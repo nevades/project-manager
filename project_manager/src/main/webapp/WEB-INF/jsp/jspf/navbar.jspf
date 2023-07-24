@@ -1,0 +1,66 @@
+<style>
+    .navbar {
+        background-color: #7589a994 !important;
+    }
+</style>
+
+<nav class="navbar navbar-expand-lg bg-body-tertiary">
+    <div class="container-fluid">
+        <a href="dashboard">
+            <img class="img-fluid" src="files/images/logo1.png" style="width: 150px;" alt="fintrex DropInNet">
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item">
+                    <a class="nav-link" aria-current="page" href="dashboard">Dashboard</a>
+                    <!--active-->
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="setup">Setup</a>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        Dropdown
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="#">Action</a></li>
+                        <li><a class="dropdown-item" href="#">Another action</a></li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li><a class="dropdown-item" href="#">Something else here</a></li>
+                    </ul>
+                </li>
+            </ul>
+            <ul class="nav-right">
+                <li class="user-profile header-notification" style="height: 20px;">
+                    <div class="dropdown-primary dropdown" style="height: 20px;">
+                        <div class="dropdown-toggle" data-toggle="dropdown" style="height: 20px;">
+                            <img style="height: 20px;" src="files/images/user.png" class="img-radius" alt="My Photo">
+                            <span><%=session.getAttribute("username")%></span>
+                            <i class="feather icon-chevron-down"></i>
+                        </div>
+                        <ul style="height: 20px;" class="show-notification profile-notification dropdown-menu" data-dropdown-in="fadeIn" data-dropdown-out="fadeOut">
+                            <li>
+                                <a href="#">
+                                    <i class="feather icon-settings"></i> Settings
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#">
+                                    <i class="feather icon-user"></i> Profile
+                                </a>
+                            </li>
+                            <li>
+                                <a href="logout">
+                                    <i class="feather icon-log-out"></i> Logout
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
