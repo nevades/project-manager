@@ -19,6 +19,18 @@
         body {
             overflow: hidden;
         }
+
+        .custom-tag-container {
+            display: inline-block;
+            background-color: purple;
+            padding: 4px 12px;
+            border-radius: 16px;
+            color: white;
+            font-weight: bold;
+            font-size: 14px;
+            line-height: 1;
+            cursor: pointer;
+        }
     </style>
 
 
@@ -31,6 +43,9 @@
                 </div>
             </div>
             <div class="horizontal-scroll-wrapper squares">
+                <div class="custom-tag-container">
+                    PvP
+                </div>
                 <div class="col-4">
                     <h3>Queued</h3>
                     <div class="box">
@@ -129,19 +144,17 @@
                 });
 
                 newNote.click(function () {
-                    // Use Swal.fire to show the input dialog instead of prompt
                     Swal.fire({
                         title: "Add new task?",
                         input: "text",
                         inputAttributes: {
-                            autocapitalize: "off",
+                            autocapitalize: "off"
                         },
                         showCancelButton: true,
                         confirmButtonText: "Add",
                         showLoaderOnConfirm: true,
                         preConfirm: (toDo) => {
                             return new Promise((resolve) => {
-                                // You can add validation for the input if needed
                                 if (toDo) {
                                     resolve(toDo);
                                 } else {
@@ -157,7 +170,10 @@
                             if (toDo) {
                                 thisNote = $("<div id=\"card-" + (note.length + 1) + "\" class=\"post-it\" draggable=\"true\"><p title=\"Click to edit\" contenteditable=\"true\">" + toDo + "</p></div>");
                                 note.push(thisNote);
+                                var pvpButton = $("<button class=\"custom-tag-container\">PvP</button>");
+                                thisNote.append(pvpButton);
 
+                                note.push(thisNote);
                                 thisNote.on("dragstart", noteDragStart);
                                 thisNote.on("dragend", noteDragEnd);
                                 thisNote.on("keyup", noteChange);

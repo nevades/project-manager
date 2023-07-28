@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package neva.project_manager.service;
 
 import neva.project_manager.model.Board;
@@ -11,10 +7,6 @@ import neva.project_manager.repo.ProjectRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-/**
- *
- * @author nevanjith
- */
 @Service
 public class ProjectService {
 
@@ -24,21 +16,26 @@ public class ProjectService {
     @Autowired
     private BoardRepo brepo;
 
-    public Project saveProject(String projectName, String boardName, String boardColor) {
+    public Project saveProject(String projectName, String[] boardNames, String[] boardColors) {
 
-        Project ifp = repo.findByProjectName(projectName);
-
-        if (ifp == null) {
-            Project project = new Project();
-            project.setProjectName(projectName);
-            project = repo.save(project);
+        Project existingProject = repo.findByProjectName(projectName);
+        if (existingProject != null) {
+            return existingProject;
         }
 
-        Board board = new Board();
-        board.setBoardName(boardName);
-        board.setBoardColor(boardColor);
-        board = brepo.save(board);
+        Project project = new Project();
+        project.setProjectName(projectName);
+        project = repo.save(project);
 
-        return ifp;
+        for (int i = 0; i < boardNames.length; i++) {
+            String name = boardNames[i].replace("\"", "").replace("[", "").replace("]", "");
+            String color = boardColors[i].replace("\"", "").replace("[", "").replace("]", "");
+            Board board = new Board();
+            board.setBoardName(name);
+            board.setBoardColor(color);
+            brepo.save(board);
+        }
+
+        return project;
     }
 }
