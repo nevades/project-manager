@@ -10,118 +10,64 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Project Manager</title>
+        <link rel="icon" href="files/images/favicon.ico" type="images/x-icon">
         <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
-        <!--<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">-->
-        <%--<%@include file="jspf/header.jspf" %>--%>
         <link rel="stylesheet" href="files/css/kanban.css">
 
     </head>
     <style>
-        /*        .nav-item {
-                    position: relative;
-                }
-
-                .navbar-collapse ul li a.nav-link:before {
-                    position: absolute;
-                    bottom: -5px;
-                    left: 0;
-                    width: 100%;
-                    height: 2px;
-                    background: transparent;
-                    content: '';
-                    opacity: 0;
-                    -ms-transition: opacity 0.3s, -webkit-transform 0.3s;
-                    -webkit-transition: opacity 0.3s, -webkit-transform 0.3s;
-                    transition: opacity 0.3s, transform 0.3s;
-                    -ms-transform: translateY(10px);
-                    -webkit-transform: translateY(10px);
-                    transform: translateY(10px);
-                }
-
-                .navbar-collapse ul li:hover a.nav-link:before {
-                    opacity: 1;
-                    -ms-transform: translateY(0px);
-                    -webkit-transform: translateY(0px);
-                    transform: translateY(0px);
-                    bottom: 0px;
-                    background: #dd4343;
-                }
-
-                .dropdown-item:hover, .dropdown-item:focus {
-                    color: #ffffff;
-                    text-decoration: none;
-                    background-color: #dd4343;
-                }
-
-                .dropdown-menu {
-                    border: 0px;
-                }
-
-                body {
-                    background: #599fd9;
-                    background: -webkit-linear-gradient(to right, #599fd9, #c2e59c);
-                    background: linear-gradient(to right, #599fd9, #c2e59c);
-                    min-height: 100vh;
-                    overflow-x: hidden;
-                }*/
+        body {
+            overflow: hidden;
+        }
     </style>
 
-    <body  style="background-image: url('files/images/body_background2.jpg');background-size: cover; background-repeat: no-repeat; background-position: center center;">
 
+    <body style="background-image: url('files/images/body_background2.jpg');height: 740px;background-size: cover; background-repeat: no-repeat; background-position: center center;">
         <%@include file="jspf/navbar.jspf" %>
-
-        <div class="col-12">
-            <div class="operations">
-                <div class="create-new">
-                    <!--<button class="button-2" role="button">Button 2</button>-->
-                    <!--<button type="button" class="btn btn-outline-success btn-rounded" data-mdb-ripple-color="dark">Success</button>-->
-                    <button type="button" class="btn btn-secondary btn-rounded"><i class="fa-solid fa-plus"></i> Add Task</button>
+        <div>
+            <div class="col-12">
+                <div class="operations"><button type="button" class="create-new btn btn-secondary btn-rounded"><i class="fa-solid fa-plus"></i> Add Task</button>
+                    <i class="trash fa-solid fa-trash fa-lg"></i>
                 </div>
-                <div class="trash">
-                    <i style="width: 20px;" class="fa-solid fa-trash"></i>
+            </div>
+            <div class="horizontal-scroll-wrapper squares">
+                <div class="col-4">
+                    <h3>Queued</h3>
+                    <div class="box">
+                    </div>
+                </div>
+                <div class="col-4">
+                    <h3>In Progress</h3>
+                    <div class="box">
+                    </div>
+                </div>
+
+                <div class="col-4">
+                    <h3>Approval Pending</h3>
+                    <div class="box">
+                    </div>
+                </div>
+
+                <div class="col-4">
+                    <h3>Rejected</h3>
+                    <div class="box">
+                    </div>
+                </div>
+
+                <div class="col-4">
+                    <h3>Done</h3>
+                    <div class="box">
+                    </div>
                 </div>
             </div>
         </div>
-        <div class="horizontal-scroll-wrapper squares">
-            <div class="col-4">
-                <h3>Queued</h3>
-                <div class="box">
-                </div>
-            </div>
-            <div class="col-4">
-                <h3>In Progress</h3>
-                <div class="box">
-                </div>
-            </div>
-
-            <div class="col-4">
-                <h3>Approval Pending</h3>
-                <div class="box">
-                </div>
-            </div>
-
-            <div class="col-4">
-                <h3>Rejected</h3>
-                <div class="box">
-                </div>
-            </div>
-
-            <div class="col-4">
-                <h3>Done</h3>
-                <div class="box">
-                </div>
-            </div>
-        </div>
-
-        <%@include file="jspf/scripts.jspf" %>
+        <%--<%@include file="jspf/scripts.jspf" %>--%>
         <script src="https://kit.fontawesome.com/c16a384926.js" crossorigin="anonymous"></script>
-        <!--<script type="text/javascript" src="files/js/slimselect.js"></script>-->
-        <!--<script type="text/javascript" src="files/js/datatables.min.js"></script>-->
-        <!--<script type="text/javascript" src="files/js/sweetalert2.js"></script>-->
-        <!--<script type="text/javascript" src="files/js/func.js"></script>-->
-        <!--<script type="text/javascript" src="files/js/autoNumeric.js"></script>-->
-        <!--<script type="text/javascript" src="files/js/dataTables.responsive.min.js"></script>-->
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
         <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.18/dist/sweetalert2.min.js"></script>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.18/dist/sweetalert2.min.css">
         <script>
             $(function () {
                 "use strict";
@@ -181,22 +127,62 @@
                         $(".post-it").remove();
                     }
                 });
+
                 newNote.click(function () {
-                    var toDo = prompt("What you have to do?"),
-                            thisNote;
-                    if (toDo) {
-                        // VERIFICAR SE JA EXISTE
-                        thisNote = $("<div id=\"card-" + (note.length + 1) + "\" class=\"post-it\" draggable=\"true\"><p title=\"Click to edit\" contenteditable=\"true\">" + toDo + "</p></div>");
-                        note.push(thisNote);
+                    // Use Swal.fire to show the input dialog instead of prompt
+                    Swal.fire({
+                        title: "Add new task?",
+                        input: "text",
+                        inputAttributes: {
+                            autocapitalize: "off",
+                        },
+                        showCancelButton: true,
+                        confirmButtonText: "Add",
+                        showLoaderOnConfirm: true,
+                        preConfirm: (toDo) => {
+                            return new Promise((resolve) => {
+                                // You can add validation for the input if needed
+                                if (toDo) {
+                                    resolve(toDo);
+                                } else {
+                                    Swal.showValidationMessage("Please enter something");
+                                }
+                            });
+                        },
+                        allowOutsideClick: () => !Swal.isLoading(),
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            var toDo = result.value;
+                            var thisNote;
+                            if (toDo) {
+                                thisNote = $("<div id=\"card-" + (note.length + 1) + "\" class=\"post-it\" draggable=\"true\"><p title=\"Click to edit\" contenteditable=\"true\">" + toDo + "</p></div>");
+                                note.push(thisNote);
 
-                        thisNote.on("dragstart", noteDragStart);
-                        thisNote.on("dragend", noteDragEnd);
-                        thisNote.on("keyup", noteChange);
+                                thisNote.on("dragstart", noteDragStart);
+                                thisNote.on("dragend", noteDragEnd);
+                                thisNote.on("keyup", noteChange);
 
-                        boxs.first().prepend(thisNote);
-                        saveApplication();
-                    }
+                                boxs.first().prepend(thisNote);
+                                saveApplication();
+                            }
+                        }
+                    });
                 });
+//                newNote.click(function () {
+//                    var toDo = prompt("What you have to do?"),
+//                            thisNote;
+//                    if (toDo) {
+//                        thisNote = $("<div id=\"card-" + (note.length + 1) + "\" class=\"post-it\" draggable=\"true\"><p title=\"Click to edit\" contenteditable=\"true\">" + toDo + "</p></div>");
+//                        note.push(thisNote);
+//
+//                        thisNote.on("dragstart", noteDragStart);
+//                        thisNote.on("dragend", noteDragEnd);
+//                        thisNote.on("keyup", noteChange);
+//
+//                        boxs.first().prepend(thisNote);
+//                        saveApplication();
+//                    }
+//                });
 
                 function noteDragStart(e) {
                     e.originalEvent.dataTransfer.setData("text/plain", e.target.getAttribute("id"));

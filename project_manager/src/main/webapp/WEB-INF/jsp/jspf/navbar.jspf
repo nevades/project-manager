@@ -17,31 +17,27 @@
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                 <li class="nav-item">
                     <a class="nav-link" aria-current="page" href="dashboard">Dashboard</a>
-                    <!--active-->
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="setup">Setup</a>
                 </li>
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                        Dropdown
+                        My Projects
                     </a>
                     <ul class="dropdown-menu">
-                        <li><a class="dropdown-item" href="#">Action</a></li>
-                        <li><a class="dropdown-item" href="#">Another action</a></li>
+                        <li><a class="dropdown-item" href="#">Project 1</a></li>
+                        <li><a class="dropdown-item" href="#">Project 2</a></li>
+                        <li><a class="dropdown-item" href="#">Project 3</a></li>
                         <li><hr class="dropdown-divider"></li>
-                        <li><a class="dropdown-item" href="#">Something else here</a></li>
+                        <li><a class="dropdown-item" href="management">Manage Projects</a></li>
                     </ul>
                 </li>
             </ul>
             <ul class="nav-right">
-                <!--<li class="user-profile header-notification" style="height: 20px;">-->
                 <div class="dropdown-primary dropdown" style="height: 20px;">
-                    <!--<div class="dropdown-toggle" data-toggle="dropdown" style="height: 20px;">-->
-                    <!--<img style="height: 20px;" src="files/images/user.png" class="img-radius" alt="My Photo">-->
                     <span><%=session.getAttribute("username")%></span>
                     <i class="feather icon-chevron-down"></i>
-                    <!--</div>-->
                     <ul style="height: 20px;" class="show-notification profile-notification dropdown-menu" data-dropdown-in="fadeIn" data-dropdown-out="fadeOut">
                         <li>
                             <a href="#">
@@ -60,7 +56,6 @@
                         </li>
                     </ul>
                 </div>
-                <!--</li>-->
             </ul>
         </div>
     </div>
