@@ -28,4 +28,9 @@ public class PageController {
     public String setup() {
         return "setup";
     }
+
+    @GetMapping("/management")
+    public String management() {
+        return "management";
+    }
 }

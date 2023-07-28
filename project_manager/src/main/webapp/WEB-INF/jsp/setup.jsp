@@ -10,16 +10,17 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Setup</title>
-        <link rel="icon" type="image/x-icon" href="/images/favicon.ico">
+        <link rel="icon" href="files/images/favicon.ico" type="images/x-icon">
         <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
-
     </head>
     <style>
+        body {
+            overflow: hidden;
+        }
     </style>
     <%@include file="jspf/navbar.jspf" %>
-    <body style="background-image: url('files/images/body_background2.jpg');background-size: cover; background-repeat: no-repeat; background-position: center center;">
+    <body style="background-image: url('files/images/body_background2.jpg');height: 740px;background-size: cover; background-repeat: no-repeat; background-position: center center;">
 
-        <!--<div class="container text-left">-->
         <div style="margin-top: 10px;">
             <div class="card" style="width: auto; height: 10rem; margin-left: 30px; margin-right: 30px; margin-top: 0px; background-color: #ffffffba;">
                 <div class="card-body">
@@ -95,6 +96,13 @@
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.18/dist/sweetalert2.min.css">
 
         <script>
+//            window.addEventListener('load', function () {
+            var referenceElement = document.getElementById('labelText');
+            var referenceWidth = referenceElement.offsetWidth;
+
+            var inputField = document.getElementById('projectName');
+            inputField.style.width = referenceWidth + 'px';
+//            });
 
             $(document).on('click', '#save', function () {
 
@@ -185,6 +193,23 @@
                 document.getElementById('labelContainer').appendChild(icon);
                 document.getElementById('labelContainer').appendChild(br);
                 boardsArray.push([labelText, colorCode]);
+
+                icon.addEventListener('click', function () {
+                    const labelToRemove = labelText + ' ';
+
+                    const labelIndex = boardsArray.findIndex((item) => item[0] === labelText);
+
+                    if (labelIndex !== -1) {
+                        boardsArray.splice(labelIndex, 1);
+                    }
+
+                    customColorLabel.remove();
+                    icon.remove();
+                    br.remove();
+
+                    labelCount--;
+                });
+
 
                 labelCount++;
             });
