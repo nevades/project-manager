@@ -27,7 +27,7 @@ public class ProjectController {
 
     @RequestMapping(value = "/save-project", method = RequestMethod.POST)
     @ResponseBody
-    public ResponseEntity<CommonResponse> saveApplication(@RequestParam String projectName, @RequestParam String boardName, @RequestParam String boardColor) throws Exception {
+    public ResponseEntity<CommonResponse> saveApplication(@RequestParam String projectName, @RequestParam String[] boardName, @RequestParam String[] boardColor) throws Exception {
         ser.saveProject(projectName, boardName, boardColor);
         CommonResponse response = new CommonResponse("Success!", 200);
         return new ResponseEntity<>(response, HttpStatus.OK);

@@ -96,15 +96,16 @@
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.18/dist/sweetalert2.min.css">
 
         <script>
-//            window.addEventListener('load', function () {
             var referenceElement = document.getElementById('labelText');
             var referenceWidth = referenceElement.offsetWidth;
 
             var inputField = document.getElementById('projectName');
             inputField.style.width = referenceWidth + 'px';
-//            });
 
             $(document).on('click', '#save', function () {
+
+                const boardNames = boardsArray.map((item) => item[0]);
+                const boardColors = boardsArray.map((item) => item[1]);
 
                 const projectName = document.getElementById('projectName').value;
                 const colorCode = document.getElementById('colorInput').value;
@@ -128,24 +129,21 @@
                     confirmButtonText: 'Yes, Proceed!',
                     showLoaderOnConfirm: true,
                     preConfirm: () => {
-                        const savePromises = boardsArray.map(([labelText, colorCode]) => {
-                            return fetch('project/save-project', {
-                                method: 'POST',
-                                body: new URLSearchParams({
-                                    projectName: projectName,
-                                    boardName: labelText,
-                                    boardColor: colorCode
-                                })
-                            }).then(response => {
-                                if (!response.ok) {
-                                    throw new Error(response.statusText);
-                                }
-                                return response.json();
-                            }).catch(error => {
-                                Swal.showValidationMessage('Request failed:' + error);
-                            });
+                        return fetch('project/save-project', {
+                            method: 'POST',
+                            body: new URLSearchParams({
+                                projectName: projectName,
+                                boardName: JSON.stringify(boardNames),
+                                boardColor: JSON.stringify(boardColors)
+                            })
+                        }).then(response => {
+                            if (!response.ok) {
+                                throw new Error(response.statusText);
+                            }
+                            return response.json();
+                        }).catch(error => {
+                            Swal.showValidationMessage('Request failed:' + error);
                         });
-                        return Promise.all(savePromises);
                         ;
                     },
                     allowOutsideClick: () => !Swal.isLoading()
@@ -209,7 +207,6 @@
 
                     labelCount--;
                 });
-
 
                 labelCount++;
             });
