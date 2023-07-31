@@ -27,4 +27,5 @@ public class Board {
     private Integer boardId;
     private String boardName;
     private String boardColor;
+    private Integer projectId;
 }

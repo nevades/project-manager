@@ -18,6 +18,7 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.transaction.PlatformTransactionManager;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 /**
  *
@@ -26,6 +27,7 @@ import org.springframework.transaction.PlatformTransactionManager;
 @Configuration
 @EnableJdbcRepositories(basePackages = "neva.project_manager.repo")
 @EnableJdbcAuditing(auditorAwareRef = "httpSessionAuditorAware")
+@EnableTransactionManagement
 public class DbConfig extends AbstractJdbcConfiguration {
 
     @Bean

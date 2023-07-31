@@ -4,10 +4,14 @@
  */
 package neva.project_manager.controller;
 
+import jakarta.servlet.http.HttpSession;
+import neva.project_manager.dto.LoadBoardDTO;
 import neva.project_manager.service.ProjectService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -30,6 +34,18 @@ public class ProjectController {
     public ResponseEntity<CommonResponse> saveApplication(@RequestParam String projectName, @RequestParam String[] boardName, @RequestParam String[] boardColor) throws Exception {
         ser.saveProject(projectName, boardName, boardColor);
         CommonResponse response = new CommonResponse("Success!", 200);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @GetMapping("/load-board")
+    public Iterable<LoadBoardDTO> LoadBoard(HttpSession session) throws Exception {
+        return ser.LoadBoard(session.getAttribute("uid").toString());
+    }
+
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<CommonResponse> handleException(Exception e) {
+        e.printStackTrace();
+        CommonResponse response = new CommonResponse(e.getMessage(), 200);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
