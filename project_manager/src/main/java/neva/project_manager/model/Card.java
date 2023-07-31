@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package neva.project_manager.model;
 
 import lombok.AllArgsConstructor;
@@ -19,13 +15,12 @@ import org.springframework.data.relational.core.mapping.Table;
 @NoArgsConstructor
 @Setter
 @Getter
-@Table("board")
+@Table("card")
 
-public class Board {
+public class Card {
 
     @Id
+    private Integer cardId;
     private Integer boardId;
-    private String boardName;
-    private String boardColor;
-    private Integer projectId;
+    private String cardContent;
 }

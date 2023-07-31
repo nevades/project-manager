@@ -1,7 +1,13 @@
 <style>
     .navbar {
-        /*background-color: #7589a994 !important;*/
-        background-color: #ffffff00 !important;
+        background-color: #7589a994 !important;
+        /*background-color: #00000075 !important;*/
+    }
+
+    .nav-link {
+        color: #f0f0f0;
+        /*font-weight: bold;*/
+        font-family: "Helvetica Neue", Arial, sans-serif;
     }
 </style>
 
