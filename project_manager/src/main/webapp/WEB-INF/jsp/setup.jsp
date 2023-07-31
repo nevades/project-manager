@@ -16,6 +16,10 @@
     <style>
         body {
             overflow: hidden;
+            text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.2);
+        }
+        img{
+            max-width:0px;
         }
     </style>
     <%@include file="jspf/navbar.jspf" %>
@@ -33,7 +37,10 @@
                         </div>
                         <div class="form-group col" style="margin-left: 50px;">
                             <label class="row" for="exampleInputEmail1">Project Icon</label>
-                            <input class="row" type="file" id="myFile" name="filename">
+                            <input class="row" onchange="readURL(this);" type="file" id="myFile" name="filename">
+                        </div>
+                        <div class="form-group col" style="margin-left: 50px;">
+                            <img id="blah" src="http://placehold.it/180" alt="your image" />
                         </div>
                     </form>
                 </div>
@@ -96,8 +103,37 @@
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.18/dist/sweetalert2.min.css">
 
         <script>
+        </script>
+        <script>
             var referenceElement = document.getElementById('labelText');
             var referenceWidth = referenceElement.offsetWidth;
+            const checkbox = document.getElementById('flexCheckDefault');
+            const colorInput = document.getElementById('colorInput');
+
+            checkbox.addEventListener('change', function () {
+                if (checkbox.checked) {
+                    colorInput.value = '#ecf0f5';
+                } else {
+                    colorInput.value = colorInput.defaultValue;
+                }
+            });
+
+            function readURL(input) {
+                if (input.files && input.files[0]) {
+                    var reader = new FileReader();
+
+                    reader.onload = function (e) {
+                        $('#blah').attr('src', e.target.result);
+                    };
+
+                    reader.readAsDataURL(input.files[0]);
+                    var imgElement = document.getElementById("blah");
+                    if (imgElement) {
+                        imgElement.style.maxWidth = "150px";
+                        imgElement.style.marginTop = "10px";
+                    }
+                }
+            }
 
             var inputField = document.getElementById('projectName');
             inputField.style.width = referenceWidth + 'px';
@@ -149,8 +185,8 @@
                     allowOutsideClick: () => !Swal.isLoading()
                 }).then((result) => {
                     if (result.value) {
-                        if (result.value.status !== 200) {
-                            Swal.fire('Error!', result.value.msg, 'error');
+                        if (result.value.message !== 'Success!') {
+                            Swal.fire('Error!', result.value.message, 'error');
                         } else {
                             Swal.fire('Successfull!', 'Project has been Assigned !', 'success');
                         }
