@@ -104,8 +104,8 @@ header h1 {
 }
 
 .box {
-    background-color: #ecf0f5;
-    border:7px dotted #ecf0f5;
+    /*background-color: #ecf0f5;*/
+    /*border:7px dotted #ecf0f5;*/
     border-radius: 6px;
     padding: 14px;
     position: relative;
