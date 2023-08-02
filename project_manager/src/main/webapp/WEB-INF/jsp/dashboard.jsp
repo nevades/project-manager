@@ -10,6 +10,24 @@
         <link href="https://unpkg.com/slim-select@latest/dist/slimselect.css" rel="stylesheet">
     </head>
     <style>
+
+        #boxes {
+            overflow-x: auto;
+            white-space: nowrap;
+        }
+
+        /* Ensure the child divs don't wrap */
+        .divs {
+            display: inline-block;
+            white-space: normal;
+            vertical-align: top;
+        }
+        .centered-div {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
         .custom-tag-container {
             display: inline-block;
             background-color: purple;
@@ -56,35 +74,18 @@
         <%@include file="jspf/navbar.jspf" %>
         <div id="landing"></div>
         <div id="dashboard">
-            <div class="col-12" style="margin-top: 10px;">
-                <div class="operations" style="margin-left: 20px; width: auto;">
-                    <button type="button" class="create-new btn btn-secondary btn-rounded">
-                        <i class="fa-solid fa-plus"></i> Add Task
-                    </button>
-                    <i class="trash fa-solid fa-trash fa-lg"></i>
-                </div>
+
+            <div class="operations" style="margin-left: 20px; margin-top: 10px; width: auto;">
+                <button type="button" onclick="clearCenter()" class="btn btn-primary"><span><i class="fa fa-arrow-left fa-1x"></i></span> Select Project</button>
+                <button type="button" class="create-new btn btn-secondary btn-rounded">
+                    <i class="fa-solid fa-plus"></i> Add Task
+                </button>
+                <i class="trash fa-solid fa-trash fa-lg"></i>
             </div>
-            <div class="horizontal-scroll-wrapper squares" id="boxes">
-                <!--                <div class="col-4">
-                                    <h3>Queued</h3>
-                                    <div class="box"></div>
-                                </div>
-                                <div class="col-4">
-                                    <h3>In Progress</h3>
-                                    <div class="box"></div>
-                                </div>
-                                <div class="col-4">
-                                    <h3>Approval Pending</h3>
-                                    <div class="box"></div>
-                                </div>
-                                <div class="col-4">
-                                    <h3>Rejected</h3>
-                                    <div class="box"></div>
-                                </div>
-                                <div class="col-4">
-                                    <h3>Done</h3>
-                                    <div class="box"></div>
-                                </div>-->
+            <div class="centered-div" id="center">
+            </div>
+
+            <div class="horizontal-scroll-wrapper squares" id="boxes" style="display: none;">
             </div>
         </div>
         <script src="https://kit.fontawesome.com/c16a384926.js" crossorigin="anonymous"></script>
@@ -94,166 +95,185 @@
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.18/dist/sweetalert2.min.js"></script>
         <script src="https://unpkg.com/slim-select@latest/dist/slimselect.min.js"></script>
         <script>
-
-            fetch('project/load-board').then((res) => res.json()).then((data) => {
+        </script>
+        <script>
+            $("#center").empty();
+            fetch('project/load-project').then((res) => res.json()).then((data) => {
                 console.log(data);
+                for (var i = 0; i < data.length; i++) {
+                    const pid = data[i].projectId;
+                    const pname = data[i].projectName;
+                    const pdate = new Date(data[i].date).toISOString().split('T')[0];
+                    const ptime = new Date(data[i].date).toLocaleTimeString([], {hour: '2-digit', minute: '2-digit', second: '2-digit'});
+
+                    var temp = ' <div class="card" style="width: 18rem;">'
+                            + '<div class="card-body">'
+                            + '<h5 class="card-title">' + pname + '</h5>'
+                            + '<p class="card-text">Date Created : ' + pdate + '</p>'
+                            + '<p class="card-text">Time Created : ' + ptime + '</p>'
+                            + '<button class="btn btn-primary select" id="projectButton" type="button" data-projectid="' + pid + '">Go to project</button>'
+                            + '</div></div>'
+
+                    $('#center').append(temp);
+                }
             });
-            const loadBoardDTO = {
-                boardId: 26,
-                boardName: "bjhhjbjh",
-                boardColor: "#3892ff"
-            };
 
-            const colDiv = $('<div class="col-4"></div>');
+            function clearCenter() {
+                $(".divs").empty();
+                document.getElementById("center").style.display = "flex";
+            }
 
-            const h3Element = $(`<h3>${loadBoardDTO.boardName}</h3>`);
+            $(document).on('click', '.select', function () {
+                $('#boxes').empty();
+                boxes.style.display = "block";
+                document.getElementById("center").style.display = "none";
+                var projectid = $(this).data('projectid');
+                return fetch('project/load-board', {
+                    method: 'POST',
+                    body: new URLSearchParams({
+                        projectId: projectid
+                    })
+                }).then((resp) => resp.json()).then((data) => {
+                    for (var i = 0; i < data.length; i++) {
 
-            const boxDiv = $('<div class="box"></div>');
-
-            colDiv.append(h3Element);
-            colDiv.append(boxDiv);
-
-            $('#boxes').append(colDiv);
-
-            $(function () {
-                "use strict";
-                var saveApplication = function () {
-                    localStorage.setItem("app", $(".main-content").html());
-                };
-                var getApplication = function () {
-                    return localStorage.getItem("app");
-                };
-                (function () {
-                    if (getApplication()) {
-                        $(".main-content").html(getApplication());
+                        const name = data[i].boardName;
+                        const color = data[i].boardColor;
+                        const colDiv = $('<div style="margin-top: 10px;" class="divs col-4"></div>');
+                        const h3Element = $('<h3>' + name + '</h3>');
+                        const boxDiv = $('<div class="box" style="background-color: ' + color + '; border:7px dotted ' + color + ';"></div>');
+                        colDiv.append(h3Element);
+                        colDiv.append(boxDiv);
+                        $('#boxes').append(colDiv);
                     }
-                })();
 
-                var boxs = $(".box"),
-                        trash = $(".trash"),
-                        note = $(".post-it"),
-                        newNote = $(".create-new");
-
-                note.on("dragstart", noteDragStart);
-                note.on("dragend", noteDragEnd);
-
-                boxs.on("dragover", function (e) {
-                    $(this).addClass("drop-here");
-                    e.preventDefault();
-                });
-
-                boxs.on("dragleave", function () {
-                    $(this).removeClass("drop-here");
-                });
-
-                trash.on("dragover", function (e) {
-                    e.preventDefault();
-                    trash.addClass("active");
-                });
-
-                boxs.on("drop", function (e) {
-                    var card = e.originalEvent.dataTransfer.getData("text/plain");
-                    e.target.appendChild(document.getElementById(card));
-                    e.preventDefault();
-                });
-
-                trash.on("drop", function (e) {
-                    var card = e.originalEvent.dataTransfer.getData("text/plain");
-                    if (confirm("Want to delete this note?")) {
-                        $("#" + card).remove();
-                        saveApplication();
-                    }
-                    e.preventDefault();
-                });
-
-                trash.click(function () {
-                    if (confirm("Want to clear?")) {
-                        localStorage.clear();
-                        $(".post-it").remove();
-                    }
-                });
-
-                newNote.click(function () {
-                    Swal.fire({
-                        title: "Add new task",
-                        html:
-                                '<input id="subject" maxlength="18" class="swal2-input" placeholder="Subject" autocapitalize="on">' +
-                                '<input id="description" class="swal2-input" placeholder="Description" autocapitalize="off">' +
-                                '<select id="selectInput" class="swal2-select">' +
-                                '   <option value="Low">Priority: Low</option>' +
-                                '   <option value="Medium">Priority: Medium</option>' +
-                                '   <option value="High">Priority: High</option>' +
-                                '</select>',
-                        showCancelButton: true,
-                        confirmButtonText: "Add",
-                        showLoaderOnConfirm: true,
-                        preConfirm: () => {
-                            return new Promise((resolve) => {
-                                const subject = document.getElementById('subject').value;
-                                const description = document.getElementById('description').value;
-                                const selectedOption = document.getElementById('selectInput').value;
-                                if (subject && description) {
-                                    resolve({subject, description, selectedOption});
-                                } else {
-                                    Swal.showValidationMessage("Please fill in all fields");
-                                }
-                            });
-                        },
-                        allowOutsideClick: () => !Swal.isLoading(),
-                    }).then((result) => {
-                        if (result.isConfirmed) {
-                            const {subject, description, selectedOption} = result.value;
-                            var thisNote;
-
-                            if (subject && description) {
-                                thisNote = $("<div id=\"card-" + (note.length + 1) + "\" class=\"post-it\" draggable=\"true\"><p class=\"editable\" style=\"font-size: 17px; margin-top: -25px; margin-left: 5px; font-weight: bold;\" title=\"Click to edit\" contenteditable=\"false\">" + subject + "</p><p contenteditable=\"true\" style=\"font-size: 14px; margin-top: -5px; margin-left: 5px;\">" + description + "</p><div style=\"margin-top: 0px\" class=\"card-footer\"></div></div>");
-                                note.push(thisNote);
-
-                                switch (selectedOption) {
-                                    case "Low":
-                                        thisNote.find(".card-footer").append($("<button type=\"button\" style=\"margin-left: -150px\" class=\"btn btn-success\"></button>"));
-                                        break;
-                                    case "Medium":
-                                        thisNote.find(".card-footer").append($("<button type=\"button\" style=\"margin-left: -150px\" class=\"btn btn-warning\"></button>"));
-                                        break;
-                                    case "High":
-                                        thisNote.find(".card-footer").append($("<button type=\"button\" style=\"margin-left: -150px\" class=\"btn btn-danger\"></button>"));
-                                        break;
-                                }
-
-                                thisNote.on("dragstart", noteDragStart);
-                                thisNote.on("dragend", noteDragEnd);
-                                thisNote.on("keyup", noteChange);
-
-                                boxs.first().prepend(thisNote);
+                    $(function () {
+                        "use strict";
+                        var saveApplication = function () {
+                            localStorage.setItem("app", $(".main-content").html());
+                        };
+                        var getApplication = function () {
+                            return localStorage.getItem("app");
+                        };
+                        (function () {
+                            if (getApplication()) {
+                                $(".main-content").html(getApplication());
+                            }
+                        })();
+                        var boxs = $(".box"),
+                                trash = $(".trash"),
+                                note = $(".post-it"),
+                                newNote = $(".create-new");
+                        note.on("dragstart", noteDragStart);
+                        note.on("dragend", noteDragEnd);
+                        boxs.on("dragover", function (e) {
+                            $(this).addClass("drop-here");
+                            e.preventDefault();
+                        });
+                        boxs.on("dragleave", function () {
+                            $(this).removeClass("drop-here");
+                        });
+                        trash.on("dragover", function (e) {
+                            e.preventDefault();
+                            trash.addClass("active");
+                        });
+                        boxs.on("drop", function (e) {
+                            var card = e.originalEvent.dataTransfer.getData("text/plain");
+                            e.target.appendChild(document.getElementById(card));
+                            e.preventDefault();
+                        });
+                        trash.on("drop", function (e) {
+                            var card = e.originalEvent.dataTransfer.getData("text/plain");
+                            if (confirm("Want to delete this note?")) {
+                                $("#" + card).remove();
                                 saveApplication();
                             }
+                            e.preventDefault();
+                        });
+                        trash.click(function () {
+                            if (confirm("Want to clear?")) {
+                                localStorage.clear();
+                                $(".post-it").remove();
+                            }
+                        });
+                        newNote.click(function () {
+                            Swal.fire({
+                                title: "Add new task",
+                                html:
+                                        '<input id="subject" maxlength="18" class="swal2-input" placeholder="Subject" autocapitalize="on">' +
+                                        '<input id="description" class="swal2-input" placeholder="Description" autocapitalize="off">' +
+                                        '<select id="selectInput" class="swal2-select">' +
+                                        '   <option value="Low">Priority: Low</option>' +
+                                        '   <option value="Medium">Priority: Medium</option>' +
+                                        '   <option value="High">Priority: High</option>' +
+                                        '</select>',
+                                showCancelButton: true,
+                                confirmButtonText: "Add",
+                                showLoaderOnConfirm: true,
+                                preConfirm: () => {
+                                    return new Promise((resolve) => {
+                                        const subject = document.getElementById('subject').value;
+                                        const description = document.getElementById('description').value;
+                                        const selectedOption = document.getElementById('selectInput').value;
+                                        if (subject && description) {
+                                            resolve({subject, description, selectedOption});
+                                        } else {
+                                            Swal.showValidationMessage("Please fill in all fields");
+                                        }
+                                    });
+                                },
+                                allowOutsideClick: () => !Swal.isLoading(),
+                            }).then((result) => {
+                                if (result.isConfirmed) {
+                                    const {subject, description, selectedOption} = result.value;
+                                    var thisNote;
+                                    if (subject && description) {
+                                        thisNote = $("<div id=\"card-" + (note.length + 1) + "\" class=\"post-it\" draggable=\"true\"><p class=\"editable\" style=\"font-size: 17px; margin-top: -25px; margin-left: 5px; font-weight: bold;\" title=\"Click to edit\" contenteditable=\"false\">" + subject + "</p><p contenteditable=\"true\" style=\"font-size: 14px; margin-top: -5px; margin-left: 5px;\">" + description + "</p><div style=\"margin-top: 0px\" class=\"card-footer\"></div></div>");
+                                        note.push(thisNote);
+                                        switch (selectedOption) {
+                                            case "Low":
+                                                thisNote.find(".card-footer").append($("<button type=\"button\" style=\"margin-left: -150px\" class=\"btn btn-success\"></button>"));
+                                                break;
+                                            case "Medium":
+                                                thisNote.find(".card-footer").append($("<button type=\"button\" style=\"margin-left: -150px\" class=\"btn btn-warning\"></button>"));
+                                                break;
+                                            case "High":
+                                                thisNote.find(".card-footer").append($("<button type=\"button\" style=\"margin-left: -150px\" class=\"btn btn-danger\"></button>"));
+                                                break;
+                                        }
+
+                                        thisNote.on("dragstart", noteDragStart);
+                                        thisNote.on("dragend", noteDragEnd);
+                                        thisNote.on("keyup", noteChange);
+                                        boxs.first().prepend(thisNote);
+                                        saveApplication();
+                                    }
+                                }
+                            });
+                        });
+                        function noteDragStart(e) {
+                            e.originalEvent.dataTransfer.setData("text/plain", e.target.getAttribute("id"));
+                            trash.css({
+                                opacity: 0.5
+                            });
                         }
+
+                        function noteDragEnd() {
+                            boxs.removeClass("drop-here");
+                            trash.css({
+                                opacity: 0.2
+                            });
+                            trash.removeClass("active");
+                            saveApplication();
+                        }
+
+                        function noteChange() {
+                            saveApplication();
+                        }
+
+                        $(".post-it").on("keyup", function () {
+                            saveApplication();
+                        });
                     });
-                });
-
-                function noteDragStart(e) {
-                    e.originalEvent.dataTransfer.setData("text/plain", e.target.getAttribute("id"));
-                    trash.css({
-                        opacity: 0.5
-                    });
-                }
-
-                function noteDragEnd() {
-                    boxs.removeClass("drop-here");
-                    trash.css({
-                        opacity: 0.2
-                    });
-                    trash.removeClass("active");
-                    saveApplication();
-                }
-
-                function noteChange() {
-                    saveApplication();
-                }
-
-                $(".post-it").on("keyup", function () {
-                    saveApplication();
                 });
             });
         </script>

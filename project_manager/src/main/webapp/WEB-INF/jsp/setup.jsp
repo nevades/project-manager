@@ -16,7 +16,7 @@
     <style>
         body {
             overflow: hidden;
-            text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.2);
+            /*text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.2);*/
         }
         img{
             max-width:0px;
@@ -197,10 +197,10 @@
             let labelCount = 1;
             const boardsArray = [];
             document.getElementById('createLabelButton').addEventListener('click', function () {
-                if (labelCount === 13) {
+                if (labelCount === 7) {
                     Swal.fire(
                             '',
-                            'An project can have only 12 project boards!',
+                            'An project can have only 6 project boards!',
                             'error'
                             );
                     return;
