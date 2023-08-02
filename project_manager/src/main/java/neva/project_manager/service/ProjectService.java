@@ -1,6 +1,7 @@
 package neva.project_manager.service;
 
 import neva.project_manager.dto.LoadBoardDTO;
+import neva.project_manager.dto.LoadProjectDTO;
 import neva.project_manager.model.Board;
 import neva.project_manager.model.Project;
 import neva.project_manager.repo.BoardRepo;
@@ -54,7 +55,11 @@ public class ProjectService {
 
     }
 
-    public Iterable<LoadBoardDTO> LoadBoard(String uid) {
-        return crepo.LoadBoard(uid);
+    public Iterable<LoadBoardDTO> LoadBoard(String uid, String projectId) {
+        return crepo.LoadBoard(uid, projectId);
+    }
+
+    public Iterable<LoadProjectDTO> LoadProject(String uid) {
+        return repo.LoadProject(uid);
     }
 }
