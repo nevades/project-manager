@@ -30,6 +30,7 @@ public class Project {
     @Id
     private Integer projectId;
     private String projectName;
+    private Integer status;
     @CreatedBy
     private Integer userId;
     @CreatedDate

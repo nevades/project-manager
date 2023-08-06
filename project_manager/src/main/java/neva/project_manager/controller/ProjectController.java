@@ -6,6 +6,7 @@ package neva.project_manager.controller;
 
 import jakarta.servlet.http.HttpSession;
 import neva.project_manager.dto.LoadBoardDTO;
+import neva.project_manager.dto.LoadDataDTO;
 import neva.project_manager.dto.LoadProjectDTO;
 import neva.project_manager.service.ProjectService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,6 +43,11 @@ public class ProjectController {
     @PostMapping("/load-board")
     public Iterable<LoadBoardDTO> LoadBoard(HttpSession session, String projectId) throws Exception {
         return ser.LoadBoard(session.getAttribute("uid").toString(), projectId);
+    }
+
+    @GetMapping("/load-data")
+    public Iterable<LoadDataDTO> LoadData(HttpSession session, String projectId) throws Exception {
+        return ser.LoadData(session.getAttribute("uid").toString());
     }
 
     @GetMapping("/load-project")

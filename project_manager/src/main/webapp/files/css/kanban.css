@@ -28,7 +28,7 @@ img {
 }
 .col-4 {
     width: 260px;
-    margin-left: 2.5%;
+    /*margin-left: 2.5%;*/
 }
 .col-12 {
     width: 95%;
@@ -36,8 +36,8 @@ img {
 @media (max-width: 740px) {
     .col-4 {
         width: 95%;
-        margin: auto;
-        float: none;
+        /*margin: auto;*/
+        /*float: none;*/
     }
 }
 
@@ -108,7 +108,7 @@ header h1 {
     /*border:7px dotted #ecf0f5;*/
     border-radius: 6px;
     padding: 14px;
-    position: relative;
+    /*position: relative;*/
     text-align: center;
     min-height: 500px;
     margin-bottom: 20px;
