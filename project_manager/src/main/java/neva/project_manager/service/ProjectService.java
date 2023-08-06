@@ -1,6 +1,7 @@
 package neva.project_manager.service;
 
 import neva.project_manager.dto.LoadBoardDTO;
+import neva.project_manager.dto.LoadDataDTO;
 import neva.project_manager.dto.LoadProjectDTO;
 import neva.project_manager.model.Board;
 import neva.project_manager.model.Project;
@@ -35,6 +36,7 @@ public class ProjectService {
 
             Project project = new Project();
             project.setProjectName(projectName);
+            project.setStatus(1);
             project = repo.save(project);
 
             for (int i = 0; i < boardNames.length; i++) {
@@ -61,5 +63,9 @@ public class ProjectService {
 
     public Iterable<LoadProjectDTO> LoadProject(String uid) {
         return repo.LoadProject(uid);
+    }
+    
+    public Iterable<LoadDataDTO> LoadData(String uid) {
+        return repo.LoadData(uid);
     }
 }

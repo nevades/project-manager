@@ -180,7 +180,6 @@
                         }).catch(error => {
                             Swal.showValidationMessage('Request failed:' + error);
                         });
-                        ;
                     },
                     allowOutsideClick: () => !Swal.isLoading()
                 }).then((result) => {
@@ -189,6 +188,9 @@
                             Swal.fire('Error!', result.value.message, 'error');
                         } else {
                             Swal.fire('Successfull!', 'Project has been Assigned !', 'success');
+                            var inputElement = document.getElementById("projectName");
+                            inputElement.value = "";
+
                         }
                     }
                 });
@@ -197,10 +199,10 @@
             let labelCount = 1;
             const boardsArray = [];
             document.getElementById('createLabelButton').addEventListener('click', function () {
-                if (labelCount === 7) {
+                if (labelCount === 6) {
                     Swal.fire(
                             '',
-                            'An project can have only 6 project boards!',
+                            'An project can have only 5 project boards!',
                             'error'
                             );
                     return;

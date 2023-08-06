@@ -10,22 +10,18 @@
         <link href="https://unpkg.com/slim-select@latest/dist/slimselect.css" rel="stylesheet">
     </head>
     <style>
+        .card-scrollx {
+            display: flex;
+            overflow-x: auto;
+            scroll-behavior: smooth;
+        }
 
         #boxes {
-            overflow-x: auto;
-            white-space: nowrap;
         }
 
-        /* Ensure the child divs don't wrap */
-        .divs {
-            display: inline-block;
-            white-space: normal;
-            vertical-align: top;
-        }
         .centered-div {
             display: flex;
             justify-content: center;
-            align-items: center;
         }
 
         .custom-tag-container {
@@ -38,17 +34,6 @@
             font-size: 14px;
             line-height: 1;
             cursor: pointer;
-        }
-
-        .card {
-            width: 240px;
-            height: auto;
-            background-color: #f9f9f9;
-            padding: 10px;
-            border-radius: 5px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-            margin: 10px;
-            position: relative;
         }
 
         .subject {
@@ -69,12 +54,64 @@
             border: 1px solid #e6ac00;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
-    </style>
-    <body style="background-image: url('files/images/body_background2.jpg');height: 740px;background-size: cover; background-repeat: no-repeat; background-position: center center;">
-        <%@include file="jspf/navbar.jspf" %>
-        <div id="landing"></div>
-        <div id="dashboard">
 
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        .container {
+            width: 100%;
+            overflow-x: hidden;
+        }
+
+        .card-scroll {
+            display: flex;
+            overflow-x: auto;
+            scroll-behavior: smooth;
+            padding: 10px;
+        }
+
+        .cards {
+            width: 240px;
+            height: auto;
+            background-color: #f9f9f9;
+            padding: 10px;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            margin: 10px;
+            position: relative;
+        }
+
+        .card {
+            margin: 10px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            flex: 0 0 auto;
+            width: 240px;
+            height: auto;
+            margin-right: 10px;
+            background-color: #f9f9f9;
+            border-radius: 5px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 20px;
+            padding: 10px;
+            position: relative;
+        }
+        body {
+            overflow-y: hidden;
+            overflow-x: visible;
+        }
+
+    </style>
+    <%@include file="jspf/navbar.jspf" %>
+    <body style="background-image: url('files/images/body_background2.jpg');height: 740px;background-size: cover; background-repeat: no-repeat; background-position: center center;">
+        <div id="landing">
+
+        </div>
+        <div id="dashboard">
             <div class="operations" style="margin-left: 20px; margin-top: 10px; width: auto;">
                 <button type="button" onclick="clearCenter()" class="btn btn-primary"><span><i class="fa fa-arrow-left fa-1x"></i></span> Select Project</button>
                 <button type="button" class="create-new btn btn-secondary btn-rounded">
@@ -84,10 +121,24 @@
             </div>
             <div class="centered-div" id="center">
             </div>
+            <div id="boxes" style="display: none;">
 
-            <div class="horizontal-scroll-wrapper squares" id="boxes" style="display: none;">
             </div>
         </div>
+        <!--        <div class="card-scrollx">
+                    <div class="card">Card 1</div>
+                    <div class="card">Card 2</div>
+                    <div class="card">Card 3</div>
+                    <div class="card">Card 4</div>
+                    <div class="card">Card 5</div>
+                    <div class="card">Card 6</div>
+                    <div class="card">Card 7</div>
+                    <div class="card">Card 8</div>
+                    <div class="card">Card 9</div>
+                    <div class="card">Card 10</div>
+                    <div class="card">Card 11</div>
+                    <div class="card">Card 12</div>
+                </div>-->
         <script src="https://kit.fontawesome.com/c16a384926.js" crossorigin="anonymous"></script>
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
         <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
@@ -106,13 +157,13 @@
                     const pdate = new Date(data[i].date).toISOString().split('T')[0];
                     const ptime = new Date(data[i].date).toLocaleTimeString([], {hour: '2-digit', minute: '2-digit', second: '2-digit'});
 
-                    var temp = ' <div class="card" style="width: 18rem;">'
+                    var temp = ' <div class="cards" style="width: 18rem;">'
                             + '<div class="card-body">'
-                            + '<h5 class="card-title">' + pname + '</h5>'
+                            + '<h5 class="card-title" style="font-weight: bold; text-decoration: underline;">' + pname + '</h5>'
                             + '<p class="card-text">Date Created : ' + pdate + '</p>'
                             + '<p class="card-text">Time Created : ' + ptime + '</p>'
                             + '<button class="btn btn-primary select" id="projectButton" type="button" data-projectid="' + pid + '">Go to project</button>'
-                            + '</div></div>'
+                            + '</div></div>';
 
                     $('#center').append(temp);
                 }
@@ -220,6 +271,9 @@
                                             Swal.showValidationMessage("Please fill in all fields");
                                         }
                                     });
+
+
+
                                 },
                                 allowOutsideClick: () => !Swal.isLoading(),
                             }).then((result) => {

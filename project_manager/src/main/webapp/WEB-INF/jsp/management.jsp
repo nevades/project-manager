@@ -62,6 +62,23 @@
         <script src="https://code.jquery.com/jquery-3.6.0.min.js" crossorigin="anonymous"></script>
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.18/dist/sweetalert2.min.js"></script>
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.18/dist/sweetalert2.min.css">
-
+        <script>
+            fetch('project/load-data').then((res) => res.json()).then((data) => {
+                console.log(data);
+//                for (var i = 0; i < data.length; i++) {
+//                    const pid = data[i].projectId;
+//                    const pname = data[i].projectName;
+//                    var temp = ' <div class="cards" style="width: 18rem;">'
+//                            + '<div class="card-body">'
+//                            + '<h5 class="card-title" style="font-weight: bold; text-decoration: underline;">' + pname + '</h5>'
+//                            + '<p class="card-text">Date Created : ' + pdate + '</p>'
+//                            + '<p class="card-text">Time Created : ' + ptime + '</p>'
+//                            + '<button class="btn btn-primary select" id="projectButton" type="button" data-projectid="' + pid + '">Go to project</button>'
+//                            + '</div></div>';
+//
+//                    $('#center').append(temp);
+//                }
+            });
+        </script>
     </body>
 </html>
