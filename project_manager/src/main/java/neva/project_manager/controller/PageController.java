@@ -33,4 +33,9 @@ public class PageController {
     public String management() {
         return "management";
     }
+
+    @GetMapping("/advanced")
+    public String advanced() {
+        return "advanced";
+    }
 }
