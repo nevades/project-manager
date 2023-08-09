@@ -8,9 +8,11 @@ import neva.project_manager.dto.LoadDataDTO;
 import neva.project_manager.dto.LoadProjectDTO;
 import neva.project_manager.dto.ParamDTO;
 import neva.project_manager.model.Board;
+import neva.project_manager.model.Parameter;
 import neva.project_manager.model.Project;
 import neva.project_manager.repo.BoardRepo;
 import neva.project_manager.repo.CardRepo;
+import neva.project_manager.repo.ParamRepo;
 import neva.project_manager.repo.ProjectRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -31,6 +33,9 @@ public class ProjectService {
 
     @Autowired
     private DataTableRepo<ParamDTO> prepo;
+
+    @Autowired
+    ParamRepo pramrepo;
 
     @Transactional
     public Project saveProject(String projectName, String[] boardNames, String[] boardColors) throws Exception {
@@ -74,6 +79,20 @@ public class ProjectService {
 
     public Iterable<LoadDataDTO> LoadData(String uid) {
         return repo.LoadData(uid);
+    }
+
+    public Parameter deactivateStatus(Integer id) throws Exception {
+        Parameter utype = pramrepo.findById(id).get();
+        utype.setStatus("deactivated");
+        utype = pramrepo.save(utype);
+        return utype;
+    }
+
+    public Parameter reactivateStatus(Integer id) throws Exception {
+        Parameter utype = pramrepo.findById(id).get();
+        utype.setStatus("active");
+        utype = pramrepo.save(utype);
+        return utype;
     }
 
     public DataTablesResponse<ParamDTO> getParam(DataTableRequest param) throws Exception {

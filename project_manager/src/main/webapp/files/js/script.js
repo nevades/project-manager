@@ -178,7 +178,7 @@ function setTableStatus(td, custom, whiteSpace) {
     } else if ($(td).html() === 'rejected') {
         $(td).html('<label class="label label-danger" ' + whiteSpaceTxt + '>Rejected</label>');
     } else if ($(td).html() === 'deactivated') {
-        $(td).html('<label class="label label-inverse" ' + whiteSpaceTxt + '>Deactivated</label>');
+        $(td).html('<label class="label label-danger">Deactivated</label>');
     } else if ($(td).html() === 'in progress') {
         $(td).html('<label class="label label-info" ' + whiteSpaceTxt + '>In Progress</label>');
     } else if (custom) {
