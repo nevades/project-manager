@@ -64,6 +64,20 @@ public class ProjectController {
         return ser.getParam(param);
     }
 
+    @PostMapping("/deactivate")
+    public ResponseEntity<CommonResponse> deactivateStatus(@RequestParam Integer id) throws Exception {
+        ser.deactivateStatus(id);
+        CommonResponse response = new CommonResponse("Success!", 200);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @PostMapping("/reactivate")
+    public ResponseEntity<CommonResponse> reactivateStatus(@RequestParam Integer id) throws Exception {
+        ser.reactivateStatus(id);
+        CommonResponse response = new CommonResponse("Success!", 200);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
     @ExceptionHandler(Exception.class)
     public ResponseEntity<CommonResponse> handleException(Exception e) {
         e.printStackTrace();
