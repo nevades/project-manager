@@ -35,8 +35,70 @@
                         </table>
                     </div>
                 </div>
+                <div class="card-footer">
+                    <div class="text-right">
+                        <button id="addCategoryBtn" class="btn btn-sm waves-effect waves-light btn-danger"><i class="icon feather icon-plus"></i>Add Categories</button>
+                        <button id="addCategoryTypeBtn" class="btn btn-sm waves-effect waves-light btn-info"><i class="icon feather icon-plus"></i>Add Category Type</button>
+                    </div>
+                </div>
             </div>
         </div>
+
+        <div class="modal fade" id="addCategoryModal" tabindex="-1" role="dialog" aria-labelledby="addCategoryModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="addCategoryModalLabel">Add New Category</h5>
+                    </div>
+                    <div class="modal-body">
+                        <form id="addCategoryForm">
+                            <div class="form-group">
+                                <label for="categoryName">Category Name</label>
+                                <input type="text" class="form-control" id="categoryName" name="categoryName" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="categoryType">Category Type</label>
+                                <select class="form-control" id="categoryType" name="categoryType" required>
+                                    <option value="option1">Option 1</option>
+                                    <option value="option2">Option 2</option>
+                                    <option value="option3">Option 3</option>
+                                </select>
+
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" id="cancel" data-dismiss="modal">Cancel</button>
+                        <button type="button" class="btn btn-primary" id="saveCategoryBtn">Add Category</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ... (your existing HTML code) ... -->
+
+        <div class="modal fade" id="addCategoryTypeModal" tabindex="-1" role="dialog" aria-labelledby="addCategoryTypeModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="addCategoryTypeModalLabel">Add New Category Type</h5>
+                    </div>
+                    <div class="modal-body">
+                        <form id="addCategoryTypeForm">
+                            <div class="form-group">
+                                <label for="categoryTypeName">Category Type Name</label>
+                                <input type="text" class="form-control" id="categoryTypeName" name="categoryTypeName" required>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" id="cancelCategoryType" data-dismiss="modal">Cancel</button>
+                        <button type="button" class="btn btn-primary" id="saveCategoryTypeBtn">Add Category Type</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <script src="https://kit.fontawesome.com/c16a384926.js" crossorigin="anonymous"></script>
         <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" crossorigin="anonymous"></script>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
@@ -49,9 +111,80 @@
         <script type="text/javascript" src="files/js/autoNumeric.js"></script>
         <script type="text/javascript" src="files/js/dataTables.responsive.min.js"></script>
         <script>
+
+            var $addCategoryModal = $('#addCategoryModal');
+            var $categoryName = $('#categoryName');
+            var $categoryType = $('#categoryType');
+
+            $('#addCategoryBtn').click(function () {
+                $addCategoryModal.modal('show');
+            });
+
+            $('#cancel').click(function () {
+                $addCategoryModal.modal('hide');
+            });
+
+            $('#saveCategoryBtn').click(function () {
+                var categoryName = $categoryName.val();
+                var categoryType = $categoryType.val();
+
+                $categoryName.val('');
+                $categoryType.val('');
+                $addCategoryModal.modal('hide');
+            });
+
+            $('#addCategoryTypeBtn').click(function () {
+                $('#addCategoryTypeModal').modal('show');
+            });
+
+            $('#cancelCategoryType').click(function () {
+                $('#addCategoryTypeModal').modal('hide');
+            });
+
+            $('#saveCategoryTypeBtn').click(function () {
+                Swal.fire({
+                    title: 'Are you sure?',
+                    text: "This Category Type Will Be Sent!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Yes, Proceed!',
+                    showLoaderOnConfirm: true,
+                    preConfirm: () => {
+                        return fetch('project/save-ctype', {
+                            method: 'POST',
+                            body: new URLSearchParams({
+                                ctype: document.getElementById('categoryTypeName').value
+                            })
+                        }).then(response => {
+                            if (!response.ok) {
+                                throw new Error(response.statusText);
+                            }
+                            return response.json();
+                        }).catch(error => {
+                            Swal.showValidationMessage('Request failed:' + error);
+                        });
+                    },
+                    allowOutsideClick: () => !Swal.isLoading()
+
+                }).then((result) => {
+                    if (result.value) {
+                        if (result.value.status !== 200) {
+                            Swal.fire('Error!', result.value.msg, 'error');
+                        } else {
+                            Swal.fire('Successfull!', 'Comment has been sent!', 'success');
+                            dtable.ajax.reload();
+                        }
+                    }
+                });
+                $('#addCategoryTypeModal').modal('hide');
+            });
+
             $(document).on('click', '.editrec', function () {
                 alert();
             });
+
             $(document).on('click', '.delrec', function () {
                 var id = $(this).closest('tr').find('td').eq(0).text();
 
@@ -91,8 +224,6 @@
                         }
                     }
                 });
-
-
             });
             $(document).on('click', '.rerec', function () {
                 var id = $(this).closest('tr').find('td').eq(0).text();
