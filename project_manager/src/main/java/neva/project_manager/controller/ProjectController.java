@@ -44,6 +44,13 @@ public class ProjectController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
+    @PostMapping("/save-ctype")
+    public ResponseEntity<CommonResponse> saveCtype(@RequestParam String ctype) throws Exception {
+        ser.saveCtypee(ctype);
+        CommonResponse response = new CommonResponse("Success!", 200);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
     @PostMapping("/load-board")
     public Iterable<LoadBoardDTO> LoadBoard(HttpSession session, String projectId) throws Exception {
         return ser.LoadBoard(session.getAttribute("uid").toString(), projectId);

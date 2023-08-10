@@ -8,10 +8,12 @@ import neva.project_manager.dto.LoadDataDTO;
 import neva.project_manager.dto.LoadProjectDTO;
 import neva.project_manager.dto.ParamDTO;
 import neva.project_manager.model.Board;
+import neva.project_manager.model.Category;
 import neva.project_manager.model.Parameter;
 import neva.project_manager.model.Project;
 import neva.project_manager.repo.BoardRepo;
 import neva.project_manager.repo.CardRepo;
+import neva.project_manager.repo.CategoryRepo;
 import neva.project_manager.repo.ParamRepo;
 import neva.project_manager.repo.ProjectRepo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +26,9 @@ public class ProjectService {
 
     @Autowired
     private ProjectRepo repo;
+
+    @Autowired
+    private CategoryRepo catrepo;
 
     @Autowired
     private BoardRepo brepo;
@@ -66,6 +71,16 @@ public class ProjectService {
             TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
             throw e;
         }
+
+    }
+
+    public Category saveCtypee(String ctype) throws Exception {
+
+        Category cate = new Category();
+        cate.setName(ctype);
+        cate = catrepo.save(cate);
+
+        return cate;
 
     }
 
