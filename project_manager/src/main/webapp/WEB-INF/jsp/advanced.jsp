@@ -8,8 +8,23 @@
         <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.18/dist/sweetalert2.min.css">
         <%@include file="jspf/header.jspf" %>
+        <style>
+            .placeholder {
+                display: inline-block;
+                min-height: 1em;
+                vertical-align: middle;
+                cursor: auto;
+                background-color: #ffffff;
+                opacity:  1;
+            }
+        </style>
     </head>
-    <body style="background-image: url('files/images/background1.jpg'); height: 100vh; background-size: cover; background-repeat: no-repeat; background-position: center center;">
+
+    <body style="background-image: url('files/images/background1.jpg');
+          height: 100vh;
+          background-size: cover;
+          background-repeat: no-repeat;
+          background-position: center center;">
         <%@include file="jspf/navbar.jspf" %>
         <div class="container mt-4">
             <div class="card">
@@ -42,6 +57,35 @@
                     </div>
                 </div>
             </div>
+            <div class="card">
+                <div class="card-header">
+                    <h6 class="m-0">User Management</h6>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-hover" id="userTable">
+                            <thead class="table-dark">
+                                <tr>
+                                    <th>ID</th>
+                                    <th>User Name</th>
+                                    <th>User Type</th>
+                                    <th>Date Created</th>
+                                    <th>Created By</th>
+                                    <th>Status</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <div class="text-right">
+                        <button id="addUserBtn" class="btn btn-sm waves-effect waves-light btn-danger"><i class="icon feather icon-plus"></i>Add User</button>
+                    </div>
+                </div>
+            </div>
         </div>
 
         <div class="modal fade" id="addCategoryModal" tabindex="-1" role="dialog" aria-labelledby="addCategoryModalLabel" aria-hidden="true">
@@ -56,14 +100,10 @@
                                 <label for="categoryName">Category Name</label>
                                 <input type="text" class="form-control" id="categoryName" name="categoryName" required>
                             </div>
-                            <div class="form-group">
+                            <div>
                                 <label for="categoryType">Category Type</label>
-                                <select class="form-control" id="categoryType" name="categoryType" required>
-                                    <option value="option1">Option 1</option>
-                                    <option value="option2">Option 2</option>
-                                    <option value="option3">Option 3</option>
+                                <select id="categoryType">
                                 </select>
-
                             </div>
                         </form>
                     </div>
@@ -75,7 +115,31 @@
             </div>
         </div>
 
-        <!-- ... (your existing HTML code) ... -->
+        <div class="modal fade" id="addUserModal" tabindex="-1" role="dialog" aria-labelledby="addCategoryModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="addCategoryModalLabel">Add New Category</h5>
+                    </div>
+                    <div class="modal-body">
+                        <form id="addCategoryForm">
+                            <div class="form-group">
+                                <label for="categoryName">Category Name</label>
+                                <input type="text" class="form-control" id="categoryName" name="categoryName" required>
+                            </div>
+                            <div>
+                                <label for="categoryType">Category Type</label>
+                                <input type="text" class="form-control" id="categoryName" name="categoryName" required>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" id="cancelUser" data-dismiss="modal">Cancel</button>
+                        <button type="button" class="btn btn-primary" id="saveUserBtn">Add Category</button>
+                    </div>
+                </div>
+            </div>
+        </div>
 
         <div class="modal fade" id="addCategoryTypeModal" tabindex="-1" role="dialog" aria-labelledby="addCategoryTypeModalLabel" aria-hidden="true">
             <div class="modal-dialog" role="document">
@@ -87,7 +151,7 @@
                         <form id="addCategoryTypeForm">
                             <div class="form-group">
                                 <label for="categoryTypeName">Category Type Name</label>
-                                <input type="text" class="form-control" id="categoryTypeName" name="categoryTypeName" required>
+                                <input type="text" class="form-control" id="categoryTypeName">
                             </div>
                         </form>
                     </div>
@@ -112,19 +176,83 @@
         <script type="text/javascript" src="files/js/dataTables.responsive.min.js"></script>
         <script>
 
+            var categoryType = new SlimSelect({
+                select: '#categoryType',
+                placeholder: "Category Type List",
+                ajax: function (search, callback) {
+                    fetch('project/get-type', {
+                        method: 'POST',
+                        body: new URLSearchParams({search: search || ''})
+                    }).then(res => res.json()).then((data) => {
+                        callback(data);
+                    });
+                },
+                allowDeselect: false
+            });
+            $('#categoryType').data('select', categoryType);
+
             var $addCategoryModal = $('#addCategoryModal');
+            var $addUserModal = $('#addUserModal');
             var $categoryName = $('#categoryName');
             var $categoryType = $('#categoryType');
+            var $categoryTypeName = $('#categoryTypeName');
 
             $('#addCategoryBtn').click(function () {
                 $addCategoryModal.modal('show');
+            });
+
+            $('#addUserBtn').click(function () {
+                $addUserModal.modal('show');
             });
 
             $('#cancel').click(function () {
                 $addCategoryModal.modal('hide');
             });
 
+            $('#cancelUser').click(function () {
+                $addUserModal.modal('hide');
+            });
+
             $('#saveCategoryBtn').click(function () {
+
+                Swal.fire({
+                    title: 'Are you sure?',
+                    text: "This Category Type Will Be Saved!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Yes, Proceed!',
+                    showLoaderOnConfirm: true,
+                    preConfirm: () => {
+                        return fetch('project/save-param', {
+                            method: 'POST',
+                            body: new URLSearchParams({
+                                ctype: categoryType,
+                                cname: categoryName
+                            })
+                        }).then(response => {
+                            if (!response.ok) {
+                                throw new Error(response.statusText);
+                            }
+                            return response.json();
+                        }).catch(error => {
+                            Swal.showValidationMessage('Request failed:' + error);
+                        });
+                    },
+                    allowOutsideClick: () => !Swal.isLoading()
+
+                }).then((result) => {
+                    if (result.value) {
+                        if (result.value.status !== 200) {
+                            Swal.fire('Error!', result.value.msg, 'error');
+                        } else {
+                            Swal.fire('Successfull!', 'Category Type Has Been Saved!', 'success');
+                            dtable.ajax.reload();
+                        }
+                    }
+                });
+
                 var categoryName = $categoryName.val();
                 var categoryType = $categoryType.val();
 
@@ -144,7 +272,7 @@
             $('#saveCategoryTypeBtn').click(function () {
                 Swal.fire({
                     title: 'Are you sure?',
-                    text: "This Category Type Will Be Sent!",
+                    text: "This Category Type Will Be Saved!",
                     icon: 'warning',
                     showCancelButton: true,
                     confirmButtonColor: '#3085d6',
@@ -173,12 +301,52 @@
                         if (result.value.status !== 200) {
                             Swal.fire('Error!', result.value.msg, 'error');
                         } else {
-                            Swal.fire('Successfull!', 'Comment has been sent!', 'success');
+                            Swal.fire('Successfull!', 'Category Type Has Been Saved!', 'success');
                             dtable.ajax.reload();
                         }
                     }
                 });
                 $('#addCategoryTypeModal').modal('hide');
+            });
+
+            $('#saveUserBtn').click(function () {
+                Swal.fire({
+                    title: 'Are you sure?',
+                    text: "This User Will Be Saved!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Yes, Proceed!',
+                    showLoaderOnConfirm: true,
+                    preConfirm: () => {
+                        return fetch('project/save-ctype', {
+                            method: 'POST',
+                            body: new URLSearchParams({
+                                ctype: document.getElementById('categoryTypeName').value
+                            })
+                        }).then(response => {
+                            if (!response.ok) {
+                                throw new Error(response.statusText);
+                            }
+                            return response.json();
+                        }).catch(error => {
+                            Swal.showValidationMessage('Request failed:' + error);
+                        });
+                    },
+                    allowOutsideClick: () => !Swal.isLoading()
+
+                }).then((result) => {
+                    if (result.value) {
+                        if (result.value.status !== 200) {
+                            Swal.fire('Error!', result.value.msg, 'error');
+                        } else {
+                            Swal.fire('Successfull!', 'Category Type Has Been Saved!', 'success');
+                            dtable.ajax.reload();
+                        }
+                    }
+                });
+                $addUserModal.modal('hide');
             });
 
             $(document).on('click', '.editrec', function () {
@@ -190,7 +358,7 @@
 
                 Swal.fire({
                     title: 'Are you sure?',
-                    text: "This User Type Will be Deleted!",
+                    text: "This Category Will be Deactivated!",
                     icon: 'warning',
                     showCancelButton: true,
                     confirmButtonColor: '#3085d6',
@@ -219,18 +387,19 @@
                         if (result.value.status !== 200) {
                             Swal.fire('Error!', result.value.msg, 'error');
                         } else {
-                            Swal.fire('Successfull!', 'User Type has been Deactivated !', 'success');
+                            Swal.fire('Successfull!', 'Category has been Deactivated !', 'success');
                             dtable.ajax.reload();
                         }
                     }
                 });
             });
+
             $(document).on('click', '.rerec', function () {
                 var id = $(this).closest('tr').find('td').eq(0).text();
 
                 Swal.fire({
                     title: 'Are you sure?',
-                    text: "This User Type Will be Deleted!",
+                    text: "This Category Will be Re-activated!",
                     icon: 'warning',
                     showCancelButton: true,
                     confirmButtonColor: '#3085d6',
@@ -259,7 +428,7 @@
                         if (result.value.status !== 200) {
                             Swal.fire('Error!', result.value.msg, 'error');
                         } else {
-                            Swal.fire('Successfull!', 'User Type has been Deactivated !', 'success');
+                            Swal.fire('Successfull!', 'Category has been Re-activated !', 'success');
                             dtable.ajax.reload();
                         }
                     }
@@ -311,7 +480,55 @@
                             $(row).append(action_td);
                             setTableStatus($(row).find('td').eq(5));
                         }
-                    });
+                    }
+            );
+
+            var dtable1 = $('#userTable').DataTable(
+                    {
+                        "aLengthMenu": [[5, 10, 25, -1], [5, 10, 25, "All"]],
+                        "pageLength": 0,
+                        "ordering": true,
+                        "autoWidth": false,
+                        "processing": true,
+                        "serverSide": true,
+                        "order": [[0, "desc"]],
+                        "searchHighlight": true,
+                        "searchDelay": 350,
+                        "ajax": {
+                            "url": "project/get-users",
+                            "contentType": "application/json",
+                            "type": "POST",
+                            "data": function (d) {
+                                return JSON.stringify(d);
+                            },
+                            error: function (xhr, error, code) {
+                                console.log(xhr);
+                                console.log(code);
+                            }
+                        },
+                        "columns": [
+                            {"data": "userId", className: "text-right"},
+                            {"data": "userName"},
+                            {"data": "userType"},
+                            {"data": "date"},
+                            {"data": "createdBy", visible: true},
+                            {"data": "status", className: "text-center"}
+                        ], "language": {
+                            'loadingRecords': '&nbsp;',
+                            'processing': '<div class="loader2"></div>'
+                        }, "createdRow": function (row, data) {
+                            let action_td = document.createElement('td');
+                            $(action_td).addClass('text-center');
+                            if (data['status'] === 'active') {
+                                $(action_td).append('<a href="javascript:void(0)" class="usereditrec" data-toggle="modal" data-target="#exampleModalCenter"><i class="icon feather icon-edit f-w-600 f-16 m-r-10 text-c-green"></i></a><a href="javascript:void(0)" class="userdelrec"><i class="feather icon-trash-2 f-w-600 f-16 text-danger"></i></a>');
+                            } else if (data['status'] === 'deactivated') {
+                                $(action_td).append('<a href="javascript:void(0)" class="userrerec"><i class="feather icon-refresh-cw f-w-600 f-16 text-c-blue"></i></a>');
+                            }
+                            $(row).append(action_td);
+                            setTableStatus($(row).find('td').eq(5));
+                        }
+                    }
+            );
         </script>
     </body>
 </html>
