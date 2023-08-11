@@ -10,7 +10,9 @@ import neva.project_manager.datatable.DataTablesResponse;
 import neva.project_manager.dto.LoadBoardDTO;
 import neva.project_manager.dto.LoadDataDTO;
 import neva.project_manager.dto.LoadProjectDTO;
+import neva.project_manager.dto.LoadUserDTO;
 import neva.project_manager.dto.ParamDTO;
+import neva.project_manager.dto.SlimSelectDTO;
 import neva.project_manager.service.ProjectService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -51,6 +53,13 @@ public class ProjectController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
+    @PostMapping("/save-param")
+    public ResponseEntity<CommonResponse> saveParam(@RequestParam String ctype, @RequestParam String cname) throws Exception {
+        ser.saveParam(ctype, cname);
+        CommonResponse response = new CommonResponse("Success!", 200);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
     @PostMapping("/load-board")
     public Iterable<LoadBoardDTO> LoadBoard(HttpSession session, String projectId) throws Exception {
         return ser.LoadBoard(session.getAttribute("uid").toString(), projectId);
@@ -71,6 +80,11 @@ public class ProjectController {
         return ser.getParam(param);
     }
 
+    @PostMapping("/get-users")
+    public DataTablesResponse<LoadUserDTO> getUsers(@RequestBody DataTableRequest param) throws Exception {
+        return ser.getUsers(param);
+    }
+
     @PostMapping("/deactivate")
     public ResponseEntity<CommonResponse> deactivateStatus(@RequestParam Integer id) throws Exception {
         ser.deactivateStatus(id);
@@ -85,10 +99,15 @@ public class ProjectController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
+    @PostMapping("/get-type")
+    public Iterable<SlimSelectDTO> searchType(@RequestParam String search) throws Exception {
+        return ser.searchType(search);
+    }
+
     @ExceptionHandler(Exception.class)
     public ResponseEntity<CommonResponse> handleException(Exception e) {
         e.printStackTrace();
-        CommonResponse response = new CommonResponse(e.getMessage(), 200);
+        CommonResponse response = new CommonResponse(e.getMessage(), 2000);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 

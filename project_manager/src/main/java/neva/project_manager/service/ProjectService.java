@@ -6,7 +6,9 @@ import neva.project_manager.datatable.DataTablesResponse;
 import neva.project_manager.dto.LoadBoardDTO;
 import neva.project_manager.dto.LoadDataDTO;
 import neva.project_manager.dto.LoadProjectDTO;
+import neva.project_manager.dto.LoadUserDTO;
 import neva.project_manager.dto.ParamDTO;
+import neva.project_manager.dto.SlimSelectDTO;
 import neva.project_manager.model.Board;
 import neva.project_manager.model.Category;
 import neva.project_manager.model.Parameter;
@@ -31,6 +33,9 @@ public class ProjectService {
     private CategoryRepo catrepo;
 
     @Autowired
+    private ParamRepo pramrepo;
+
+    @Autowired
     private BoardRepo brepo;
 
     @Autowired
@@ -40,7 +45,10 @@ public class ProjectService {
     private DataTableRepo<ParamDTO> prepo;
 
     @Autowired
-    ParamRepo pramrepo;
+    private DataTableRepo<LoadUserDTO> urepo;
+//
+//    @Autowired
+//    ParamRepo pramrepo;
 
     @Transactional
     public Project saveProject(String projectName, String[] boardNames, String[] boardColors) throws Exception {
@@ -78,9 +86,22 @@ public class ProjectService {
 
         Category cate = new Category();
         cate.setName(ctype);
+        cate.setStatus("Active");
         cate = catrepo.save(cate);
 
         return cate;
+
+    }
+
+    public Parameter saveParam(String ctype, String cname) throws Exception {
+
+        Parameter parameter = new Parameter();
+        parameter.setCategoryName(cname);
+        parameter.setCategoryType(ctype);
+        parameter.setStatus("Active");
+        parameter = pramrepo.save(parameter);
+
+        return parameter;
 
     }
 
@@ -111,6 +132,15 @@ public class ProjectService {
     }
 
     public DataTablesResponse<ParamDTO> getParam(DataTableRequest param) throws Exception {
-        return prepo.getData(ParamDTO.class, param, "SELECT `id`,`category_name` AS categoryName,(SELECT `name` FROM `category` WHERE `id` = `category_type`) AS categoryType,`date`,(SELECT `username` FROM `user` WHERE `id` = `created_by`) AS createdBy,`status` FROM `parameter`");
+        return prepo.getData(ParamDTO.class, param, "SELECT `id`,`category_name` AS categoryName,(SELECT `name` FROM `category` WHERE `id` = `category_type`) AS categoryType,`date`,(SELECT `username` FROM `user` WHERE `id` = p.`created_by`) AS createdBy,`status` FROM `parameter` p");
     }
+
+    public DataTablesResponse<LoadUserDTO> getUsers(DataTableRequest param) throws Exception {
+        return urepo.getData(LoadUserDTO.class, param, "SELECT `id` AS `userId`,`username` AS `userName`,`user_type` AS `userType`,`date`,`created_by` AS `createdBy`,`status` FROM `user`");
+    }
+
+    public Iterable<SlimSelectDTO> searchType(String search) {
+        return catrepo.searchType("%" + search.trim() + "%");
+    }
+
 }
