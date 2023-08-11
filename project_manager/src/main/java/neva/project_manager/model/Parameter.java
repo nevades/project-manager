@@ -27,7 +27,7 @@ public class Parameter {
     @Id
     private Integer id;
     private String categoryName;
-    private Integer categoryType;
+    private String categoryType;
     @CreatedDate
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd hh:mm:ss")
     private Date date;
