@@ -13,11 +13,13 @@ import neva.project_manager.model.Board;
 import neva.project_manager.model.Category;
 import neva.project_manager.model.Parameter;
 import neva.project_manager.model.Project;
+import neva.project_manager.model.User;
 import neva.project_manager.repo.BoardRepo;
 import neva.project_manager.repo.CardRepo;
 import neva.project_manager.repo.CategoryRepo;
 import neva.project_manager.repo.ParamRepo;
 import neva.project_manager.repo.ProjectRepo;
+import neva.project_manager.repo.UserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -28,6 +30,9 @@ public class ProjectService {
 
     @Autowired
     private ProjectRepo repo;
+
+    @Autowired
+    private UserRepo usr;
 
     @Autowired
     private CategoryRepo catrepo;
@@ -61,7 +66,7 @@ public class ProjectService {
 
             Project project = new Project();
             project.setProjectName(projectName);
-            project.setStatus(1);
+            project.setStatus("Active");
             project = repo.save(project);
 
             for (int i = 0; i < boardNames.length; i++) {
@@ -93,6 +98,17 @@ public class ProjectService {
 
     }
 
+    public Project updateProject(Integer projectId, String projectName, String data) throws Exception {
+        Project existingProject = repo.findByProjectId(projectId);
+
+        if (existingProject == null) {
+
+        }
+        existingProject.setProjectName(projectName);
+
+        return repo.save(existingProject);
+    }
+
     public Parameter saveParam(String ctype, String cname) throws Exception {
 
         Parameter parameter = new Parameter();
@@ -102,7 +118,16 @@ public class ProjectService {
         parameter = pramrepo.save(parameter);
 
         return parameter;
+    }
 
+    public User saveUser(String username) throws Exception {
+
+        User usro = new User();
+        usro.setUsername(username);
+        usro.setStatus("Active");
+        usro = usr.save(usro);
+
+        return usro;
     }
 
     public Iterable<LoadBoardDTO> LoadBoard(String uid, String projectId) {
@@ -124,6 +149,13 @@ public class ProjectService {
         return utype;
     }
 
+    public User deactivateUser(Integer id) throws Exception {
+        User usrtype = usr.findById(id).get();
+        usrtype.setStatus("deactivated");
+        usrtype = usr.save(usrtype);
+        return usrtype;
+    }
+
     public Parameter reactivateStatus(Integer id) throws Exception {
         Parameter utype = pramrepo.findById(id).get();
         utype.setStatus("active");
@@ -131,12 +163,19 @@ public class ProjectService {
         return utype;
     }
 
+    public User reactivateUser(Integer id) throws Exception {
+        User usrtype = usr.findById(id).get();
+        usrtype.setStatus("active");
+        usrtype = usr.save(usrtype);
+        return usrtype;
+    }
+
     public DataTablesResponse<ParamDTO> getParam(DataTableRequest param) throws Exception {
         return prepo.getData(ParamDTO.class, param, "SELECT `id`,`category_name` AS categoryName,(SELECT `name` FROM `category` WHERE `id` = `category_type`) AS categoryType,`date`,(SELECT `username` FROM `user` WHERE `id` = p.`created_by`) AS createdBy,`status` FROM `parameter` p");
     }
 
     public DataTablesResponse<LoadUserDTO> getUsers(DataTableRequest param) throws Exception {
-        return urepo.getData(LoadUserDTO.class, param, "SELECT `id` AS `userId`,`username` AS `userName`,`user_type` AS `userType`,`date`,`created_by` AS `createdBy`,`status` FROM `user`");
+        return urepo.getData(LoadUserDTO.class, param, "SELECT `id` AS `userId`,`username` AS `userName`,`user_type` AS `userType`,`date`,(SELECT `username` FROM `user` WHERE `id` = p.`created_by`) AS createdBy,`status` FROM `user` p");
     }
 
     public Iterable<SlimSelectDTO> searchType(String search) {

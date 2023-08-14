@@ -53,9 +53,23 @@ public class ProjectController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
+    @PostMapping("/update-project")
+    public ResponseEntity<CommonResponse> updateProject(@RequestParam Integer projectId, @RequestParam String projectName, @RequestParam String data) throws Exception {
+        ser.updateProject(projectId, projectName, data);
+        CommonResponse response = new CommonResponse("Success!", 200);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
     @PostMapping("/save-param")
     public ResponseEntity<CommonResponse> saveParam(@RequestParam String ctype, @RequestParam String cname) throws Exception {
         ser.saveParam(ctype, cname);
+        CommonResponse response = new CommonResponse("Success!", 200);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @PostMapping("/save-user")
+    public ResponseEntity<CommonResponse> saveUser(@RequestParam String username) throws Exception {
+        ser.saveUser(username);
         CommonResponse response = new CommonResponse("Success!", 200);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
@@ -92,9 +106,23 @@ public class ProjectController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
+    @PostMapping("/deactivate-user")
+    public ResponseEntity<CommonResponse> deactivateUser(@RequestParam Integer id) throws Exception {
+        ser.deactivateUser(id);
+        CommonResponse response = new CommonResponse("Success!", 200);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
     @PostMapping("/reactivate")
     public ResponseEntity<CommonResponse> reactivateStatus(@RequestParam Integer id) throws Exception {
         ser.reactivateStatus(id);
+        CommonResponse response = new CommonResponse("Success!", 200);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @PostMapping("/reactivate-user")
+    public ResponseEntity<CommonResponse> reactivateUser(@RequestParam Integer id) throws Exception {
+        ser.reactivateUser(id);
         CommonResponse response = new CommonResponse("Success!", 200);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }

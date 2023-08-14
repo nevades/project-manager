@@ -5,6 +5,7 @@
 package neva.project_manager.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import java.util.Date;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -34,9 +35,9 @@ public class User {
     private String password;
     @CreatedDate
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd hh:mm:ss")
-    private String date;
+    private Date date;
     @CreatedBy
-    private String createdBy;
+    private Integer createdBy;
     private String status;
 
 }
