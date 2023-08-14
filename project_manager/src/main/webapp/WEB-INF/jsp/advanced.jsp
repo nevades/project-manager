@@ -3,7 +3,7 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>Setup</title>
+        <title>Advanced Setup</title>
         <link rel="icon" href="files/images/favicon.ico" type="images/x-icon">
         <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.18/dist/sweetalert2.min.css">
@@ -124,18 +124,18 @@
                     <div class="modal-body">
                         <form id="addCategoryForm">
                             <div class="form-group">
-                                <label for="categoryName">Category Name</label>
-                                <input type="text" class="form-control" id="categoryName" name="categoryName" required>
+                                <label for="categoryName">User Name</label>
+                                <input type="text" class="form-control" id="userNameText" name="categoryName" required>
                             </div>
                             <div>
-                                <label for="categoryType">Category Type</label>
-                                <input type="text" class="form-control" id="categoryName" name="categoryName" required>
+                                <label for="categoryType">User Type</label>
+                                <input type="text" class="form-control" id="" name="categoryName" required>
                             </div>
                         </form>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" id="cancelUser" data-dismiss="modal">Cancel</button>
-                        <button type="button" class="btn btn-primary" id="saveUserBtn">Add Category</button>
+                        <button type="button" class="btn btn-primary" id="saveUserBtn">Add User</button>
                     </div>
                 </div>
             </div>
@@ -199,6 +199,8 @@
 
             $('#addCategoryBtn').click(function () {
                 $addCategoryModal.modal('show');
+                const selectElement = document.getElementById("categoryType");
+                selectElement.selectedIndex = -1;
             });
 
             $('#addUserBtn').click(function () {
@@ -320,10 +322,10 @@
                     confirmButtonText: 'Yes, Proceed!',
                     showLoaderOnConfirm: true,
                     preConfirm: () => {
-                        return fetch('project/save-ctype', {
+                        return fetch('project/save-user', {
                             method: 'POST',
                             body: new URLSearchParams({
-                                ctype: document.getElementById('categoryTypeName').value
+                                username: document.getElementById('userNameText').value
                             })
                         }).then(response => {
                             if (!response.ok) {
@@ -341,8 +343,8 @@
                         if (result.value.status !== 200) {
                             Swal.fire('Error!', result.value.msg, 'error');
                         } else {
-                            Swal.fire('Successfull!', 'Category Type Has Been Saved!', 'success');
-                            dtable.ajax.reload();
+                            Swal.fire('Successfull!', 'User Has Been Saved!', 'success');
+                            dtable1.ajax.reload();
                         }
                     }
                 });
@@ -394,6 +396,47 @@
                 });
             });
 
+            $(document).on('click', '.userdelrec', function () {
+                var id = $(this).closest('tr').find('td').eq(0).text();
+
+                Swal.fire({
+                    title: 'Are you sure?',
+                    text: "This User Will be Deactivated!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Yes, Proceed!',
+                    showLoaderOnConfirm: true,
+                    preConfirm: () => {
+                        return fetch('project/deactivate-user', {
+                            method: 'POST',
+                            body: new URLSearchParams({
+                                id: id
+                            })
+                        }).then(response => {
+                            if (!response.ok) {
+                                throw new Error(response.statusText);
+                            }
+                            return response.json();
+                        }).catch(error => {
+                            Swal.showValidationMessage('Request failed:' + error);
+                        });
+                    },
+                    allowOutsideClick: () => !Swal.isLoading()
+
+                }).then((result) => {
+                    if (result.value) {
+                        if (result.value.status !== 200) {
+                            Swal.fire('Error!', result.value.msg, 'error');
+                        } else {
+                            Swal.fire('Successfull!', 'User has been Deactivated !', 'success');
+                            dtable1.ajax.reload();
+                        }
+                    }
+                });
+            });
+
             $(document).on('click', '.rerec', function () {
                 var id = $(this).closest('tr').find('td').eq(0).text();
 
@@ -430,6 +473,47 @@
                         } else {
                             Swal.fire('Successfull!', 'Category has been Re-activated !', 'success');
                             dtable.ajax.reload();
+                        }
+                    }
+                });
+            });
+
+            $(document).on('click', '.userrerec', function () {
+                var id = $(this).closest('tr').find('td').eq(0).text();
+
+                Swal.fire({
+                    title: 'Are you sure?',
+                    text: "This User Will be Re-activated!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Yes, Proceed!',
+                    showLoaderOnConfirm: true,
+                    preConfirm: () => {
+                        return fetch('project/reactivate-user', {
+                            method: 'POST',
+                            body: new URLSearchParams({
+                                id: id
+                            })
+                        }).then(response => {
+                            if (!response.ok) {
+                                throw new Error(response.statusText);
+                            }
+                            return response.json();
+                        }).catch(error => {
+                            Swal.showValidationMessage('Request failed:' + error);
+                        });
+                    },
+                    allowOutsideClick: () => !Swal.isLoading()
+
+                }).then((result) => {
+                    if (result.value) {
+                        if (result.value.status !== 200) {
+                            Swal.fire('Error!', result.value.msg, 'error');
+                        } else {
+                            Swal.fire('Successfull!', 'User has been Re-activated !', 'success');
+                            dtable1.ajax.reload();
                         }
                     }
                 });
