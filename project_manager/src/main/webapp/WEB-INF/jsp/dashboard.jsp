@@ -125,20 +125,6 @@
 
             </div>
         </div>
-        <!--        <div class="card-scrollx">
-                    <div class="card">Card 1</div>
-                    <div class="card">Card 2</div>
-                    <div class="card">Card 3</div>
-                    <div class="card">Card 4</div>
-                    <div class="card">Card 5</div>
-                    <div class="card">Card 6</div>
-                    <div class="card">Card 7</div>
-                    <div class="card">Card 8</div>
-                    <div class="card">Card 9</div>
-                    <div class="card">Card 10</div>
-                    <div class="card">Card 11</div>
-                    <div class="card">Card 12</div>
-                </div>-->
         <script src="https://kit.fontawesome.com/c16a384926.js" crossorigin="anonymous"></script>
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
         <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>

@@ -17,6 +17,8 @@ public interface ProjectRepo extends CrudRepository<Project, Long> {
 
     Project findByProjectName(String projectName);
 
+    Project findByProjectId(Integer projectId);
+
     @Query("SELECT `project_id`,`project_name`,`project_icon`,`date` FROM `project` WHERE `user_id` =:uid and `status` = 'active'")
     Iterable<LoadProjectDTO> LoadProject(@Param("uid") String uid);
 
