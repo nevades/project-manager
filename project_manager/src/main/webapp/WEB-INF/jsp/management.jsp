@@ -23,9 +23,17 @@
         body {
             overflow: hidden;
         }
+
+        .row {
+            /*width: 300px;*/
+        }
     </style>
     <%@include file="jspf/navbar.jspf" %>
-    <body style="background-image: url('files/images/16678.jpg');height: 740px; background-size: cover; background-repeat: no-repeat; background-position: center center;">
+    <body style="background-image: url('files/images/background1.jpg');
+          height: 100vh;
+          background-size: cover;
+          background-repeat: no-repeat;
+          background-position: center center;">
         <div class="row" style="margin-top: 20px;">
             <div class="col-3">
                 <div class="card" style="background-color: #ffffffab; height: 50rem; margin-left: 20px;">
@@ -51,7 +59,7 @@
                         <div id="labelContainer">
                             <div class="form-group">
                                 <label for="exampleInputEmail">Project Name</label>
-                                <input type="email" class="form-control" id="exampleInputEmail">
+                                <input type="name" class="form-control" id="exampleInputEmail">
                             </div>
 
 
@@ -123,8 +131,8 @@
                         const bcolor = data[i].boardColor;
 
                         var temp = '<div style="margin-top: 10px;" class="row board-item">'
-                                + '<div class="row"><p>' + bname + '</p></div>'
-                                + '<div class="row"><input type="color" class="form-control" id="colorInput' + i + '" style="margin-left: 10px; height: 50px; width: 200px;"></div>'
+                                + '<div class="row" style="margin-left: 1px;"><input style="width: 300px;" value="' + bname + '" class="form-control"></div>'
+                                + '<div class="row"><input type="color" class="form-control" id="colorInput' + i + '" style="margin-top: 5px; margin-left: 25px; height: 50px; width: 200px;"></div>'
                                 + '<br>'
                                 + '</div>';
 
