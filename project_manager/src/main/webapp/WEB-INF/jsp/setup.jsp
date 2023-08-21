@@ -11,22 +11,35 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Setup</title>
         <link rel="icon" href="files/images/favicon.ico" type="images/x-icon">
+        <!--<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">-->
         <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.18/dist/sweetalert2.min.css">
+        <%@include file="jspf/header.jspf" %>
     </head>
     <style>
         body {
             overflow: hidden;
             /*text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.2);*/
         }
+
+        .border-top.mb-3 {
+            border-top: 1px solid #666666 !important;
+            margin-bottom: 3px !important;
+        }
+
+        .card {
+            background-color: #bdbdbd;
+        }
+
         img{
             max-width:0px;
         }
     </style>
     <%@include file="jspf/navbar.jspf" %>
-    <body style="background-image: url('files/images/body_background2.jpg');height: 740px;background-size: cover; background-repeat: no-repeat; background-position: center center;">
+    <body style="background-image: url('files/images/background1.jpg'); height: 100vh; background-size: cover; background-repeat: no-repeat; background-position: center center;">
 
-        <div style="margin-top: 10px;">
-            <div class="card" style="width: auto; height: 10rem; margin-left: 30px; margin-right: 30px; margin-top: 0px; background-color: #ffffffba;">
+        <div style="margin-top: 20px;">
+            <div class="card" style="width: auto; height: 10rem; margin-left: 30px; margin-right: 30px; margin-top: 0px;">
                 <div class="card-body">
                     <h5 class="card-title">Project Setup</h5>
                     <div class="border-top mb-3"></div>
@@ -45,9 +58,9 @@
                     </form>
                 </div>
             </div>
-            <div class="row">
+            <div class="row" style="margin-top: 20px;">
                 <div class="col">
-                    <div class="card" style="background-color: #ffffffba; width: auto; height: 30rem; margin-left: 30px; margin-top: 10px;">
+                    <div class="card" style="width: auto; height: 30rem; margin-left: 30px; margin-top: 10px;">
                         <div class="card-body">
                             <h5 class="card-title">Add new project board</h5>
                             <div class="border-top mb-3"></div>
@@ -80,7 +93,7 @@
                     </div>
                 </div>
                 <div class="col">
-                    <div class="card" style="background-color: #ffffffba; width: auto; height: 30rem;margin-right: 30px; margin-top: 10px;">
+                    <div class="card" style="width: auto; height: 30rem;margin-right: 30px; margin-top: 10px;">
                         <div class="card-body">
                             <h5 class="card-title">Custom created project board list</h5>
                             <div class="border-top mb-3"></div>
@@ -95,13 +108,23 @@
                 </div>
             </div>
         </div>
+        <!--        <script src="https://kit.fontawesome.com/c16a384926.js" crossorigin="anonymous"></script>
+                <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+                <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+                <script src="https://code.jquery.com/jquery-3.6.0.min.js" crossorigin="anonymous"></script>
+                <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.18/dist/sweetalert2.min.js"></script>
+                <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.18/dist/sweetalert2.min.css">-->
         <script src="https://kit.fontawesome.com/c16a384926.js" crossorigin="anonymous"></script>
-        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-        <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-        <script src="https://code.jquery.com/jquery-3.6.0.min.js" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.18/dist/sweetalert2.min.js"></script>
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.18/dist/sweetalert2.min.css">
-
+        <%@include file="jspf/scripts.jspf" %>
+        <script type="text/javascript" src="files/js/slimselect.js"></script>
+        <script type="text/javascript" src="files/js/datatables.min.js"></script>
+        <script type="text/javascript" src="files/js/sweetalert2.js"></script>
+        <script type="text/javascript" src="files/js/func.js"></script>
+        <script type="text/javascript" src="files/js/autoNumeric.js"></script>
+        <script type="text/javascript" src="files/js/dataTables.responsive.min.js"></script>
         <script>
         </script>
         <script>

@@ -96,7 +96,7 @@
 
         let span2 = document.createElement('span');
         $(span2).addClass('pcoded-mtext');
-        $(span2).html(data.name)
+        $(span2).html(data.name);
         $(a).append(span2);
 
         let li = document.createElement('li');
