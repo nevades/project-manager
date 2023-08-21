@@ -55,11 +55,7 @@
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
 
-        body {
-            margin: 0;
-            padding: 0;
-            font-family: Arial, sans-serif;
-        }
+
 
         .container {
             width: 100%;
@@ -107,7 +103,38 @@
 
     </style>
     <%@include file="jspf/navbar.jspf" %>
-    <body style="background-image: url('files/images/body_background2.jpg');height: 740px;background-size: cover; background-repeat: no-repeat; background-position: center center;">
+    <body style="background-image: url('files/images/background1.jpg');
+          height: 100vh;
+          background-size: cover;
+          background-repeat: no-repeat;
+          background-position: center center;">
+
+        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#largeModal">
+            Open Large Centered Modal
+        </button>
+
+        <!-- Large Centered Modal -->
+        <div class="modal fade" id="largeModal" tabindex="-1" role="dialog" aria-labelledby="largeModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="largeModalLabel">Large Centered Modal</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <!-- Modal content goes here -->
+                        <p>This is a large centered modal.</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary">Save changes</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <div id="landing">
 
         </div>
@@ -238,6 +265,8 @@
                                 html:
                                         '<input id="subject" maxlength="18" class="swal2-input" placeholder="Subject" autocapitalize="on">' +
                                         '<input id="description" class="swal2-input" placeholder="Description" autocapitalize="off">' +
+                                        '<select id="ctype">' +
+                                        '</select>' +
                                         '<select id="selectInput" class="swal2-select">' +
                                         '   <option value="Low">Priority: Low</option>' +
                                         '   <option value="Medium">Priority: Medium</option>' +
@@ -247,6 +276,22 @@
                                 confirmButtonText: "Add",
                                 showLoaderOnConfirm: true,
                                 preConfirm: () => {
+
+                                    var ctype = new SlimSelect({
+                                        select: '#ctype',
+                                        placeholder: "Category Type List",
+                                        ajax: function (search, callback) {
+                                            fetch('project/get-type', {
+                                                method: 'POST',
+                                                body: new URLSearchParams({search: search || ''})
+                                            }).then(res => res.json()).then((data) => {
+                                                callback(data);
+                                            });
+                                        },
+                                        allowDeselect: false
+                                    });
+                                    $('#ctype').data('select', ctype);
+
                                     return new Promise((resolve) => {
                                         const subject = document.getElementById('subject').value;
                                         const description = document.getElementById('description').value;
@@ -257,11 +302,8 @@
                                             Swal.showValidationMessage("Please fill in all fields");
                                         }
                                     });
-
-
-
                                 },
-                                allowOutsideClick: () => !Swal.isLoading(),
+                                allowOutsideClick: () => !Swal.isLoading()
                             }).then((result) => {
                                 if (result.isConfirmed) {
                                     const {subject, description, selectedOption} = result.value;
@@ -290,6 +332,7 @@
                                 }
                             });
                         });
+
                         function noteDragStart(e) {
                             e.originalEvent.dataTransfer.setData("text/plain", e.target.getAttribute("id"));
                             trash.css({
