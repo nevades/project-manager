@@ -19,19 +19,11 @@
         .board-item {
             display: flex;
         }
-
-        body {
-            overflow: hidden;
-        }
-
-        .row {
-            /*width: 300px;*/
-        }
     </style>
     <%@include file="jspf/navbar.jspf" %>
     <body style="background-image: url('files/images/background1.jpg');
-          height: 100vh;
-          background-size: cover;
+          /*height: 100vh;*/
+          /*background-size: cover;*/
           background-repeat: no-repeat;
           background-position: center center;">
         <div class="row" style="margin-top: 20px;">
