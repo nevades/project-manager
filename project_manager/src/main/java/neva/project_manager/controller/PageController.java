@@ -34,6 +34,16 @@ public class PageController {
         return "management";
     }
 
+    @GetMapping("/advancedUsers")
+    public String advancedUsers() {
+        return "users";
+    }
+
+    @GetMapping("/advancedTasks")
+    public String advancedTasks() {
+        return "tasks";
+    }
+
     @GetMapping("/advanced")
     public String advanced() {
         return "advanced";
