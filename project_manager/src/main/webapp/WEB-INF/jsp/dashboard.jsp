@@ -10,13 +10,21 @@
         <link href="https://unpkg.com/slim-select@latest/dist/slimselect.css" rel="stylesheet">
     </head>
     <style>
+        .pill {
+            font-size: 14px;
+            padding: 0.5em 1em;
+            margin: 0.25em;
+            border-radius: 1em;
+            border: none;
+            outline: none;
+            background: #CADDDC;
+            width: auto;
+        }
+
         .card-scrollx {
             display: flex;
             overflow-x: auto;
             scroll-behavior: smooth;
-        }
-
-        #boxes {
         }
 
         .centered-div {
@@ -54,8 +62,6 @@
             border: 1px solid #e6ac00;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
-
-
 
         .container {
             width: 100%;
@@ -96,50 +102,24 @@
             padding: 10px;
             position: relative;
         }
-        body {
-            overflow-y: hidden;
-            overflow-x: visible;
-        }
 
+        body {
+            margin: 0;
+            padding: 0;
+            background: rgb(41,37,108);
+            background: linear-gradient(90deg, rgba(41,37,108,1) 0%, rgba(73,73,110,1) 35%, rgba(42,110,124,1) 100%);
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            background-size: cover;
+        }
     </style>
     <%@include file="jspf/navbar.jspf" %>
-    <body style="background-image: url('files/images/background1.jpg');
-          height: 100vh;
-          background-size: cover;
-          background-repeat: no-repeat;
-          background-position: center center;">
-
-        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#largeModal">
-            Open Large Centered Modal
-        </button>
-
-        <!-- Large Centered Modal -->
-        <div class="modal fade" id="largeModal" tabindex="-1" role="dialog" aria-labelledby="largeModalLabel" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered modal-lg">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="largeModalLabel">Large Centered Modal</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        <!-- Modal content goes here -->
-                        <p>This is a large centered modal.</p>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                        <button type="button" class="btn btn-primary">Save changes</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-
+    <body>
         <div id="landing">
-
         </div>
+
         <div id="dashboard">
-            <div class="operations" style="margin-left: 20px; margin-top: 10px; width: auto;">
+            <div class="operations" style="margin-top: 10px; width: auto; display: none;">
                 <button type="button" onclick="clearCenter()" class="btn btn-primary"><span><i class="fa fa-arrow-left fa-1x"></i></span> Select Project</button>
                 <button type="button" class="create-new btn btn-secondary btn-rounded">
                     <i class="fa-solid fa-plus"></i> Add Task
@@ -171,11 +151,15 @@
                     const ptime = new Date(data[i].date).toLocaleTimeString([], {hour: '2-digit', minute: '2-digit', second: '2-digit'});
 
                     var temp = ' <div class="cards" style="width: 18rem;">'
-                            + '<div class="card-body">'
+                            + '<div class="card-body" style="background: #DADADA; padding: 7px;">'
                             + '<h5 class="card-title" style="font-weight: bold; text-decoration: underline;">' + pname + '</h5>'
+                            + '<div class="card" style="background-color: #8d85ff; padding: 0; font-size: 14px;">'
                             + '<p class="card-text">Date Created : ' + pdate + '</p>'
+                            + '</div>'
+                            + '<div class="card" style="background-color: #8d85ff; padding: 0; font-size: 14px;">'
                             + '<p class="card-text">Time Created : ' + ptime + '</p>'
-                            + '<button class="btn btn-primary select" id="projectButton" type="button" data-projectid="' + pid + '">Go to project</button>'
+                            + '</div>'
+                            + '<button class="btn btn-secondary btn-sm select" id="projectButton" type="button" data-projectid="' + pid + '">Go to project</button>'
                             + '</div></div>';
 
                     $('#center').append(temp);
@@ -183,11 +167,13 @@
             });
 
             function clearCenter() {
+                $(".operations").hide();
                 $(".divs").empty();
                 document.getElementById("center").style.display = "flex";
             }
 
             $(document).on('click', '.select', function () {
+                $(".operations").show();
                 $('#boxes').empty();
                 boxes.style.display = "block";
                 document.getElementById("center").style.display = "none";
@@ -203,7 +189,8 @@
                         const name = data[i].boardName;
                         const color = data[i].boardColor;
                         const colDiv = $('<div style="margin-top: 10px;" class="divs col-4"></div>');
-                        const h3Element = $('<h3>' + name + '</h3>');
+                        const h3Element = $('<div class="card" style="height: 35px; width: auto;"><h3>' + name + '</h3></div>');
+//                        const h3Element = $('<button type="button" class="btn btn-secondary" style="--bs-btn-padding-y: .25rem; border-radius: 1em; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem;">' + name + '</button>');
                         const boxDiv = $('<div class="box" style="background-color: ' + color + '; border:7px dotted ' + color + ';"></div>');
                         colDiv.append(h3Element);
                         colDiv.append(boxDiv);

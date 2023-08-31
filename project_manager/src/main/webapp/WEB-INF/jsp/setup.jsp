@@ -1,9 +1,3 @@
-<%--
-    Document   : setup
-    Created on : Jul 20, 2023, 3:51:59 PM
-    Author     : Neva
---%>
-
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -18,7 +12,7 @@
     </head>
     <style>
         body {
-            overflow: hidden;
+            /*overflow: hidden;*/
             /*text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.2);*/
         }
 
@@ -27,26 +21,35 @@
             margin-bottom: 3px !important;
         }
 
-        .card {
-            background-color: #bdbdbd;
-        }
-
         img{
             max-width:0px;
         }
+
+        body {
+            margin: 0;
+            padding: 0;
+            background: #466368;
+            background: -webkit-linear-gradient(#648880, #293f50);
+            background: -moz-linear-gradient(#648880, #293f50);
+            background: linear-gradient(#648880, #293f50);
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            background-size: cover;
+        }
     </style>
     <%@include file="jspf/navbar.jspf" %>
-    <body style="background-image: url('files/images/background1.jpg'); height: 100vh; background-size: cover; background-repeat: no-repeat; background-position: center center;">
-
+    <body>
         <div style="margin-top: 20px;">
             <div class="card" style="width: auto; height: 10rem; margin-left: 30px; margin-right: 30px; margin-top: 0px;">
-                <div class="card-body">
+                <div class="card-header">
                     <h5 class="card-title">Project Setup</h5>
                     <div class="border-top mb-3"></div>
+                </div>
+                <div class="card-body">
                     <form class="row">
                         <div class="form-group col">
                             <label for="exampleInputEmail1">Project Name</label>
-                            <input type="text" class="form-control" id="projectName" style="width: 895.5px;" aria-describedby="emailHelp" placeholder="">
+                            <input type="text" class="form-control" id="projectName" style="width: 600px;" aria-describedby="emailHelp" placeholder="">
                         </div>
                         <div class="form-group col" style="margin-left: 50px;">
                             <label class="row" for="exampleInputEmail1">Project Icon</label>
@@ -61,9 +64,11 @@
             <div class="row" style="margin-top: 20px;">
                 <div class="col">
                     <div class="card" style="width: auto; height: 30rem; margin-left: 30px; margin-top: 10px;">
-                        <div class="card-body">
+                        <div class="card-header">
                             <h5 class="card-title">Add new project board</h5>
                             <div class="border-top mb-3"></div>
+                        </div>
+                        <div class="card-body">
                             <form>
                                 <div class="form-group">
                                     <label for="exampleInputEmail1">Project board name</label>
@@ -94,9 +99,11 @@
                 </div>
                 <div class="col">
                     <div class="card" style="width: auto; height: 30rem;margin-right: 30px; margin-top: 10px;">
-                        <div class="card-body">
+                        <div class="card-header">
                             <h5 class="card-title">Custom created project board list</h5>
                             <div class="border-top mb-3"></div>
+                        </div>
+                        <div class="card-body">
                             <div id="labelContainer">
                             </div>
                         </div>
