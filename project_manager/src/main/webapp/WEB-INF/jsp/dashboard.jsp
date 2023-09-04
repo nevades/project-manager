@@ -10,6 +10,42 @@
         <link href="https://unpkg.com/slim-select@latest/dist/slimselect.css" rel="stylesheet">
     </head>
     <style>
+        @import url(https://fonts.googleapis.com/css?family=Raleway:300,400,600);
+
+        .navbar-laravel
+        {
+            box-shadow: 0 2px 4px rgba(0,0,0,.04);
+        }
+
+        .navbar-brand , .nav-link, .my-form, .login-form
+        {
+            font-family: Raleway, sans-serif;
+        }
+
+        .my-form
+        {
+            padding-top: 1.5rem;
+            padding-bottom: 1.5rem;
+        }
+
+        .my-form .row
+        {
+            margin-left: 0;
+            margin-right: 0;
+        }
+
+        .login-form
+        {
+            padding-top: 1.5rem;
+            padding-bottom: 1.5rem;
+        }
+
+        .login-form .row
+        {
+            margin-left: 0;
+            margin-right: 0;
+        }
+
         .pill {
             font-size: 14px;
             padding: 0.5em 1em;
@@ -121,7 +157,10 @@
         <div id="dashboard">
             <div class="operations" style="margin-top: 10px; width: auto; display: none;">
                 <button type="button" onclick="clearCenter()" class="btn btn-primary"><span><i class="fa fa-arrow-left fa-1x"></i></span> Select Project</button>
-                <button type="button" class="create-new btn btn-secondary btn-rounded">
+                <!--                <button type="button" class="create-new btn btn-secondary btn-rounded">
+                                    <i class="fa-solid fa-plus"></i> Add Task
+                                </button>-->
+                <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#exampleModal">
                     <i class="fa-solid fa-plus"></i> Add Task
                 </button>
                 <i class="trash fa-solid fa-trash fa-lg"></i>
@@ -131,6 +170,74 @@
             <div id="boxes" style="display: none;">
 
             </div>
+
+            <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered modal-xl">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h1 class="modal-title fs-5" id="exampleModalLabel"><i class="fa-solid fa-plus"></i> Add Task</h1>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <div class=" row form-group row-up">
+                                <div class="col-topic-start"></div>
+                                <label class=" col-form-label new-label-box" style="width: 20%" id="lbl_type">Category<span class="text-danger">*</span></label>
+                                <div class="col-15" style="width: 75%">
+                                    <div>
+                                        <select id="select_task" style="margin-top:-5px">
+
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row form-group row-up">
+                                <div class="col-topic-start"></div>
+                                <label class="col-form-label new-label-box" style="width: 20%; margin-top: 10px">Priority</label>
+                                <div class="col-15 " style="width: 75%">
+                                    <select id="select_priority" style="margin-top:-5px" class="swal2-select">
+                                        <option value="Low">Priority: Low</option>
+                                        <option value="Medium">Priority: Medium</option>
+                                        <option value="High">Priority: High</option>
+                                    </select>
+                                </div>
+                            </div>      
+                            <br>
+
+                            <div class="row form-group row-up">
+                                <div class="col-topic-start"></div>
+                                <label class=" col-form-label new-label-box" style="width: 20%">Subject<span class="text-danger">*</span></label>
+                                <div class="col-15 " style="width: 75%">
+                                    <input type="text" onkeyup="this.value = this.value.toUpperCase();" max="100" class="form-control form-control-xs" autocomplete="off" id="subject_input">
+                                </div>
+                            </div>
+
+                            <div class="row form-group">
+                                <div class="col-topic-start"></div>
+                                <label class="col-form-label new-label-box" style="width: 20%">Description<span class="text-danger">*</span></label>
+                                <div class="col-15 " style="width: 75%">
+                                    <textarea class="form-control" rows="7" name="description" id="description"></textarea>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div id="fileList"></div>
+                                <div class="col-topic-start"></div>
+                                <label class=" col-form-label new-label-box" style="width: 20%">Attachments</label>
+                                <div class="col-8">
+                                    <div class="col-sm-12 col-form-label input-images" id="upload_document_div">
+                                        <div class="jquery-image-uploader"><input type="file" id="image_upload" name="images" multiple="multiple"><div class="uploaded"></div><div class="upload-text"><i class="material-icons"></i><span>(6 Files only)</span></div></div></div>                
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <button type="button" id="add" class="btn btn-primary">Save changes</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
         </div>
         <script src="https://kit.fontawesome.com/c16a384926.js" crossorigin="anonymous"></script>
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
@@ -141,6 +248,25 @@
         <script>
         </script>
         <script>
+            var select_priority = new SlimSelect({
+                select: '#select_priority'
+            });
+
+            var select_task = new SlimSelect({
+                select: '#select_task',
+                ajax: function (search, callback) {
+                    fetch('project/search-type', {
+                        method: 'POST',
+                        body: new URLSearchParams({search: search || ''})
+                    }).then(res => res.json()).then((data) => {
+                        callback(data);
+                    });
+                },
+                allowDeselect: false,
+                deselectLabel: '<span class="red">✖</span>',
+                showSearch: false
+            });
+
             $("#center").empty();
             fetch('project/load-project').then((res) => res.json()).then((data) => {
                 console.log(data);
@@ -190,13 +316,162 @@
                         const color = data[i].boardColor;
                         const colDiv = $('<div style="margin-top: 10px;" class="divs col-4"></div>');
                         const h3Element = $('<div class="card" style="height: 35px; width: auto;"><h3>' + name + '</h3></div>');
-//                        const h3Element = $('<button type="button" class="btn btn-secondary" style="--bs-btn-padding-y: .25rem; border-radius: 1em; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem;">' + name + '</button>');
+                        //                        const h3Element = $('<button type="button" class="btn btn-secondary" style="--bs-btn-padding-y: .25rem; border-radius: 1em; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem;">' + name + '</button>');
                         const boxDiv = $('<div class="box" style="background-color: ' + color + '; border:7px dotted ' + color + ';"></div>');
                         colDiv.append(h3Element);
                         colDiv.append(boxDiv);
                         $('#boxes').append(colDiv);
                     }
 
+//                    $(function () {
+//                        "use strict";
+//                        var saveApplication = function () {
+//                            localStorage.setItem("app", $(".main-content").html());
+//                        };
+//                        var getApplication = function () {
+//                            return localStorage.getItem("app");
+//                        };
+//                        (function () {
+//                            if (getApplication()) {
+//                                $(".main-content").html(getApplication());
+//                            }
+//                        })();
+//                        var boxs = $(".box"),
+//                                trash = $(".trash"),
+//                                note = $(".post-it"),
+//                                newNote = $(".create-new");
+//                        note.on("dragstart", noteDragStart);
+//                        note.on("dragend", noteDragEnd);
+//                        boxs.on("dragover", function (e) {
+//                            $(this).addClass("drop-here");
+//                            e.preventDefault();
+//                        });
+//                        boxs.on("dragleave", function () {
+//                            $(this).removeClass("drop-here");
+//                        });
+//                        trash.on("dragover", function (e) {
+//                            e.preventDefault();
+//                            trash.addClass("active");
+//                        });
+//                        boxs.on("drop", function (e) {
+//                            var card = e.originalEvent.dataTransfer.getData("text/plain");
+//                            e.target.appendChild(document.getElementById(card));
+//                            e.preventDefault();
+//                        });
+//                        trash.on("drop", function (e) {
+//                            var card = e.originalEvent.dataTransfer.getData("text/plain");
+//                            if (confirm("Want to delete this note?")) {
+//                                $("#" + card).remove();
+//                                saveApplication();
+//                            }
+//                            e.preventDefault();
+//                        });
+//                        trash.click(function () {
+//                            if (confirm("Want to clear?")) {
+//                                localStorage.clear();
+//                                $(".post-it").remove();
+//                            }
+//                        });
+//                        newNote.click(function () {
+//
+//
+//
+//                            Swal.fire({
+//                                title: "Add new task",
+//                                html:
+//                                        '<input id="subject" maxlength="18" class="swal2-input" placeholder="Subject" autocapitalize="on">' +
+//                                        '<input id="description" class="swal2-input" placeholder="Description" autocapitalize="off">' +
+//                                        '<select id="ctype">' +
+//                                        '</select>' +
+//                                        '<select id="selectInput" class="swal2-select">' +
+//                                        '   <option value="Low">Priority: Low</option>' +
+//                                        '   <option value="Medium">Priority: Medium</option>' +
+//                                        '   <option value="High">Priority: High</option>' +
+//                                        '</select>',
+//                                showCancelButton: true,
+//                                confirmButtonText: "Add",
+//                                showLoaderOnConfirm: true,
+//                                preConfirm: () => {
+//                                    var ctype = new SlimSelect({
+//                                        select: '#ctype',
+//                                        placeholder: "Category Type List",
+//                                        ajax: function (search, callback) {
+//                                            fetch('project/get-type', {
+//                                                method: 'POST',
+//                                                body: new URLSearchParams({search: search || ''})
+//                                            }).then(res => res.json()).then((data) => {
+//                                                callback(data);
+//                                            });
+//                                        },
+//                                        allowDeselect: false
+//                                    });
+//                                    $('#ctype').data('select', ctype);
+//
+//                                    return new Promise((resolve) => {
+//                                        const subject = document.getElementById('subject').value;
+//                                        const description = document.getElementById('description').value;
+//                                        const selectedOption = document.getElementById('selectInput').value;
+//                                        if (subject && description) {
+//                                            resolve({subject, description, selectedOption});
+//                                        } else {
+//                                            Swal.showValidationMessage("Please fill in all fields");
+//                                        }
+//                                    });
+//                                },
+//                                allowOutsideClick: () => !Swal.isLoading()
+//                            }).then((result) => {
+//                                if (result.isConfirmed) {
+//                                    const {subject, description, selectedOption} = result.value;
+//                                    var thisNote;
+//                                    if (subject && description) {
+//                                        thisNote = $("<div id=\"card-" + (note.length + 1) + "\" class=\"post-it\" draggable=\"true\"><p class=\"editable\" style=\"font-size: 17px; margin-top: -25px; margin-left: 5px; font-weight: bold;\" title=\"Click to edit\" contenteditable=\"false\">" + subject + "</p><p contenteditable=\"true\" style=\"font-size: 14px; margin-top: -5px; margin-left: 5px;\">" + description + "</p><div style=\"margin-top: 0px\" class=\"card-footer\"></div></div>");
+//                                        note.push(thisNote);
+//                                        switch (selectedOption) {
+//                                            case "Low":
+//                                                thisNote.find(".card-footer").append($("<button type=\"button\" style=\"margin-left: -150px\" class=\"btn btn-success\"></button>"));
+//                                                break;
+//                                            case "Medium":
+//                                                thisNote.find(".card-footer").append($("<button type=\"button\" style=\"margin-left: -150px\" class=\"btn btn-warning\"></button>"));
+//                                                break;
+//                                            case "High":
+//                                                thisNote.find(".card-footer").append($("<button type=\"button\" style=\"margin-left: -150px\" class=\"btn btn-danger\"></button>"));
+//                                                break;
+//                                        }
+//
+//                                        thisNote.on("dragstart", noteDragStart);
+//                                        thisNote.on("dragend", noteDragEnd);
+//                                        thisNote.on("keyup", noteChange);
+//                                        boxs.first().prepend(thisNote);
+//                                        saveApplication();
+//                                    }
+//                                }
+//                            });
+//                        });
+//
+//                        function noteDragStart(e) {
+//                            e.originalEvent.dataTransfer.setData("text/plain", e.target.getAttribute("id"));
+//                            trash.css({
+//                                opacity: 0.5
+//                            });
+//                        }
+//
+//                        function noteDragEnd() {
+//                            boxs.removeClass("drop-here");
+//                            trash.css({
+//                                opacity: 0.2
+//                            });
+//                            trash.removeClass("active");
+//                            saveApplication();
+//                        }
+//
+//                        function noteChange() {
+//                            saveApplication();
+//                        }
+//
+//                        $(".post-it").on("keyup", function () {
+//                            saveApplication();
+//                        });
+//                    });
                     $(function () {
                         "use strict";
                         var saveApplication = function () {
@@ -246,78 +521,38 @@
                                 $(".post-it").remove();
                             }
                         });
+
                         newNote.click(function () {
-                            Swal.fire({
-                                title: "Add new task",
-                                html:
-                                        '<input id="subject" maxlength="18" class="swal2-input" placeholder="Subject" autocapitalize="on">' +
-                                        '<input id="description" class="swal2-input" placeholder="Description" autocapitalize="off">' +
-                                        '<select id="ctype">' +
-                                        '</select>' +
-                                        '<select id="selectInput" class="swal2-select">' +
-                                        '   <option value="Low">Priority: Low</option>' +
-                                        '   <option value="Medium">Priority: Medium</option>' +
-                                        '   <option value="High">Priority: High</option>' +
-                                        '</select>',
-                                showCancelButton: true,
-                                confirmButtonText: "Add",
-                                showLoaderOnConfirm: true,
-                                preConfirm: () => {
+                            $("#exampleModal").modal("show");
+                        });
 
-                                    var ctype = new SlimSelect({
-                                        select: '#ctype',
-                                        placeholder: "Category Type List",
-                                        ajax: function (search, callback) {
-                                            fetch('project/get-type', {
-                                                method: 'POST',
-                                                body: new URLSearchParams({search: search || ''})
-                                            }).then(res => res.json()).then((data) => {
-                                                callback(data);
-                                            });
-                                        },
-                                        allowDeselect: false
-                                    });
-                                    $('#ctype').data('select', ctype);
+                        $("#add").click(function () {
+                            const subject = $("#subject_input").val();
+                            const description = $("#description").val();
+                            const selectedOption = $("#select_priority").val();
 
-                                    return new Promise((resolve) => {
-                                        const subject = document.getElementById('subject').value;
-                                        const description = document.getElementById('description').value;
-                                        const selectedOption = document.getElementById('selectInput').value;
-                                        if (subject && description) {
-                                            resolve({subject, description, selectedOption});
-                                        } else {
-                                            Swal.showValidationMessage("Please fill in all fields");
-                                        }
-                                    });
-                                },
-                                allowOutsideClick: () => !Swal.isLoading()
-                            }).then((result) => {
-                                if (result.isConfirmed) {
-                                    const {subject, description, selectedOption} = result.value;
-                                    var thisNote;
-                                    if (subject && description) {
-                                        thisNote = $("<div id=\"card-" + (note.length + 1) + "\" class=\"post-it\" draggable=\"true\"><p class=\"editable\" style=\"font-size: 17px; margin-top: -25px; margin-left: 5px; font-weight: bold;\" title=\"Click to edit\" contenteditable=\"false\">" + subject + "</p><p contenteditable=\"true\" style=\"font-size: 14px; margin-top: -5px; margin-left: 5px;\">" + description + "</p><div style=\"margin-top: 0px\" class=\"card-footer\"></div></div>");
-                                        note.push(thisNote);
-                                        switch (selectedOption) {
-                                            case "Low":
-                                                thisNote.find(".card-footer").append($("<button type=\"button\" style=\"margin-left: -150px\" class=\"btn btn-success\"></button>"));
-                                                break;
-                                            case "Medium":
-                                                thisNote.find(".card-footer").append($("<button type=\"button\" style=\"margin-left: -150px\" class=\"btn btn-warning\"></button>"));
-                                                break;
-                                            case "High":
-                                                thisNote.find(".card-footer").append($("<button type=\"button\" style=\"margin-left: -150px\" class=\"btn btn-danger\"></button>"));
-                                                break;
-                                        }
-
-                                        thisNote.on("dragstart", noteDragStart);
-                                        thisNote.on("dragend", noteDragEnd);
-                                        thisNote.on("keyup", noteChange);
-                                        boxs.first().prepend(thisNote);
-                                        saveApplication();
-                                    }
+                            if (subject && description) {
+                                var thisNote = $("<div id=\"card-" + (note.length + 1) + "\" class=\"post-it\" draggable=\"true\"><p class=\"editable\" style=\"font-size: 17px; margin-top: -25px; margin-left: 5px; font-weight: bold;\" title=\"Click to edit\" contenteditable=\"false\">" + subject + "</p><p contenteditable=\"true\" style=\"font-size: 14px; margin-top: -5px; margin-left: 5px;\">" + description + "</p><div style=\"margin-top: 0px\" class=\"card-footer\"></div></div>");
+                                note.push(thisNote);
+                                switch (selectedOption) {
+                                    case "Low":
+                                        thisNote.find(".card-footer").append($("<button type=\"button\" style=\"margin-left: -150px\" class=\"btn btn-success\"></button>"));
+                                        break;
+                                    case "Medium":
+                                        thisNote.find(".card-footer").append($("<button type=\"button\" style=\"margin-left: -150px\" class=\"btn btn-warning\"></button>"));
+                                        break;
+                                    case "High":
+                                        thisNote.find(".card-footer").append($("<button type=\"button\" style=\"margin-left: -150px\" class=\"btn btn-danger\"></button>"));
+                                        break;
                                 }
-                            });
+                                thisNote.on("dragstart", noteDragStart);
+                                thisNote.on("dragend", noteDragEnd);
+                                thisNote.on("keyup", noteChange);
+                                boxs.first().prepend(thisNote);
+                                saveApplication();
+
+                                $("#exampleModal").modal("hide");
+                            }
                         });
 
                         function noteDragStart(e) {
@@ -344,6 +579,7 @@
                             saveApplication();
                         });
                     });
+
                 });
             });
         </script>

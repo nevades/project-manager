@@ -30,7 +30,7 @@ public class ProjectService {
 
     @Autowired
     private ProjectRepo repo;
-
+    
     @Autowired
     private UserRepo usr;
 
@@ -181,5 +181,5 @@ public class ProjectService {
     public Iterable<SlimSelectDTO> searchType(String search) {
         return catrepo.searchType("%" + search.trim() + "%");
     }
-
+    
 }
