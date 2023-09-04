@@ -61,7 +61,7 @@
                     </form>
                 </div>
             </div>
-            <div class="row" style="margin-top: 20px;">
+            <div class="row" style="margin-top: -30px;">
                 <div class="col">
                     <div class="card" style="width: auto; height: 30rem; margin-left: 30px; margin-top: 10px;">
                         <div class="card-header">
