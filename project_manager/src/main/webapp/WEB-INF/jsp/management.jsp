@@ -28,14 +28,13 @@
           background-position: center center;">
         <div class="row" style="margin-top: 20px;">
             <div class="col-3">
-                <div class="card" style="background-color: #ffffffab; height: 50rem; margin-left: 20px;">
+                <div class="card" style="background-color: #fff; height: 50rem; margin-left: 20px;">
                     <div class="card-body">
                         <h5 class="card-title">Project Management</h5>
                         <!--<div class="border-top mb-3"></div>-->
                         <div class="border-top my-4"></div>
                         <form class="row">
                             <div class="col" id="projects">
-
                             </div>
                         </form>
                     </div>
@@ -43,7 +42,7 @@
             </div>
 
             <div class="col-9">
-                <div class="card" style="background-color: #ffffffab; height: 50rem; margin-right: 20px;">
+                <div class="card" style="background-color: #fff; height: 50rem; margin-right: 20px;">
                     <div class="card-body">
                         <h5 class="card-title">Edit Project</h5>
                         <!--<div class="border-top mb-3"></div>-->
@@ -53,8 +52,6 @@
                                 <label for="exampleInputEmail">Project Name</label>
                                 <input type="name" class="form-control" id="exampleInputEmail">
                             </div>
-
-
                         </div>
                     </div>
                     <div class="card-footer">
@@ -75,15 +72,7 @@
         <script type="text/javascript" src="files/js/func.js"></script>
         <script type="text/javascript" src="files/js/autoNumeric.js"></script>
         <script type="text/javascript" src="files/js/dataTables.responsive.min.js"></script>
-        <!--        <script src="https://kit.fontawesome.com/c16a384926.js" crossorigin="anonymous"></script>
-                <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-                <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-                <script src="https://code.jquery.com/jquery-3.6.0.min.js" crossorigin="anonymous"></script>
-                <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.18/dist/sweetalert2.min.js"></script>
-                <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.18/dist/sweetalert2.min.css">-->
         <script>
-
-
 
             fetch('project/load-project').then((res) => res.json()).then((data) => {
                 for (var i = 0; i < data.length; i++) {
@@ -92,9 +81,17 @@
                     const pdate = new Date(data[i].date).toISOString().split('T')[0];
                     const ptime = new Date(data[i].date).toLocaleTimeString([], {hour: '2-digit', minute: '2-digit', second: '2-digit'});
 
-                    var temp = ' <div class="cards" style="width: 18rem;">'
+                    var temp = '<div class="cards" style="width: 18rem;">'
+//                            '<li>'
+//                            + '<span>' + pname + '</span>'
+//                            + '<button type="button" style="margin-left: 4px; padding: 4px;" class="button select" id="projectButton" data-projectid="' + pid + '">Edit</button><br>'
+//                            + '<span>Date Created: ' + pdate + '</span><br>'
+//                            + '<span>Time Created: ' + ptime + '</span><br>'
+//                            + '<div class="border-top mb-3"></div>'
+//                            + '</li>';
+
                             + '<div class="card-body">'
-                            + '<h5 class="card-title" style="font-weight: bold; text-decoration: underline;">' + pname + '</h5>'
+                            + '<h5 class="card-title" style="font-weight: bold; text-decoration: underline;" id="ppname">' + pname + '</h5>'
                             + '<p class="card-text">Date Created : ' + pdate + '</p>'
                             + '<p class="card-text">Time Created : ' + ptime + '</p>'
                             + '<button class="btn btn-primary select" id="projectButton" type="button" data-projectid="' + pid + '" style="font-size: 12px; padding: 5px 10px;">Edit Project</button>'
@@ -106,8 +103,10 @@
 
             $(document).on('click', '.select', function () {
                 var projectid = $(this).data('projectid');
-                var ponnaya = $(this).data('projectid');
-                var projectName = $(this).closest('.card-body').find('.card-title').text(); // Extract project name
+                var pp = $(this).data('projectid');
+                var projectName = $(this).closest('.card-body').find('.card-title').text();
+//                const pnameElement = document.getElementById("ppname");
+//                var projectName = pnameElement.textContent;
                 $('#exampleInputEmail').val(projectName);
                 $('#labelContainer').children().not('.form-group').remove();
 
@@ -161,7 +160,7 @@
                             return fetch('project/update-project', {
                                 method: 'POST',
                                 body: new URLSearchParams({
-                                    projectId: ponnaya,
+                                    projectId: pp,
                                     projectName: projectName,
                                     data: JSON.stringify(requestData)
                                 })

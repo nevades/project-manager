@@ -5,7 +5,6 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Setup</title>
         <link rel="icon" href="files/images/favicon.ico" type="images/x-icon">
-        <!--<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">-->
         <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.18/dist/sweetalert2.min.css">
         <%@include file="jspf/header.jspf" %>
@@ -46,7 +45,7 @@
                     <div class="border-top mb-3"></div>
                 </div>
                 <div class="card-body">
-                    <form class="row">
+                    <div class="row">
                         <div class="form-group col">
                             <label for="exampleInputEmail1">Project Name</label>
                             <input type="text" class="form-control" id="projectName" style="width: 600px;" aria-describedby="emailHelp" placeholder="">
@@ -58,7 +57,7 @@
                         <div class="form-group col" style="margin-left: 50px;">
                             <img id="blah" src="http://placehold.it/180" alt="your image" />
                         </div>
-                    </form>
+                    </div>
                 </div>
             </div>
             <div class="row" style="margin-top: -30px;">
@@ -68,8 +67,8 @@
                             <h5 class="card-title">Add new project board</h5>
                             <div class="border-top mb-3"></div>
                         </div>
-                        <div class="card-body">
-                            <form>
+                        <div class="card-body" style="margin-top: -10px;">
+                            <div>
                                 <div class="form-group">
                                     <label for="exampleInputEmail1">Project board name</label>
                                     <input type="text" class="form-control" id="labelText" aria-describedby="emailHelp" placeholder="">
@@ -89,7 +88,7 @@
                                     </label>
                                 </div>
                                 <br>
-                            </form>
+                            </div>
                         </div>
                         <div class="card-footer">
                             <p class="card-text">You can add new project boards with their own custom colors</p>
@@ -115,12 +114,6 @@
                 </div>
             </div>
         </div>
-        <!--        <script src="https://kit.fontawesome.com/c16a384926.js" crossorigin="anonymous"></script>
-                <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-                <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-                <script src="https://code.jquery.com/jquery-3.6.0.min.js" crossorigin="anonymous"></script>
-                <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.18/dist/sweetalert2.min.js"></script>
-                <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.18/dist/sweetalert2.min.css">-->
         <script src="https://kit.fontawesome.com/c16a384926.js" crossorigin="anonymous"></script>
         <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" crossorigin="anonymous"></script>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
