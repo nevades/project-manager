@@ -30,7 +30,7 @@ public class ProjectService {
 
     @Autowired
     private ProjectRepo repo;
-    
+
     @Autowired
     private UserRepo usr;
 
@@ -51,9 +51,6 @@ public class ProjectService {
 
     @Autowired
     private DataTableRepo<LoadUserDTO> urepo;
-//
-//    @Autowired
-//    ParamRepo pramrepo;
 
     @Transactional
     public Project saveProject(String projectName, String[] boardNames, String[] boardColors) throws Exception {
@@ -181,5 +178,9 @@ public class ProjectService {
     public Iterable<SlimSelectDTO> searchType(String search) {
         return catrepo.searchType("%" + search.trim() + "%");
     }
-    
+
+    public Iterable<SlimSelectDTO> getAllType(String search) {
+        return pramrepo.getAllType("%" + search.trim() + "%");
+    }
+
 }

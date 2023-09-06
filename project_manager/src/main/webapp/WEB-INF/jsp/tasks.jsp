@@ -121,7 +121,6 @@
         <script type="text/javascript" src="files/js/autoNumeric.js"></script>
         <script type="text/javascript" src="files/js/dataTables.responsive.min.js"></script>
         <script>
-
             var categoryType = new SlimSelect({
                 select: '#categoryType',
                 placeholder: "Category Type List",

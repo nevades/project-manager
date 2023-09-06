@@ -44,8 +44,4 @@ public class PageController {
         return "tasks";
     }
 
-    @GetMapping("/advanced")
-    public String advanced() {
-        return "advanced";
-    }
 }

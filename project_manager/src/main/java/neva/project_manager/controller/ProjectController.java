@@ -131,6 +131,11 @@ public class ProjectController {
     public Iterable<SlimSelectDTO> searchType(@RequestParam String search) throws Exception {
         return ser.searchType(search);
     }
+    
+    @PostMapping("/search-type")
+    public Iterable<SlimSelectDTO> getAllType(@RequestParam String search) throws Exception {
+        return ser.getAllType(search);
+    }
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity<CommonResponse> handleException(Exception e) {
