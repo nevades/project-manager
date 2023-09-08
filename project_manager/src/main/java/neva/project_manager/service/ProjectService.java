@@ -6,6 +6,7 @@ import neva.project_manager.datatable.DataTablesResponse;
 import neva.project_manager.dto.LoadBoardDTO;
 import neva.project_manager.dto.LoadDataDTO;
 import neva.project_manager.dto.LoadProjectDTO;
+import neva.project_manager.dto.LoadTaskDTO;
 import neva.project_manager.dto.LoadUserDTO;
 import neva.project_manager.dto.ParamDTO;
 import neva.project_manager.dto.SlimSelectDTO;
@@ -13,12 +14,14 @@ import neva.project_manager.model.Board;
 import neva.project_manager.model.Category;
 import neva.project_manager.model.Parameter;
 import neva.project_manager.model.Project;
+import neva.project_manager.model.Task;
 import neva.project_manager.model.User;
 import neva.project_manager.repo.BoardRepo;
 import neva.project_manager.repo.CardRepo;
 import neva.project_manager.repo.CategoryRepo;
 import neva.project_manager.repo.ParamRepo;
 import neva.project_manager.repo.ProjectRepo;
+import neva.project_manager.repo.TaskRepo;
 import neva.project_manager.repo.UserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -30,9 +33,12 @@ public class ProjectService {
 
     @Autowired
     private ProjectRepo repo;
-
+    
     @Autowired
     private UserRepo usr;
+
+    @Autowired
+    private TaskRepo trepor;
 
     @Autowired
     private CategoryRepo catrepo;
@@ -134,6 +140,10 @@ public class ProjectService {
     public Iterable<LoadProjectDTO> LoadProject(String uid) {
         return repo.LoadProject(uid);
     }
+    
+    public Iterable<LoadTaskDTO> LoadTasks(String uid) {
+        return trepor.LoadTasks(uid);
+    }
 
     public Iterable<LoadDataDTO> LoadData(String uid) {
         return repo.LoadData(uid);
@@ -165,6 +175,28 @@ public class ProjectService {
         usrtype.setStatus("active");
         usrtype = usr.save(usrtype);
         return usrtype;
+    }
+
+    public Task saveTask(String subject, String selectedOption, String description, Integer projectId) {
+        Task task = new Task();
+        task.setSubject(subject);
+        task.setDescription(description);
+        task.setProject_id(projectId);
+        task.setBoard_id(1);
+
+        switch (selectedOption) {
+            case "Low" ->
+                task.setPriority("1");
+            case "Medium" ->
+                task.setPriority("2");
+            case "High" ->
+                task.setPriority("3");
+            default ->
+                throw new AssertionError();
+        }
+
+        task = trepor.save(task);
+        return task;
     }
 
     public DataTablesResponse<ParamDTO> getParam(DataTableRequest param) throws Exception {

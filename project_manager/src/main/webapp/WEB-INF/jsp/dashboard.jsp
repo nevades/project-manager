@@ -170,6 +170,7 @@
                 </button>
                 <i class="trash fa-solid fa-trash fa-lg"></i>
             </div>
+
             <div class="centered-div" id="center">
             </div>
             <div id="boxes" style="display: none;">
@@ -243,7 +244,6 @@
                     </div>
                 </div>
             </div>
-
 
         </div>
         <script src="https://kit.fontawesome.com/c16a384926.js" crossorigin="anonymous"></script>
@@ -326,13 +326,37 @@
 
                         const name = data[i].boardName;
                         const color = data[i].boardColor;
+                        const id = data[i].boardId;
+
                         const colDiv = $('<div style="margin-top: 10px;" class="divs col-4"></div>');
                         const h3Element = $('<div class="card" style="height: 35px; width: auto;"><h3>' + name + '</h3></div>');
-                        const boxDiv = $('<div class="box" style="background-color: ' + color + '; border:7px dotted ' + color + ';"></div>');
+                        const boxDiv = $('<div  class="box card' + id + '" style="background-color: ' + color + '; border:7px dotted ' + color + ';"></div>');
                         colDiv.append(h3Element);
                         colDiv.append(boxDiv);
                         $('#boxes').append(colDiv);
                     }
+
+                    fetch('project/load-tasks').then((res) => res.json()).then((data) => {
+                        console.log(data);
+
+                        for (var i = 0; i < data.length; i++) {
+                            const sub = data[i].subject;
+                            const desc = data[i].description;
+                            const pri = data[i].priority;
+                            const pid = data[i].project_id;
+                            const bid = data[i].board_id;
+
+                            var task = '<div id="card-1" class="post-it" draggable="true">'
+                                    + '<p class="editable" style="font-size: 17px; margin-top: -25px; margin-left: 5px; font-weight: bold;" title="Click to edit" contenteditable="false">' + sub + '</p>'
+                                    + '<p contenteditable="true" style="font-size: 14px; margin-top: -5px; margin-left: 5px;">' + desc + '</p>'
+                                    + '<div style="margin-top: 0px" class="card-footer">'
+                                    + '<button type="button" style="margin-left: -150px" class="btn btn-warning"></button>'
+                                    + '</div>'
+                                    + '</div>';
+
+                            $('.card' + bid + '').append(task);
+                        }
+                    });
 
                     $(function () {
                         "use strict";
@@ -390,7 +414,6 @@
 
                         $("#add").click(function () {
                             const subject = $("#subject_input").val();
-//                            const type = $("#select_task").val();
                             const description = $("#description").val();
                             const selectedOption = $("#select_priority").val();
 
@@ -417,6 +440,25 @@
 
                                 $("#exampleModal").modal("hide");
                             }
+
+                            return fetch('project/save-task', {
+                                method: 'POST',
+                                body: new URLSearchParams({
+                                    subject: subject,
+                                    selectedOption: selectedOption,
+                                    description: description,
+                                    projectId: projectid
+                                })
+                            }).then(response => {
+                                if (!response.ok) {
+                                    throw new Error(response.statusText);
+                                } else {
+                                    Swal.fire('Successfull!', 'Task has been successfully submitted');
+                                }
+                                return response.json();
+                            }).catch(error => {
+                                Swal.fire("Empty Description!", "Please Enter a Valid Subject!", "warning");
+                            });
                         });
 
                         function noteDragStart(e) {

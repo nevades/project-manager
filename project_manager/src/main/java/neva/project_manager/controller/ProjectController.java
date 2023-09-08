@@ -10,6 +10,7 @@ import neva.project_manager.datatable.DataTablesResponse;
 import neva.project_manager.dto.LoadBoardDTO;
 import neva.project_manager.dto.LoadDataDTO;
 import neva.project_manager.dto.LoadProjectDTO;
+import neva.project_manager.dto.LoadTaskDTO;
 import neva.project_manager.dto.LoadUserDTO;
 import neva.project_manager.dto.ParamDTO;
 import neva.project_manager.dto.SlimSelectDTO;
@@ -88,6 +89,11 @@ public class ProjectController {
     public Iterable<LoadProjectDTO> LoadProject(HttpSession session) throws Exception {
         return ser.LoadProject(session.getAttribute("uid").toString());
     }
+    
+    @GetMapping("/load-tasks")
+    public Iterable<LoadTaskDTO> LoadTasks(HttpSession session) throws Exception {
+        return ser.LoadTasks(session.getAttribute("uid").toString());
+    }
 
     @PostMapping("/show")
     public DataTablesResponse<ParamDTO> getParam(@RequestBody DataTableRequest param) throws Exception {
@@ -131,10 +137,17 @@ public class ProjectController {
     public Iterable<SlimSelectDTO> searchType(@RequestParam String search) throws Exception {
         return ser.searchType(search);
     }
-    
+
     @PostMapping("/search-type")
     public Iterable<SlimSelectDTO> getAllType(@RequestParam String search) throws Exception {
         return ser.getAllType(search);
+    }
+
+    @PostMapping("/save-task")
+    public ResponseEntity<CommonResponse> saveTask(@RequestParam String subject, @RequestParam String selectedOption, @RequestParam String description, @RequestParam Integer projectId) throws Exception {
+        ser.saveTask(subject, selectedOption, description, projectId);
+        CommonResponse response = new CommonResponse("Success!", 200);
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @ExceptionHandler(Exception.class)
