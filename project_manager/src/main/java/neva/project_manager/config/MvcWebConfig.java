@@ -33,6 +33,7 @@ public class MvcWebConfig implements WebMvcConfigurer {
 
         registry.addResourceHandler("/userimages/**").addResourceLocations("/userimages/");
         registry.addResourceHandler("/files/**").addResourceLocations("/files/");
+//        registry.addResourceHandler("/test/view2/**").addResourceLocations("file:///C:/Users/Neva/");
 
     }
 
