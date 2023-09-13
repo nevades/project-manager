@@ -346,11 +346,21 @@
                             const pid = data[i].project_id;
                             const bid = data[i].board_id;
 
+                            let color = "";
+
+                            if (pri === "Low") {
+                                color = "success";
+                            } else if (pri === "Medium") {
+                                color = "warning";
+                            } else if (pri === "High") {
+                                color = "danger";
+                            }
+
                             var task = '<div id="card-1" class="post-it" draggable="true">'
                                     + '<p class="editable" style="font-size: 17px; margin-top: -25px; margin-left: 5px; font-weight: bold;" title="Click to edit" contenteditable="false">' + sub + '</p>'
                                     + '<p contenteditable="true" style="font-size: 14px; margin-top: -5px; margin-left: 5px;">' + desc + '</p>'
                                     + '<div style="margin-top: 0px" class="card-footer">'
-                                    + '<button type="button" style="margin-left: -150px" class="btn btn-warning"></button>'
+                                    + '<button type="button" style="margin-left: -150px" class="btn btn-' + color + '"></button>'
                                     + '</div>'
                                     + '</div>';
 
