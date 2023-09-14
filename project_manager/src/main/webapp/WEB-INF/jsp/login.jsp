@@ -10,7 +10,7 @@
         <link rel="stylesheet" type="text/css" href="files/css/waves.min.css">
         <meta name="keywords" content="fintrex,fintrexfinance,finance,cms">
         <meta name="author" content="fintrexIT">
-        <link rel="icon" href="files/images/favicon.ico" type="images/x-icon">
+        <link rel="icon" href="files/images/fav.ico" type="image/x-icon">
     </head>
     <body class="" style="background-color: #42a5f5;">
         <%@include file="jspf/loader.jspf" %>

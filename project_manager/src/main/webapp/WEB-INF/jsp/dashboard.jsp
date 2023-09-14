@@ -4,7 +4,7 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Project Manager</title>
-        <link rel="icon" href="files/images/favicon.ico" type="image/x-icon">
+        <link rel="icon" href="files/images/fav.ico" type="image/x-icon">
         <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.css">
         <%--<%@include file="jspf/header.jspf" %>--%>
         <link rel="stylesheet" type="text/css" href="files/css/slimselect.css">
