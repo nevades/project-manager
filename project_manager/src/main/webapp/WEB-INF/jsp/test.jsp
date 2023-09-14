@@ -1,4 +1,4 @@
-<%-- 
+<%--
     Document   : test
     Created on : Sep 7, 2023, 11:04:10 AM
     Author     : Neva
@@ -10,6 +10,7 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>JSP Page</title>
+        <link rel="icon" href="files/images/fav.ico" type="image/x-icon">
     </head>
     <body>
         <h1>Hello World!</h1>
