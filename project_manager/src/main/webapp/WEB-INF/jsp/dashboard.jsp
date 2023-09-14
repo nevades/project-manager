@@ -12,6 +12,19 @@
     </head>
     <style>
 
+        #boxes {
+            display: flex !important;
+            overflow-x: auto !important; /* Enable horizontal scrolling */
+            white-space: nowrap !important; /* Prevent boards from wrapping to the next line */
+            padding-bottom: 20px !important; /* Add some padding to the bottom to ensure scrollbars are visible */
+        }
+
+        .divs {
+            /*width: 300px !important;  Set a fixed width for each board container */
+            /*margin-right: 10px !important;  Add some spacing between board containers */
+            overflow: auto !important; /* Enable vertical scrolling within each board container if needed */
+        }
+
         .placeholder {
             cursor: auto !important;
             background-color: white !important;
@@ -173,8 +186,8 @@
 
             <div class="centered-div" id="center">
             </div>
-            <div id="boxes" style="display: none;">
 
+            <div id="boxes" style="display: none;">
             </div>
 
             <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -209,7 +222,7 @@
                                         </select>
                                     </div>
                                 </div>
-                            </div>      
+                            </div>
                             <br>
 
                             <div class="row form-group row-up" style="margin-top: -40px;">
@@ -233,7 +246,7 @@
                                 <label class=" col-form-label new-label-box" style="width: 20%">Attachments</label>
                                 <div class="col-8">
                                     <div class="col-sm-12 col-form-label input-images" id="upload_document_div">
-                                        <div class="jquery-image-uploader"><input type="file" id="image_upload" name="images" multiple="multiple"><div class="uploaded"></div><div class="upload-text"><i class="material-icons"></i><span>(6 Files only)</span></div></div></div>                
+                                        <div class="jquery-image-uploader"><input type="file" id="image_upload" name="images" multiple="multiple"><div class="uploaded"></div><div class="upload-text"><i class="material-icons"></i><span>(6 Files only)</span></div></div></div>
                                 </div>
                             </div>
                         </div>
@@ -333,6 +346,7 @@
                         const boxDiv = $('<div  class="box card' + id + '" style="background-color: ' + color + '; border:7px dotted ' + color + ';"></div>');
                         colDiv.append(h3Element);
                         colDiv.append(boxDiv);
+                        colDiv.addClass("divs");
                         $('#boxes').append(colDiv);
                     }
 
