@@ -273,133 +273,6 @@
         <script>
         </script>
         <script>
-//            $(function () {
-//                "use strict";
-            var saveApplication = function () {
-                localStorage.setItem("app", $(".main-content").html());
-            };
-            var getApplication = function () {
-                return localStorage.getItem("app");
-            };
-            (function () {
-                if (getApplication()) {
-                    $(".main-content").html(getApplication());
-                }
-            })();
-            var boxs = $(".box"),
-                    trash = $(".trash"),
-                    note = $(".post-it"),
-                    newNote = $(".create-new");
-            note.on("dragstart", noteDragStart);
-            note.on("dragend", noteDragEnd);
-            boxs.on("dragover", function (e) {
-                $(this).addClass("drop-here");
-                e.preventDefault();
-            });
-            boxs.on("dragleave", function () {
-                $(this).removeClass("drop-here");
-            });
-            trash.on("dragover", function (e) {
-                e.preventDefault();
-                trash.addClass("active");
-            });
-            boxs.on("drop", function (e) {
-                var card = e.originalEvent.dataTransfer.getData("text/plain");
-                e.target.appendChild(document.getElementById(card));
-                e.preventDefault();
-            });
-            trash.on("drop", function (e) {
-                var card = e.originalEvent.dataTransfer.getData("text/plain");
-                if (confirm("Want to delete this note?")) {
-                    $("#" + card).remove();
-                    saveApplication();
-                }
-                e.preventDefault();
-            });
-            trash.click(function () {
-                if (confirm("Want to clear?")) {
-                    localStorage.clear();
-                    $(".post-it").remove();
-                }
-            });
-
-            newNote.click(function () {
-                $("#exampleModal").modal("show");
-            });
-
-            $("#add").click(function () {
-                const subject = $("#subject_input").val();
-                const description = $("#description").val();
-                const selectedOption = $("#select_priority").val();
-
-                if (subject && description) {
-                    var thisNote = $("<div id=\"card-" + (note.length + 1) + "\" class=\"post-it\" draggable=\"true\"><p class=\"editable\" style=\"font-size: 17px; margin-top: -25px; margin-left: 5px; font-weight: bold;\" title=\"Click to edit\" contenteditable=\"false\">" + subject + "</p><p contenteditable=\"true\" style=\"font-size: 14px; margin-top: -5px; margin-left: 5px;\">" + description + "</p><div style=\"margin-top: 0px\" class=\"card-footer\"></div></div>");
-                    note.push(thisNote);
-                    switch (selectedOption) {
-                        case "Low":
-                            thisNote.find(".card-footer").append($("<button type=\"button\" style=\"margin-left: -150px\" class=\"btn btn-success\"></button>"));
-                            break;
-                        case "Medium":
-                            thisNote.find(".card-footer").append($("<button type=\"button\" style=\"margin-left: -150px\" class=\"btn btn-warning\"></button>"));
-                            break;
-                        case "High":
-                            thisNote.find(".card-footer").append($("<button type=\"button\" style=\"margin-left: -150px\" class=\"btn btn-danger\"></button>"));
-                            break;
-                    }
-                    thisNote.on("dragstart", noteDragStart);
-                    thisNote.on("dragend", noteDragEnd);
-                    thisNote.on("keyup", noteChange);
-                    boxs.first().prepend(thisNote);
-                    saveApplication();
-
-                    $("#exampleModal").modal("hide");
-                }
-
-                return fetch('project/save-task', {
-                    method: 'POST',
-                    body: new URLSearchParams({
-                        subject: subject,
-                        selectedOption: selectedOption,
-                        description: description,
-                        projectId: projectid
-                    })
-                }).then(response => {
-                    if (!response.ok) {
-                        throw new Error(response.statusText);
-                    } else {
-                        Swal.fire('Successfull!', 'Task has been successfully submitted');
-                    }
-                    return response.json();
-                }).catch(error => {
-                    Swal.fire("Empty Description!", "Please Enter a Valid Subject!", "warning");
-                });
-            });
-
-            function noteDragStart(e) {
-                e.originalEvent.dataTransfer.setData("text/plain", e.target.getAttribute("id"));
-                trash.css({
-                    opacity: 0.5
-                });
-            }
-
-            function noteDragEnd() {
-                boxs.removeClass("drop-here");
-                trash.css({
-                    opacity: 0.2
-                });
-                trash.removeClass("active");
-                saveApplication();
-            }
-
-            function noteChange() {
-                saveApplication();
-            }
-
-            $(".post-it").on("keyup", function () {
-                saveApplication();
-            });
-//            });
-
             var select_priority = new SlimSelect({
                 select: '#select_priority'
             });
@@ -509,7 +382,133 @@
                         }
                     });
 
+                    $(function () {
+                        "use strict";
+                        var saveApplication = function () {
+                            localStorage.setItem("app", $(".main-content").html());
+                        };
+                        var getApplication = function () {
+                            return localStorage.getItem("app");
+                        };
+                        (function () {
+                            if (getApplication()) {
+                                $(".main-content").html(getApplication());
+                            }
+                        })();
+                        var boxs = $(".box"),
+                                trash = $(".trash"),
+                                note = $(".post-it"),
+                                newNote = $(".create-new");
+                        note.on("dragstart", noteDragStart);
+                        note.on("dragend", noteDragEnd);
+                        boxs.on("dragover", function (e) {
+                            $(this).addClass("drop-here");
+                            e.preventDefault();
+                        });
+                        boxs.on("dragleave", function () {
+                            $(this).removeClass("drop-here");
+                        });
+                        trash.on("dragover", function (e) {
+                            e.preventDefault();
+                            trash.addClass("active");
+                        });
+                        boxs.on("drop", function (e) {
+                            var card = e.originalEvent.dataTransfer.getData("text/plain");
+                            e.target.appendChild(document.getElementById(card));
+                            e.preventDefault();
+                        });
+                        trash.on("drop", function (e) {
+                            var card = e.originalEvent.dataTransfer.getData("text/plain");
+                            if (confirm("Want to delete this note?")) {
+                                $("#" + card).remove();
+                                saveApplication();
+                            }
+                            e.preventDefault();
+                        });
+                        trash.click(function () {
+                            if (confirm("Want to clear?")) {
+                                localStorage.clear();
+                                $(".post-it").remove();
+                            }
+                        });
 
+                        newNote.click(function () {
+                            $("#exampleModal").modal("show");
+                        });
+
+                        $("#add").click(function () {
+                            const subject = $("#subject_input").val();
+                            const description = $("#description").val();
+                            const selectedOption = $("#select_priority").val();
+
+                            if (subject && description) {
+                                var thisNote = $("<div id=\"card-" + (note.length + 1) + "\" class=\"post-it\" draggable=\"true\"><p class=\"editable\" style=\"font-size: 17px; margin-top: -25px; margin-left: 5px; font-weight: bold;\" title=\"Click to edit\" contenteditable=\"false\">" + subject + "</p><p contenteditable=\"true\" style=\"font-size: 14px; margin-top: -5px; margin-left: 5px;\">" + description + "</p><div style=\"margin-top: 0px\" class=\"card-footer\"></div></div>");
+                                note.push(thisNote);
+                                switch (selectedOption) {
+                                    case "Low":
+                                        thisNote.find(".card-footer").append($("<button type=\"button\" style=\"margin-left: -150px\" class=\"btn btn-success\"></button>"));
+                                        break;
+                                    case "Medium":
+                                        thisNote.find(".card-footer").append($("<button type=\"button\" style=\"margin-left: -150px\" class=\"btn btn-warning\"></button>"));
+                                        break;
+                                    case "High":
+                                        thisNote.find(".card-footer").append($("<button type=\"button\" style=\"margin-left: -150px\" class=\"btn btn-danger\"></button>"));
+                                        break;
+                                }
+//                                thisNote.find(".card-footer").append($("<br><button type=\"button\" style=\"margin-left: 5px; margin-top: -20px;\" class=\"btn btn-info\">" + type + "</button>"));
+                                thisNote.on("dragstart", noteDragStart);
+                                thisNote.on("dragend", noteDragEnd);
+                                thisNote.on("keyup", noteChange);
+                                boxs.first().prepend(thisNote);
+                                saveApplication();
+
+                                $("#exampleModal").modal("hide");
+                            }
+
+                            return fetch('project/save-task', {
+                                method: 'POST',
+                                body: new URLSearchParams({
+                                    subject: subject,
+                                    selectedOption: selectedOption,
+                                    description: description,
+                                    projectId: projectid
+                                })
+                            }).then(response => {
+                                if (!response.ok) {
+                                    throw new Error(response.statusText);
+                                } else {
+                                    Swal.fire('Successfull!', 'Task has been successfully submitted');
+                                }
+                                return response.json();
+                            }).catch(error => {
+                                Swal.fire("Empty Description!", "Please Enter a Valid Subject!", "warning");
+                            });
+                        });
+
+                        function noteDragStart(e) {
+                            e.originalEvent.dataTransfer.setData("text/plain", e.target.getAttribute("id"));
+                            trash.css({
+                                opacity: 0.5
+                            });
+                        }
+
+                        function noteDragEnd() {
+                            boxs.removeClass("drop-here");
+                            trash.css({
+                                opacity: 0.2
+                            });
+                            trash.removeClass("active");
+                            saveApplication();
+                        }
+
+                        function noteChange() {
+                            saveApplication();
+                        }
+
+                        $(".post-it").on("keyup", function () {
+                            saveApplication();
+                        });
+                    });
                 });
             });
         </script>
