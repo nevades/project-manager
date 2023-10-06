@@ -15,7 +15,6 @@
     <body class="" style="background-color: #42a5f5;">
         <%@include file="jspf/loader.jspf" %>
         <section class="login-block">
-
             <div class="container-fluid">
                 <div class="row">
                     <div class="col-sm-12">
