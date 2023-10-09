@@ -14,15 +14,12 @@
     </head>
     <body>
         <h1>Hello World!</h1>
-
         <input id="txt" type="text">
         <input id="file" type="file" multiple="">
         <button id="uploadBtn">Upload</button>
     </body>
 
-
     <script>
-
         document.getElementById('uploadBtn').addEventListener('click', function () {
 
             let fd = new FormData();
@@ -42,12 +39,5 @@
                 console.log(response.text());
             });
         });
-
-
     </script>
-
-
-
-
-
 </html>
