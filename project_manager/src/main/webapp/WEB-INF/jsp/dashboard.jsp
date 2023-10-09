@@ -16,50 +16,27 @@
             white-space: nowrap !important;
             padding-bottom: 20px !important;
         }
-
         .divs {
             overflow: auto !important;
         }
-
         .placeholder {
             cursor: auto !important;
             background-color: white !important;
         }
-
-        .navbar-laravel
-        {
+        .navbar-laravel {
             box-shadow: 0 2px 4px rgba(0,0,0,.04);
         }
-
-        .navbar-brand , .nav-link, .my-form, .login-form
-        {
+        .navbar-brand, .nav-link, .my-form, .login-form {
             font-family: Raleway, sans-serif;
         }
-
-        .my-form
-        {
+        .my-form, .login-form {
             padding-top: 1.5rem;
             padding-bottom: 1.5rem;
         }
-
-        .my-form .row
-        {
+        .my-form .row, .login-form .row {
             margin-left: 0;
             margin-right: 0;
         }
-
-        .login-form
-        {
-            padding-top: 1.5rem;
-            padding-bottom: 1.5rem;
-        }
-
-        .login-form .row
-        {
-            margin-left: 0;
-            margin-right: 0;
-        }
-
         .pill {
             font-size: 14px;
             padding: 0.5em 1em;
@@ -70,18 +47,15 @@
             background: #CADDDC;
             width: auto;
         }
-
         .card-scrollx {
             display: flex;
             overflow-x: auto;
             scroll-behavior: smooth;
         }
-
         .centered-div {
             display: flex;
             justify-content: center;
         }
-
         .custom-tag-container {
             display: inline-block;
             background-color: purple;
@@ -93,38 +67,32 @@
             line-height: 1;
             cursor: pointer;
         }
-
         .subject {
             font-size: 17px;
             font-weight: bold;
             margin-top: 0;
             margin-bottom: 5px;
         }
-
         .description {
             font-size: 14px;
             margin-top: 0;
             color: #4c4c4c;
         }
-
         .post-it {
             background-color: #ffebc0;
             border: 1px solid #e6ac00;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
-
         .container {
             width: 100%;
             overflow-x: hidden;
         }
-
         .card-scroll {
             display: flex;
             overflow-x: auto;
             scroll-behavior: smooth;
             padding: 10px;
         }
-
         .cards {
             width: 240px;
             height: auto;
@@ -135,7 +103,6 @@
             margin: 10px;
             position: relative;
         }
-
         .card {
             margin: 10px;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
@@ -152,26 +119,20 @@
             padding: 10px;
             position: relative;
         }
-
         body {
             margin: 0;
             padding: 0;
-            background-color: #165171;
-            /*background: rgb(41,37,108);*/
-            /*background: linear-gradient(90deg, rgba(41,37,108,1) 0%, rgba(73,73,110,1) 35%, rgba(42,110,124,1) 100%);*/
-            background-repeat: no-repeat;
-            background-attachment: fixed;
-            background-size: cover;
         }
     </style>
+
     <%@include file="jspf/navbar.jspf" %>
-    <body>
+    <body style="background-image: url('files/images/homer.jpg'); background-repeat: no-repeat; background-attachment: fixed; background-size: cover;">
         <div id="landing">
         </div>
 
         <div id="dashboard">
             <div class="operations" style="margin-left: 10px; margin-top: 10px; width: auto; display: none;">
-                <button type="button" onclick="clearCenter()" class="btn btn-primary"><span><i class="fa fa-arrow-left fa-1x"></i></span> Select Project</button>
+                <button type="button" onclick="clearCenter()" class="btn btn-info"><span><i class="fa fa-arrow-left fa-1x"></i></span> Select Project</button>
 
                 <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#exampleModal">
                     <i class="fa-solid fa-location-arrow"></i> Add Task
@@ -295,13 +256,13 @@
                     const pdate = new Date(data[i].date).toISOString().split('T')[0];
                     const ptime = new Date(data[i].date).toLocaleTimeString([], {hour: '2-digit', minute: '2-digit', second: '2-digit'});
 
-                    var temp = ' <div class="cards" style="width: 18rem;">'
-                            + '<div class="card-body" style="background: #DADADA; padding: 7px;">'
+                    var temp = '<div class="card" style="width: 18rem; background: #DADADA; border-radius: 16px; box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1); backdrop-filter: blur(3px); -webkit-backdrop-filter: blur(3px);">'
+                            + '<div class="card-body" style="padding: 7px;">'
                             + '<h5 class="card-title" style="font-weight: bold; text-decoration: underline;">' + pname + '</h5>'
-                            + '<div class="card" style="background-color: #8d85ff; padding: 0; font-size: 14px;">'
+                            + '<div class="card" style="background-color: #32c29b; padding: 0; font-size: 14px; border-radius: 16px;">'
                             + '<p class="card-text">Date Created : ' + pdate + '</p>'
                             + '</div>'
-                            + '<div class="card" style="background-color: #8d85ff; padding: 0; font-size: 14px;">'
+                            + '<div class="card" style="background-color: #32c29b; padding: 0; font-size: 14px; border-radius: 16px;">'
                             + '<p class="card-text">Time Created : ' + ptime + '</p>'
                             + '</div>'
                             + '<button class="btn btn-secondary btn-sm select" id="projectButton" type="button" data-projectid="' + pid + '">Go to project</button>'
