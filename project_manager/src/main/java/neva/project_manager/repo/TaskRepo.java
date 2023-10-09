@@ -14,6 +14,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface TaskRepo extends CrudRepository<Task, Integer> {
 
-    @Query("SELECT `subject`,`description`,`priority`,`project_id`,`board_id` FROM `task`")
+    @Query("SELECT `id`,`subject`,`description`,`priority`,`project_id`,`board_id` FROM `task` WHERE `status` = 'active'")
     Iterable<LoadTaskDTO> LoadTasks(@Param("uid") String uid);
 }

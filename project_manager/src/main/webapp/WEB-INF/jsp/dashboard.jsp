@@ -10,7 +10,6 @@
         <link rel="stylesheet" href="files/css/kanban.css">
     </head>
     <style>
-
         #boxes {
             display: flex !important;
             overflow-x: auto !important;
@@ -157,8 +156,9 @@
         body {
             margin: 0;
             padding: 0;
-            background: rgb(41,37,108);
-            background: linear-gradient(90deg, rgba(41,37,108,1) 0%, rgba(73,73,110,1) 35%, rgba(42,110,124,1) 100%);
+            background-color: #165171;
+            /*background: rgb(41,37,108);*/
+            /*background: linear-gradient(90deg, rgba(41,37,108,1) 0%, rgba(73,73,110,1) 35%, rgba(42,110,124,1) 100%);*/
             background-repeat: no-repeat;
             background-attachment: fixed;
             background-size: cover;
@@ -289,7 +289,6 @@
 
             $("#center").empty();
             fetch('project/load-project').then((res) => res.json()).then((data) => {
-                console.log(data);
                 for (var i = 0; i < data.length; i++) {
                     const pid = data[i].projectId;
                     const pname = data[i].projectName;
@@ -399,13 +398,48 @@
                             $("#exampleModal").modal("show");
                         });
 
+                        fetch('project/load-tasks').then((res) => res.json()).then((data) => {
+
+                            for (var i = 0; i < data.length; i++) {
+                                const subject = data[i].subject;
+                                const description = data[i].description;
+                                const selectedOption = data[i].priority;
+                                const pid = data[i].project_id;
+                                const bid = data[i].board_id;
+                                const nid = data[i].id;
+
+                                if (subject && description) {
+                                    var thisNote = $("<div id=\"card-" + (nid) + "\" class=\"post-it\" draggable=\"true\"><p class=\"editable\" style=\"font-size: 17px; margin-top: -25px; margin-left: 5px; font-weight: bold;\" title=\"Click to edit\" contenteditable=\"false\">" + subject + "</p><p contenteditable=\"true\" style=\"font-size: 14px; margin-top: -5px; margin-left: 5px;\">" + description + "</p><div style=\"margin-top: 0px\" class=\"card-footer\"></div></div>");
+                                    note.push(thisNote);
+                                    switch (selectedOption) {
+                                        case "Low":
+                                            thisNote.find(".card-footer").append($("<button type=\"button\" style=\"margin-left: -150px\" class=\"btn btn-success\"></button>"));
+                                            break;
+                                        case "Medium":
+                                            thisNote.find(".card-footer").append($("<button type=\"button\" style=\"margin-left: -150px\" class=\"btn btn-warning\"></button>"));
+                                            break;
+                                        case "High":
+                                            thisNote.find(".card-footer").append($("<button type=\"button\" style=\"margin-left: -150px\" class=\"btn btn-danger\"></button>"));
+                                            break;
+                                    }
+                                    thisNote.on("dragstart", noteDragStart);
+                                    thisNote.on("dragend", noteDragEnd);
+                                    thisNote.on("keyup", noteChange);
+                                    $('.card' + bid + '').prepend(thisNote);
+                                    saveApplication();
+
+                                }
+                            }
+                        });
+
                         $("#add").click(function () {
+
                             const subject = $("#subject_input").val();
                             const description = $("#description").val();
                             const selectedOption = $("#select_priority").val();
 
                             if (subject && description) {
-                                var thisNote = $("<div id=\"card-" + (note.length + 1) + "\" class=\"post-it\" draggable=\"true\"><p class=\"editable\" style=\"font-size: 17px; margin-top: -25px; margin-left: 5px; font-weight: bold;\" title=\"Click to edit\" contenteditable=\"false\">" + subject + "</p><p contenteditable=\"true\" style=\"font-size: 14px; margin-top: -5px; margin-left: 5px;\">" + description + "</p><div style=\"margin-top: 0px\" class=\"card-footer\"></div></div>");
+                                var thisNote = $("<div id=\"temp\" class=\"post-it\" draggable=\"true\"><p class=\"editable\" style=\"font-size: 17px; margin-top: -25px; margin-left: 5px; font-weight: bold;\" title=\"Click to edit\" contenteditable=\"false\">" + subject + "</p><p contenteditable=\"true\" style=\"font-size: 14px; margin-top: -5px; margin-left: 5px;\">" + description + "</p><div style=\"margin-top: 0px\" class=\"card-footer\"></div></div>");
                                 note.push(thisNote);
                                 switch (selectedOption) {
                                     case "Low":
@@ -442,9 +476,13 @@
                                     Swal.fire('Successfull!', 'Task has been successfully submitted');
                                 }
                                 return response.json();
+                            }).then(resp => {
+                                $(document).find('#temp').attr('id', 'card-' + resp.data);
                             }).catch(error => {
                                 Swal.fire("Empty Description!", "Please Enter a Valid Subject!", "warning");
                             });
+
+
                         });
 
                         function noteDragStart(e) {
@@ -454,13 +492,60 @@
                             });
                         }
 
-                        function noteDragEnd() {
+                        function noteDragEnd(e) {
                             boxs.removeClass("drop-here");
-                            trash.css({
-                                opacity: 0.2
-                            });
-                            trash.removeClass("active");
+                            trash.css({opacity: 0.2}).removeClass("active");
                             saveApplication();
+                            const draggedNoteId = e.target.getAttribute("id");
+                            const droppedBoard = findDroppedBoard(e.target);
+
+                            if (droppedBoard) {
+                                const classes = droppedBoard.attr("class").split(" ");
+                                const secondClass = classes[1];
+                                var numberPart = secondClass.match(/\d+/);
+                                var number = parseInt(numberPart[0]);
+                                var xnumberPart = draggedNoteId.match(/\d+/);
+                                var dninumber = parseInt(xnumberPart[0]);
+                            }
+
+                            return fetch('project/update-board', {
+                                method: 'POST',
+                                body: new URLSearchParams({
+                                    id: dninumber,
+                                    bid: number
+                                })
+                            }).then(response => {
+                                if (!response.ok) {
+                                    throw new Error(response.statusText);
+                                }
+                                return response.json();
+                            }).catch(error => {
+                                Swal.showValidationMessage('Request failed:' + error);
+                            });
+
+
+                        }
+
+                        function findDroppedBoard(draggedNote) {
+                            for (let i = 0; i < boxs.length; i++) {
+                                const box = $(boxs[i]);
+                                if (isDroppedInsideBox(draggedNote, box)) {
+                                    return box;
+                                }
+                            }
+                            return null;
+                        }
+
+                        function isDroppedInsideBox(draggedNote, box) {
+                            const boxRect = box[0].getBoundingClientRect();
+                            const noteRect = draggedNote.getBoundingClientRect();
+
+                            return (
+                                    noteRect.left >= boxRect.left &&
+                                    noteRect.right <= boxRect.right &&
+                                    noteRect.top >= boxRect.top &&
+                                    noteRect.bottom <= boxRect.bottom
+                                    );
                         }
 
                         function noteChange() {
@@ -470,38 +555,6 @@
                         $(".post-it").on("keyup", function () {
                             saveApplication();
                         });
-                    });
-
-                    fetch('project/load-tasks').then((res) => res.json()).then((data) => {
-                        console.log(data);
-
-                        for (var i = 0; i < data.length; i++) {
-                            const sub = data[i].subject;
-                            const desc = data[i].description;
-                            const pri = data[i].priority;
-                            const pid = data[i].project_id;
-                            const bid = data[i].board_id;
-
-                            let color = "";
-
-                            if (pri === "Low") {
-                                color = "success";
-                            } else if (pri === "Medium") {
-                                color = "warning";
-                            } else if (pri === "High") {
-                                color = "danger";
-                            }
-
-                            var task = '<div id="card-1" class="post-it" draggable="true">'
-                                    + '<p class="editable" style="font-size: 17px; margin-top: -25px; margin-left: 5px; font-weight: bold;" title="Click to edit" contenteditable="false">' + sub + '</p>'
-                                    + '<p contenteditable="true" style="font-size: 14px; margin-top: -5px; margin-left: 5px;">' + desc + '</p>'
-                                    + '<div style="margin-top: 0px" class="card-footer">'
-                                    + '<button type="button" style="margin-left: -150px" class="btn btn-' + color + '"></button>'
-                                    + '</div>'
-                                    + '</div>';
-
-                            $('.card' + bid + '').append(task);
-                        }
                     });
                 });
             });

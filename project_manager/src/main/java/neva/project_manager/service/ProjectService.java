@@ -33,7 +33,7 @@ public class ProjectService {
 
     @Autowired
     private ProjectRepo repo;
-    
+
     @Autowired
     private UserRepo usr;
 
@@ -140,7 +140,7 @@ public class ProjectService {
     public Iterable<LoadProjectDTO> LoadProject(String uid) {
         return repo.LoadProject(uid);
     }
-    
+
     public Iterable<LoadTaskDTO> LoadTasks(String uid) {
         return trepor.LoadTasks(uid);
     }
@@ -163,6 +163,13 @@ public class ProjectService {
         return usrtype;
     }
 
+    public Task updateBoard(Integer id, Integer bid) throws Exception {
+        Task task = trepor.findById(id).get();
+        task.setBoard_id(bid);
+        task = trepor.save(task);
+        return task;
+    }
+
     public Parameter reactivateStatus(Integer id) throws Exception {
         Parameter utype = pramrepo.findById(id).get();
         utype.setStatus("active");
@@ -183,6 +190,7 @@ public class ProjectService {
         task.setDescription(description);
         task.setProject_id(projectId);
         task.setBoard_id(1);
+        task.setStatus("active");
 
         switch (selectedOption) {
             case "Low" ->
@@ -196,6 +204,7 @@ public class ProjectService {
         }
 
         task = trepor.save(task);
+        Integer tid = task.getId();
         return task;
     }
 

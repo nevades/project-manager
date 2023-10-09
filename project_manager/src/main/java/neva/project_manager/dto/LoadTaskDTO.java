@@ -15,6 +15,7 @@ import lombok.Setter;
 @Setter
 public class LoadTaskDTO {
 
+    private Integer id;
     private String subject;
     private String description;
     private String priority;
