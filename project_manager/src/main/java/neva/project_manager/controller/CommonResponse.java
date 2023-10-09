@@ -19,7 +19,13 @@ import lombok.Setter;
 @Getter
 public class CommonResponse {
 
+    public CommonResponse(String message, int status) {
+        this.message = message;
+        this.status = status;
+    }
+
     private String message;
     private int status;
+    private Object data;
 
 }
