@@ -18,6 +18,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface ParamRepo extends CrudRepository<Parameter, Integer> {
 
-    @Query("SELECT `id` AS `value`,`category_name` AS `text` FROM `parameter` LIMIT 20")
+    @Query("SELECT `id` AS `value`,`category_name` AS `text` FROM `parameter` WHERE `status`='active' LIMIT 20")
     Iterable<SlimSelectDTO> getAllType(@Param("search") String search);
 }

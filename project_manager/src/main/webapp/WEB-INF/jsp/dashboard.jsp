@@ -10,9 +10,19 @@
         <link rel="stylesheet" href="files/css/kanban.css">
     </head>
     <style>
+        body.modal-open .background-containerx{
+            -webkit-filter: blur(4px);
+            -moz-filter: blur(4px);
+            -o-filter: blur(4px);
+            -ms-filter: blur(4px);
+            filter: blur(4px);
+            filter: url("https://gist.githubusercontent.com/amitabhaghosh197/b7865b409e835b5a43b5/raw/1a255b551091924971e7dee8935fd38a7fdf7311/blur".svg#blur);
+            filter:progid:DXImageTransform.Microsoft.Blur(PixelRadius='4');
+        }
+
         #boxes {
             display: flex !important;
-            overflow-x: auto !important;
+            overflow-x: auto;
             white-space: nowrap !important;
             padding-bottom: 20px !important;
         }
@@ -131,89 +141,131 @@
         </div>
 
         <div id="dashboard">
-            <div class="operations" style="margin-left: 10px; margin-top: 10px; width: auto; display: none;">
-                <button type="button" onclick="clearCenter()" class="btn btn-info"><span><i class="fa fa-arrow-left fa-1x"></i></span> Select Project</button>
+            <div class="containerx">
+                <div class="row background-containerx">
+                    <div class="operations" style="margin-left: 10px; margin-top: 10px; width: auto; display: none;">
+                        <button type="button" onclick="clearCenter()" class="btn btn-info"><span><i class="fa fa-arrow-left fa-1x"></i></span> Select Project</button>
 
-                <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#exampleModal">
-                    <i class="fa-solid fa-location-arrow"></i> Add Task
-                </button>
-                <i class="trash fa-solid fa-trash fa-lg"></i>
+                        <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                            <i class="fa-solid fa-location-arrow"></i> Add Task
+                        </button>
+                        <i class="trash fa-solid fa-trash fa-lg"></i>
+                    </div>
+
+                    <div class="centered-div" id="center">
+                    </div>
+
+                    <div id="boxes" style="display: none;">
+                    </div>
+
+
+                </div>
             </div>
+        </div>
+        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered modal-xl">
+                <div class="modal-content" style="background-color: #ecf0f5;">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="exampleModalLabel"><i class="fa-solid fa-location-arrow"></i> Add Task</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class=" row form-group row-up">
+                            <div class="col-topic-start"></div>
+                            <label class=" col-form-label new-label-box" style="width: 20%" id="lbl_type">Category<span class="text-danger">*</span></label>
+                            <div class="col-15" style="width: 75%">
+                                <div>
+                                    <select id="select_task" style="margin-top:-5px">
 
-            <div class="centered-div" id="center">
-            </div>
-
-            <div id="boxes" style="display: none;">
-            </div>
-
-            <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                <div class="modal-dialog modal-dialog-centered modal-xl">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h1 class="modal-title fs-5" id="exampleModalLabel"><i class="fa-solid fa-location-arrow"></i> Add Task</h1>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <div class="modal-body">
-                            <div class=" row form-group row-up">
-                                <div class="col-topic-start"></div>
-                                <label class=" col-form-label new-label-box" style="width: 20%" id="lbl_type">Category<span class="text-danger">*</span></label>
-                                <div class="col-15" style="width: 75%">
-                                    <div>
-                                        <select id="select_task" style="margin-top:-5px">
-
-                                        </select>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="row form-group row-up">
-                                <div class="col-topic-start"></div>
-                                <label class="col-form-label new-label-box" style="width: 20%;">Priority</label>
-                                <div class="col-15 " style="width: 75%">
-                                    <div>
-                                        <select id="select_priority" style="margin-top:-5px; margin-left: -12px;" class="swal2-select">
-                                            <option value="Low">Priority: Low</option>
-                                            <option value="Medium">Priority: Medium</option>
-                                            <option value="High">Priority: High</option>
-                                        </select>
-                                    </div>
-                                </div>
-                            </div>
-                            <br>
-
-                            <div class="row form-group row-up" style="margin-top: -40px;">
-                                <div class="col-topic-start"></div>
-                                <label class="col-form-label new-label-box" style="width: 20%">Subject<span class="text-danger">*</span></label>
-                                <div class="col-15 " style="width: 75%">
-                                    <input type="text" onkeyup="this.value = this.value.toUpperCase();" max="100" class="form-control form-control-xs" autocomplete="off" id="subject_input">
-                                </div>
-                            </div>
-
-                            <div class="row form-group">
-                                <div class="col-topic-start"></div>
-                                <label class="col-form-label new-label-box" style="width: 20%">Description<span class="text-danger">*</span></label>
-                                <div class="col-15 " style="width: 75%">
-                                    <textarea class="form-control" rows="7" name="description" id="description"></textarea>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div id="fileList"></div>
-                                <div class="col-topic-start"></div>
-                                <label class=" col-form-label new-label-box" style="width: 20%">Attachments</label>
-                                <div class="col-8">
-                                    <div class="col-sm-12 col-form-label input-images" id="upload_document_div">
-                                        <div class="jquery-image-uploader"><input type="file" id="image_upload" name="images" multiple="multiple"><div class="uploaded"></div><div class="upload-text"><i class="material-icons"></i><span>(6 Files only)</span></div></div></div>
+                                    </select>
                                 </div>
                             </div>
                         </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                            <button type="button" id="add" class="btn btn-primary">Save changes</button>
+
+                        <div class="row form-group row-up">
+                            <div class="col-topic-start"></div>
+                            <label class="col-form-label new-label-box" style="width: 20%;">Priority</label>
+                            <div class="col-15 " style="width: 75%">
+                                <div>
+                                    <select id="select_priority" style="margin-top:-5px; margin-left: -12px;" class="swal2-select">
+                                        <option value="Low">Priority: Low</option>
+                                        <option value="Medium">Priority: Medium</option>
+                                        <option value="High">Priority: High</option>
+                                    </select>
+                                </div>
+                            </div>
                         </div>
+                        <br>
+
+                        <div class="row form-group row-up" style="margin-top: -40px;">
+                            <div class="col-topic-start"></div>
+                            <label class="col-form-label new-label-box" style="width: 20%">Subject<span class="text-danger">*</span></label>
+                            <div class="col-15 " style="width: 75%">
+                                <input type="text" onkeyup="this.value = this.value.toUpperCase();" max="100" class="form-control form-control-xs" autocomplete="off" id="subject_input">
+                            </div>
+                        </div>
+
+                        <div class="row form-group">
+                            <div class="col-topic-start"></div>
+                            <label class="col-form-label new-label-box" style="width: 20%">Description<span class="text-danger">*</span></label>
+                            <div class="col-15 " style="width: 75%">
+                                <textarea class="form-control" rows="7" name="description" id="description"></textarea>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div id="fileList"></div>
+                            <div class="col-topic-start"></div>
+                            <label class=" col-form-label new-label-box" style="width: 20%">Attachments</label>
+                            <div class="col-8">
+                                <div class="col-sm-12 col-form-label input-images" id="upload_document_div">
+                                    <div class="jquery-image-uploader"><input type="file" id="image_upload" name="images" multiple="multiple"><div class="uploaded"></div><div class="upload-text"><i class="material-icons"></i><span>(6 Files only)</span></div></div></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="button" id="add" class="btn btn-primary">Save changes</button>
                     </div>
                 </div>
             </div>
+        </div>
+        <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-xl">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title" id="myModalLabel">View Task Details</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row form-group">
+                            <div class="col-topic-start"></div>
+                            <label class="col-form-label new-label-box" style="width: 20%">Subject<span class="text-danger">*</span></label>
+                            <div class="col-15 " style="width: 75%">
+                                <input type="text" onkeyup="this.value = this.value.toUpperCase();" max="100" class="form-control form-control-xs" autocomplete="off" id="subject_input">
+                            </div>
+                        </div>
 
+                        <div class="row form-group">
+                            <div class="col-topic-start"></div>
+                            <label class="col-form-label new-label-box" style="width: 20%">Description<span class="text-danger">*</span></label>
+                            <div class="col-15 " style="width: 75%">
+                                <textarea class="form-control" rows="7" name="description" id="description"></textarea>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div id="fileList"></div>
+                            <div class="col-topic-start"></div>
+                            <label class=" col-form-label new-label-box" style="width: 20%">Attachments</label>
+                            <div class="col-8">
+                                <div class="col-sm-12 col-form-label input-images" id="upload_document_div">
+                                    <div class="jquery-image-uploader"><input type="file" id="image_upload" name="images" multiple="multiple"><div class="uploaded"></div><div class="upload-text"><i class="material-icons"></i><span>(6 Files only)</span></div></div></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary">Save changes</button>
+                    </div>
+                </div>
+            </div>
         </div>
         <script src="https://kit.fontawesome.com/c16a384926.js" crossorigin="anonymous"></script>
         <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" crossorigin="anonymous"></script>
@@ -273,6 +325,8 @@
             });
 
             function clearCenter() {
+                const body = document.body;
+                body.style.overflowX === 'hidden';
                 $(".operations").hide();
                 $(".divs").empty();
                 document.getElementById("center").style.display = "flex";
@@ -297,7 +351,7 @@
                         const id = data[i].boardId;
 
                         const colDiv = $('<div style="margin-top: 10px;" class="divs col-4"></div>');
-                        const h3Element = $('<div class="card" style="height: 35px; width: auto;"><h3>' + name + '</h3></div>');
+                        const h3Element = $('<div class="card" style="height: 35px; width: auto; background-color:' + color + '"><h3>' + name + '</h3></div>');
                         const boxDiv = $('<div  class="box card' + id + '" style="background-color: ' + color + '; border:7px dotted ' + color + ';"></div>');
                         colDiv.append(h3Element);
                         colDiv.append(boxDiv);
@@ -342,17 +396,53 @@
                         });
                         trash.on("drop", function (e) {
                             var card = e.originalEvent.dataTransfer.getData("text/plain");
-                            if (confirm("Want to delete this note?")) {
-                                $("#" + card).remove();
-                                saveApplication();
-                            }
-                            e.preventDefault();
+                            var match = card.match(/\d+/);
+                            var numberlx = match ? parseInt(match[0]) : null;
+                            Swal.fire({
+                                title: 'Are you sure?',
+                                text: "This Task Will be Deactivated!",
+                                icon: 'warning',
+                                showCancelButton: true,
+                                confirmButtonColor: '#3085d6',
+                                cancelButtonColor: '#d33',
+                                confirmButtonText: 'Yes, Proceed!',
+                                showLoaderOnConfirm: true,
+                                preConfirm: () => {
+                                    return fetch('project/deactivate-task', {
+                                        method: 'POST',
+                                        body: new URLSearchParams({
+                                            id: numberlx
+                                        })
+                                    }).then(response => {
+                                        if (!response.ok) {
+                                            throw new Error(response.statusText);
+                                        }
+                                        return response.json();
+                                    }).catch(error => {
+                                        Swal.showValidationMessage('Request failed:' + error);
+                                    });
+                                },
+                                allowOutsideClick: () => !Swal.isLoading()
+
+                            }).then((result) => {
+                                if (result.value) {
+                                    if (result.value.status !== 200) {
+                                        Swal.fire('Error!', result.value.msg, 'error');
+                                    } else {
+                                        Swal.fire('Successfull!', 'Task has been Deactivated !', 'success');
+                                        $("#" + card).remove();
+                                        saveApplication();
+                                        e.preventDefault();
+                                    }
+                                }
+                            });
                         });
+
                         trash.click(function () {
-                            if (confirm("Want to clear?")) {
-                                localStorage.clear();
-                                $(".post-it").remove();
-                            }
+//                            if (confirm("Want to clear?")) {
+//                                localStorage.clear();
+//                                $(".post-it").remove();
+//                            }
                         });
 
                         newNote.click(function () {
@@ -370,7 +460,7 @@
                                 const nid = data[i].id;
 
                                 if (subject && description) {
-                                    var thisNote = $("<div id=\"card-" + (nid) + "\" class=\"post-it\" draggable=\"true\"><p class=\"editable\" style=\"font-size: 17px; margin-top: -25px; margin-left: 5px; font-weight: bold;\" title=\"Click to edit\" contenteditable=\"false\">" + subject + "</p><p contenteditable=\"true\" style=\"font-size: 14px; margin-top: -5px; margin-left: 5px;\">" + description + "</p><div style=\"margin-top: 0px\" class=\"card-footer\"></div></div>");
+                                    var thisNote = $("<div onclick=\"handleCardClick()\" id=\"card-" + (nid) + "\" class=\"post-it\" draggable=\"true\"><p class=\"editable\" style=\"font-size: 17px; margin-top: -25px; margin-left: 5px; font-weight: bold;\" title=\"Click to edit\" contenteditable=\"false\">" + subject + "</p><p contenteditable=\"true\" style=\"font-size: 14px; margin-top: -5px; margin-left: 5px;\">" + description + "</p><div style=\"margin-top: 0px\" class=\"card-footer\"></div></div>");
                                     note.push(thisNote);
                                     switch (selectedOption) {
                                         case "Low":
@@ -419,31 +509,30 @@
                                 boxs.first().prepend(thisNote);
                                 saveApplication();
 
+                                return fetch('project/save-task', {
+                                    method: 'POST',
+                                    body: new URLSearchParams({
+                                        subject: subject,
+                                        selectedOption: selectedOption,
+                                        description: description,
+                                        projectId: projectid
+                                    })
+                                }).then(response => {
+                                    if (!response.ok) {
+                                        throw new Error(response.statusText);
+                                    } else {
+                                        Swal.fire('Successfull!', 'Task has been successfully submitted');
+                                    }
+                                    return response.json();
+                                }).then(resp => {
+                                    $(document).find('#temp').attr('id', 'card-' + resp.data);
+                                }).catch(error => {
+                                    Swal.fire("Empty Description!", "Please Enter a Valid Subject!", "warning");
+                                });
                                 $("#exampleModal").modal("hide");
+                            } else {
+                                alert("error");
                             }
-
-                            return fetch('project/save-task', {
-                                method: 'POST',
-                                body: new URLSearchParams({
-                                    subject: subject,
-                                    selectedOption: selectedOption,
-                                    description: description,
-                                    projectId: projectid
-                                })
-                            }).then(response => {
-                                if (!response.ok) {
-                                    throw new Error(response.statusText);
-                                } else {
-                                    Swal.fire('Successfull!', 'Task has been successfully submitted');
-                                }
-                                return response.json();
-                            }).then(resp => {
-                                $(document).find('#temp').attr('id', 'card-' + resp.data);
-                            }).catch(error => {
-                                Swal.fire("Empty Description!", "Please Enter a Valid Subject!", "warning");
-                            });
-
-
                         });
 
                         function noteDragStart(e) {
@@ -519,6 +608,10 @@
                     });
                 });
             });
+
+            function handleCardClick() {
+                $('#myModal').modal('show');
+            }
         </script>
     </body>
 </html>
