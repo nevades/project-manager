@@ -120,6 +120,13 @@ public class ProjectController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
+    @PostMapping("/deactivate-task")
+    public ResponseEntity<CommonResponse> deactivateTask(@RequestParam Integer id) throws Exception {
+        ser.deactivateTask(id);
+        CommonResponse response = new CommonResponse("Success!", 200);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
     @PostMapping("/update-board")
     public ResponseEntity<CommonResponse> updateBoard(@RequestParam Integer id, @RequestParam Integer bid) throws Exception {
         ser.updateBoard(id, bid);

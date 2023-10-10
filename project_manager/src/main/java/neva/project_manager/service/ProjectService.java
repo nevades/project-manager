@@ -163,6 +163,13 @@ public class ProjectService {
         return usrtype;
     }
 
+    public Task deactivateTask(Integer id) throws Exception {
+        Task tttype = trepor.findById(id).get();
+        tttype.setStatus("deactivated");
+        tttype = trepor.save(tttype);
+        return tttype;
+    }
+
     public Task updateBoard(Integer id, Integer bid) throws Exception {
         Task task = trepor.findById(id).get();
         task.setBoard_id(bid);
