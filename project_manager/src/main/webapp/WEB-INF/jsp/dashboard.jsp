@@ -325,11 +325,12 @@
             });
 
             function clearCenter() {
-                const body = document.body;
-                body.style.overflowX === 'hidden';
-                $(".operations").hide();
-                $(".divs").empty();
-                document.getElementById("center").style.display = "flex";
+                location.reload();
+//                const body = document.body;
+//                body.style.overflowX === 'hidden';
+//                $(".operations").hide();
+//                $(".divs").empty();
+//                document.getElementById("center").style.display = "flex";
             }
 
             $(document).on('click', '.select', function () {
