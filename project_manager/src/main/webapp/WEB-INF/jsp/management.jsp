@@ -19,19 +19,24 @@
         .board-item {
             display: flex;
         }
+
+        .flex {
+            display: flex;
+        }
+        .card {
+            flex: 1;
+            border: 1px solid #ccc;
+        }
     </style>
     <%@include file="jspf/navbar.jspf" %>
     <body style="background-image: url('files/images/background1.jpg');
-          /*height: 100vh;*/
-          /*background-size: cover;*/
           background-repeat: no-repeat;
           background-position: center center;">
-        <div class="row" style="margin-top: 20px;">
+        <div class="row flex" style="margin-top: 20px;">
             <div class="col-3">
-                <div class="card" style="background-color: #fff; height: 50rem; margin-left: 20px;">
+                <div class="card" style="background-color: #fff; height: auto; margin-left: 20px;">
                     <div class="card-body">
                         <h5 class="card-title">Project Management</h5>
-                        <!--<div class="border-top mb-3"></div>-->
                         <div class="border-top my-4"></div>
                         <form class="row">
                             <div class="col" id="projects">
@@ -42,10 +47,9 @@
             </div>
 
             <div class="col-9">
-                <div class="card" style="background-color: #fff; height: 50rem; margin-right: 20px;">
+                <div class="card" style="background-color: #fff; height: auto; margin-right: 20px;">
                     <div class="card-body">
                         <h5 class="card-title">Edit Project</h5>
-                        <!--<div class="border-top mb-3"></div>-->
                         <div class="border-top my-4"></div>
                         <div id="labelContainer">
                             <div class="form-group">
@@ -73,7 +77,6 @@
         <script type="text/javascript" src="files/js/autoNumeric.js"></script>
         <script type="text/javascript" src="files/js/dataTables.responsive.min.js"></script>
         <script>
-
             fetch('project/load-project').then((res) => res.json()).then((data) => {
                 for (var i = 0; i < data.length; i++) {
                     const pid = data[i].projectId;
@@ -82,14 +85,6 @@
                     const ptime = new Date(data[i].date).toLocaleTimeString([], {hour: '2-digit', minute: '2-digit', second: '2-digit'});
 
                     var temp = '<div class="cards" style="width: 18rem;">'
-//                            '<li>'
-//                            + '<span>' + pname + '</span>'
-//                            + '<button type="button" style="margin-left: 4px; padding: 4px;" class="button select" id="projectButton" data-projectid="' + pid + '">Edit</button><br>'
-//                            + '<span>Date Created: ' + pdate + '</span><br>'
-//                            + '<span>Time Created: ' + ptime + '</span><br>'
-//                            + '<div class="border-top mb-3"></div>'
-//                            + '</li>';
-
                             + '<div class="card-body">'
                             + '<h5 class="card-title" style="font-weight: bold; text-decoration: underline;" id="ppname">' + pname + '</h5>'
                             + '<p class="card-text">Date Created : ' + pdate + '</p>'
@@ -103,10 +98,7 @@
 
             $(document).on('click', '.select', function () {
                 var projectid = $(this).data('projectid');
-                var pp = $(this).data('projectid');
                 var projectName = $(this).closest('.card-body').find('.card-title').text();
-//                const pnameElement = document.getElementById("ppname");
-//                var projectName = pnameElement.textContent;
                 $('#exampleInputEmail').val(projectName);
                 $('#labelContainer').children().not('.form-group').remove();
 
@@ -116,17 +108,18 @@
                         projectId: projectid
                     })
                 }).then((resp) => resp.json()).then((data) => {
-                    console.log(data);
                     for (var i = 0; i < data.length; i++) {
                         const bname = data[i].boardName;
                         const bcolor = data[i].boardColor;
+                        const bid = data[i].boardId;
 
                         var temp = '<div style="margin-top: 10px;" class="row board-item">'
-                                + '<div class="row" style="margin-left: 1px;"><input style="width: 300px;" value="' + bname + '" class="form-control"></div>'
-                                + '<div class="row"><input type="color" class="form-control" id="colorInput' + i + '" style="margin-top: 5px; margin-left: 25px; height: 50px; width: 200px;"></div>'
+                                + '<div class="row" style="margin-left: 1px;"><input id="board-' + bid + '" style="width: 300px;" value="' + bname + '" class="form-control"><input type="color" class="' + bid + '" form-control" id="colorInput' + i + '" style="margin-top: 5px; margin-left: 25px; height: 50px; width: 200px;"></div>'
                                 + '<br>'
                                 + '</div>';
 
+                        const array = [];
+                        array.push({bid: bid, projectid: projectid, bcolor: bcolor});
                         $('#labelContainer').append(temp);
 
                         $('#colorInput' + i).val(bcolor);
@@ -135,18 +128,6 @@
 
                 $('#save').click(function () {
                     const projectName = $('#exampleInputEmail').val();
-
-                    const boardData = [];
-                    $('.board-item').each(function (index) {
-                        const boardName = $(this).find('p').text();
-                        const boardColor = $(this).find('input[type="color"]').val();
-                        boardData.push({boardName, boardColor});
-                    });
-
-                    const requestData = {
-                        boards: boardData
-                    };
-
                     Swal.fire({
                         title: 'Are you sure?',
                         text: "This Project Will Be Updated!",
@@ -160,9 +141,8 @@
                             return fetch('project/update-project', {
                                 method: 'POST',
                                 body: new URLSearchParams({
-                                    projectId: pp,
-                                    projectName: projectName,
-                                    data: JSON.stringify(requestData)
+                                    projectId: projectid,
+                                    projectName: projectName
                                 })
                             }).then(response => {
                                 if (!response.ok) {
@@ -184,8 +164,8 @@
                         }
                     });
                 });
-            });
 
+            });
         </script>
     </body>
 </html>
