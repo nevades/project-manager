@@ -21,5 +21,6 @@ public class LoadTaskDTO {
     private String priority;
     private Integer project_id;
     private Integer board_id;
+    private String status;
 
 }

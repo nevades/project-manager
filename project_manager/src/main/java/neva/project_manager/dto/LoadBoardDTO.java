@@ -14,6 +14,5 @@ public class LoadBoardDTO {
     private Integer boardId;
     private String boardName;
     private String boardColor;
-    private String cards;
 
 }

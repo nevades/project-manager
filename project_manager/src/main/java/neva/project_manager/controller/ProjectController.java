@@ -56,8 +56,8 @@ public class ProjectController {
     }
 
     @PostMapping("/update-project")
-    public ResponseEntity<CommonResponse> updateProject(@RequestParam Integer projectId, @RequestParam String projectName, @RequestParam String data) throws Exception {
-        ser.updateProject(projectId, projectName, data);
+    public ResponseEntity<CommonResponse> updateProject(@RequestParam Integer projectId, @RequestParam String projectName) throws Exception {
+        ser.updateProject(projectId, projectName);
         CommonResponse response = new CommonResponse("Success!", 200);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
