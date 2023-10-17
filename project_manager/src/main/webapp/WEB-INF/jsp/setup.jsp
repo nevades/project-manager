@@ -22,19 +22,12 @@
         body {
             margin: 0;
             padding: 0;
-            /*            background: #466368;
-                        background: -webkit-linear-gradient(#648880, #293f50);
-                        background: -moz-linear-gradient(#648880, #293f50);
-                        background: linear-gradient(#648880, #293f50);
-                        background-repeat: no-repeat;
-                        background-attachment: fixed;
-                        background-size: cover;*/
         }
     </style>
     <%@include file="jspf/navbar.jspf" %>
     <body style="background-image: url('files/images/setup.jpg'); background-repeat: no-repeat; background-attachment: fixed; background-size: cover;">
         <div style="margin-top: 20px;">
-            <div class="card" style="background-color: #ecf0f5; width: 1315px ; height: 10rem; margin-left: 25px; margin-right: 30px; margin-top: 0px;">
+            <div class="card" style="background-color: #ecf0f5; width: auto ; height: 10rem; margin-left: 25px; margin-right: 30px; margin-top: 0px;">
                 <div class="card-header">
                     <h5 class="card-title">Project Setup</h5>
                     <div class="border-top mb-3"></div>
@@ -92,7 +85,7 @@
                     </div>
                 </div>
                 <div class="col">
-                    <div class="card" style="background-color: #ecf0f5; width: auto; height: 30rem;margin-right: 30px; margin-top: 10px;">
+                    <div class="card" style="background-color: #ecf0f5; width: auto; height: 30rem;margin-right: 35px; margin-top: 10px;">
                         <div class="card-header">
                             <h5 class="card-title">Custom created project board list</h5>
                             <div class="border-top mb-3"></div>
@@ -206,9 +199,8 @@
                             Swal.fire('Error!', result.value.message, 'error');
                         } else {
                             Swal.fire('Successfull!', 'Project has been Assigned !', 'success');
-                            var inputElement = document.getElementById("projectName");
-                            inputElement.value = "";
-
+                            document.getElementById('projectName').value = '';
+                            ("#labelContainer").html("");
                         }
                     }
                 });
@@ -241,7 +233,6 @@
                 icon.classList.add('fa-regular', 'fa-trash-can');
                 icon.style.color = 'black';
                 icon.id = 'delrec';
-                customColorLabel.style.color = colorCode;
                 customColorLabel.textContent = '• ' + labelText + ' ';
                 document.getElementById('labelContainer').appendChild(customColorLabel);
                 document.getElementById('labelContainer').appendChild(icon);
@@ -265,6 +256,7 @@
                 });
 
                 labelCount++;
+                document.getElementById('labelText').value = '';
             });
         </script>
     </body>

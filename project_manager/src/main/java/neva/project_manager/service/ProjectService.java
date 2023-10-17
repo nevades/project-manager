@@ -101,12 +101,9 @@ public class ProjectService {
 
     }
 
-    public Project updateProject(Integer projectId, String projectName, String data) throws Exception {
+    public Project updateProject(Integer projectId, String projectName) throws Exception {
         Project existingProject = repo.findByProjectId(projectId);
 
-        if (existingProject == null) {
-
-        }
         existingProject.setProjectName(projectName);
 
         return repo.save(existingProject);

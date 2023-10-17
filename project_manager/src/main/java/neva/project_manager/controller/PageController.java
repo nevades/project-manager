@@ -49,4 +49,9 @@ public class PageController {
         return "tasks";
     }
 
+    @GetMapping("/admin")
+    public String admmin() {
+        return "admin";
+    }
+
 }

@@ -1,32 +1,33 @@
 <style>
     .navbar {
-        background-color: #868686  !important;
+        /*background-color: #868686  !important;*/
+        background-color: #B19DD0  !important;
     }
 
     .nav-link {
-        color: #f0f0f0;
-        font-weight: bold;
+        /*color: #f0f0f0;*/
+        /*font-weight: bold;*/
         /*font-family: "Helvetica Neue", Arial, sans-serif;*/
-        font-family: "Roboto", Arial, sans-serif !important;
+        /*font-family: "Roboto", Arial, sans-serif !important;*/
     }
+    /*
+        .navbar-nav .nav-link {
+            font-weight: normal;
+        }
 
-    .navbar-nav .nav-link {
-        font-weight: normal;
-    }
+        .dropdown-primary span {
+            font-weight: normal;
+        }
 
-    .dropdown-primary span {
-        font-weight: normal;
-    }
-
-    .dropdown-primary .feather {
-        font-size: 16px;
-    }
+        .dropdown-primary .feather {
+            font-size: 16px;
+        }*/
 </style>
 
 <nav class="navbar navbar-expand-lg bg-body-tertiary">
     <div class="container-fluid">
         <a href="dashboard">
-            <img class="img-fluid" src="files/images/removebg.png" style="width: 170px;" alt="fintrex DropInNet">
+            <img class="img-fluid" src="files/images/cpt.png" style="width: 170px;" alt="fintrex DropInNet">
         </a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -48,32 +49,33 @@
                         <li><a class="dropdown-item" href="advancedTasks">Manager Task Types</a></li>
                         <li><hr class="dropdown-divider"></li>
                         <li><a class="dropdown-item" href="management">Manage Projects</a></li>
+                        <li><a class="dropdown-item" href="admin">Admin</a></li>
                     </ul>
                 </li>
             </ul>
-            <ul class="nav-right">
-                <div class="dropdown-primary dropdown" style="height: 20px;">
-                    <span>Logged as: <span><b><%=session.getAttribute("username")%></b></span></span>
-                    <i class="feather icon-chevron-down"></i>
-                    <ul style="height: 20px;" class="show-notification profile-notification dropdown-menu" data-dropdown-in="fadeIn" data-dropdown-out="fadeOut">
-                        <li>
-                            <a href="#">
-                                <i class="feather icon-settings"></i> Settings
-                            </a>
-                        </li>
-                        <li>
-                            <a href="#">
-                                <i class="feather icon-user"></i> Profile
-                            </a>
-                        </li>
-                        <li>
-                            <a href="logout">
-                                <i class="feather icon-log-out"></i> Logout
-                            </a>
-                        </li>
-                    </ul>
-                </div>
-            </ul>
+            <!--            <ul class="nav-right">
+                            <div class="dropdown-primary dropdown" style="height: 20px;">
+                                <b><%=session.getAttribute("username")%></b>
+                                <i class="feather icon-chevron-down"></i>
+                                <ul style="height: 20px;" class="show-notification profile-notification dropdown-menu" data-dropdown-in="fadeIn" data-dropdown-out="fadeOut">
+                                    <li>
+                                        <a href="#">
+                                            <i class="feather icon-settings"></i> Settings
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="#">
+                                            <i class="feather icon-user"></i> Profile
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="logout">
+                                            <i class="feather icon-log-out"></i> Logout
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </ul>-->
         </div>
     </div>
 </nav>

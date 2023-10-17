@@ -22,7 +22,7 @@
 
         #boxes {
             display: flex !important;
-            overflow-x: auto;
+            /*overflow-x: auto;*/
             white-space: nowrap !important;
             padding-bottom: 20px !important;
         }
@@ -573,8 +573,6 @@
                             }).catch(error => {
                                 Swal.showValidationMessage('Request failed:' + error);
                             });
-
-
                         }
 
                         function findDroppedBoard(draggedNote) {
@@ -611,6 +609,28 @@
             });
 
             function handleCardClick() {
+////                fetch('project/load-info').then((res) => res.json()).then((data) => {
+////
+////                    for (var i = 0; i < data.length; i++) {
+////                        const subject = data[i].subject;
+////                        const description = data[i].description;
+////                    }
+////                    alert(subject);
+////                });
+//
+//                var yourUidHere = 5;
+//
+//                fetch('project/load-info?uid=' + yourUidHere)
+//                        .then((res) => res.json())
+//                        .then((data) => {
+//                            for (var i = 0; i < data.length; i++) {
+//                                const subject = data[i].subject;
+//                                const description = data[i].description;
+//                            }
+//                            alert(subject);
+//                        });
+
+
                 $('#myModal').modal('show');
             }
         </script>

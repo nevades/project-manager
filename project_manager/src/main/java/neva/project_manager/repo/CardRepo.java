@@ -18,6 +18,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface CardRepo extends CrudRepository<Card, Integer> {
 
-    @Query("SELECT `board_id`,`board_name`,`board_color`,(SELECT JSON_ARRAYAGG(JSON_OBJECT('id',`card_id`,'content',`card_content`))  FROM `card` c WHERE c.`board_id`=b.`board_id`) AS cards FROM `board` b WHERE `project_id`=:projectId")
+    @Query("SELECT `board_id`,`board_name`,`board_color` FROM `board` b WHERE `project_id`=:projectId")
     Iterable<LoadBoardDTO> LoadBoard(@Param("uid") String uid, @Param("projectId") String projectId);
 }
