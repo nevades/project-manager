@@ -109,6 +109,30 @@
             </div>
         </div>
 
+
+        <div class="modal fade" id="taskModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-xl">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title" id="myModalLabel">View Category Details</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label for="categoryName">Category Name</label>
+                            <input type="text" class="form-control" id="categoryNameP" name="categoryName" required="">
+                        </div>
+                        <div>
+                            <label for="categoryTypeE">Category Type</label>
+                            <select id="categoryTypeE" tabindex="-1" data-ssid="ss-57072" style="display: none;"><option value="" data-placeholder="true"></option><option value="" data-placeholder="true"></option><option value="" data-placeholder="true"></option><option value="1">Application</option></select><div class="ss-57072 ss-main" style=""><div class="ss-single-selected"><span class="placeholder"><span class="ss-disabled">Category Type List</span></span><span class="ss-deselect ss-hide">x</span><span class="ss-arrow"><span class="arrow-down"></span></span></div><div class="ss-content" style=""><div class="ss-search"><input type="search" placeholder="Search" tabindex="0" aria-label="Search"></div><div class="ss-list"><div class="ss-option ss-hide"></div><div class="ss-option ss-hide"></div><div class="ss-option ss-hide"></div><div class="ss-option" data-id="83173823">Application</div></div></div></div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary">Save changes</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <script src="https://kit.fontawesome.com/c16a384926.js" crossorigin="anonymous"></script>
         <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" crossorigin="anonymous"></script>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
@@ -120,6 +144,8 @@
         <script type="text/javascript" src="files/js/func.js"></script>
         <script type="text/javascript" src="files/js/autoNumeric.js"></script>
         <script type="text/javascript" src="files/js/dataTables.responsive.min.js"></script>
+        <script>
+        </script>
         <script>
             var categoryType = new SlimSelect({
                 select: '#categoryType',
@@ -135,6 +161,21 @@
                 allowDeselect: false
             });
             $('#categoryType').data('select', categoryType);
+
+            var categoryTypeE = new SlimSelect({
+                select: '#categoryTypeE',
+                placeholder: "Category Type List",
+                ajax: function (search, callback) {
+                    fetch('project/get-type', {
+                        method: 'POST',
+                        body: new URLSearchParams({search: search || ''})
+                    }).then(res => res.json()).then((data) => {
+                        callback(data);
+                    });
+                },
+                allowDeselect: false
+            });
+            $('#categoryTypeE').data('select', categoryTypeE);
 
             var $addCategoryModal = $('#addCategoryModal');
             var $categoryName = $('#categoryName');
@@ -329,6 +370,13 @@
                 });
             });
 
+            $(document).on('click', '.editrec', function () {
+                var dataId = $(this).data('id');
+                $.post('project/load-parameter', {pid: dataId}, function (data) {
+                    document.getElementById("categoryNameP").value = data.category_name;
+                });
+            });
+
             $.fn.dataTable.ext.errMode = 'none';
             var dtable = $('#paramTable').DataTable(
                     {
@@ -367,7 +415,7 @@
                             let action_td = document.createElement('td');
                             $(action_td).addClass('text-center');
                             if (data['status'] === 'active') {
-                                $(action_td).append('<a href="javascript:void(0)" class="editrec" data-toggle="modal" data-target="#exampleModalCenter"><i class="icon feather icon-edit f-w-600 f-16 m-r-10 text-c-green"></i></a><a href="javascript:void(0)" class="delrec"><i class="feather icon-trash-2 f-w-600 f-16 text-danger"></i></a>');
+                                $(action_td).append('<a href="javascript:void(0)" class="editrec" data-id="' + data['id'] + '" data-toggle="modal" data-target="#taskModal"><i class="icon feather icon-edit f-w-600 f-16 m-r-10 text-c-green"></i></a><a href="javascript:void(0)" class="delrec"><i class="feather icon-trash-2 f-w-600 f-16 text-danger"></i></a>');
                             } else if (data['status'] === 'deactivated') {
                                 $(action_td).append('<a href="javascript:void(0)" class="rerec"><i class="feather icon-refresh-cw f-w-600 f-16 text-c-blue"></i></a>');
                             }

@@ -1,9 +1,3 @@
-<%--
-    Document   : test
-    Created on : Sep 7, 2023, 11:04:10 AM
-    Author     : Neva
---%>
-
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>

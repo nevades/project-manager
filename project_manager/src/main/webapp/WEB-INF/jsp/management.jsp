@@ -1,9 +1,3 @@
-<%--
-    Document   : setup
-    Created on : Jul 20, 2023, 3:51:59 PM
-    Author     : Neva
---%>
-
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -160,6 +154,7 @@
                                 Swal.fire('Error!', result.value.msg, 'error');
                             } else {
                                 Swal.fire('Successfull!', 'Project Has Been Updated!', 'success');
+                                location.reload();
                             }
                         }
                     });
