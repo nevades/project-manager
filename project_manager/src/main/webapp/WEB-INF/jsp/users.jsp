@@ -72,7 +72,7 @@
                             </div>
                             <div>
                                 <label for="categoryType">User Type</label>
-                                <input type="text" class="form-control" id="" name="categoryName" required>
+                                <input type="text" class="form-control" id="categoryType" name="categoryType" required>
                             </div>
                         </form>
                     </div>
@@ -121,7 +121,8 @@
                         return fetch('project/save-user', {
                             method: 'POST',
                             body: new URLSearchParams({
-                                username: document.getElementById('userNameText').value
+                                username: document.getElementById('userNameText').value,
+                                usertype: document.getElementById('categoryType').value
                             })
                         }).then(response => {
                             if (!response.ok) {
@@ -230,7 +231,6 @@
             });
 
             $.fn.dataTable.ext.errMode = 'none';
-
             var dtable1 = $('#userTable').DataTable(
                     {
                         "aLengthMenu": [[5, 10, 25, -1], [5, 10, 25, "All"]],
@@ -239,7 +239,6 @@
                         "autoWidth": false,
                         "processing": true,
                         "serverSide": true,
-                        "order": [[0, "desc"]],
                         "searchHighlight": true,
                         "searchDelay": 350,
                         "ajax": {

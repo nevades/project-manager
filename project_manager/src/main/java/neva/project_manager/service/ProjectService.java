@@ -121,10 +121,11 @@ public class ProjectService {
         return parameter;
     }
 
-    public User saveUser(String username) throws Exception {
+    public User saveUser(String username, Integer usertype) throws Exception {
 
         User usro = new User();
         usro.setUsername(username);
+        usro.setUserType(usertype);
         usro.setStatus("Active");
         usro = usr.save(usro);
 
@@ -197,12 +198,14 @@ public class ProjectService {
         return usrtype;
     }
 
-    public Task saveTask(String subject, String selectedOption, String description, Integer projectId) {
+    public Task saveTask(String subject, String selectedOption, String description, Integer projectId, Integer assignedTo, Integer behalfOf) {
         Task task = new Task();
         task.setSubject(subject);
         task.setDescription(description);
         task.setProject_id(projectId);
         task.setBoard_id(1);
+        task.setAssigned_to(assignedTo);
+        task.setBehalf_of(behalfOf);
         task.setStatus("active");
 
         switch (selectedOption) {
@@ -226,7 +229,7 @@ public class ProjectService {
     }
 
     public DataTablesResponse<LoadUserDTO> getUsers(DataTableRequest param) throws Exception {
-        return urepo.getData(LoadUserDTO.class, param, "SELECT `id` AS `userId`,`username` AS `userName`,`user_type` AS `userType`,`date`,(SELECT `username` FROM `user` WHERE `id` = p.`created_by`) AS createdBy,`status` FROM `user` p");
+        return urepo.getData(LoadUserDTO.class, param, "SELECT `id` AS `userId`,`username` AS `userName`, (SELECT `name` FROM `user_type` WHERE `id`=`user_type`) AS `userType`,`date`,(SELECT `username` FROM `user` WHERE `id` = p.`created_by`) AS createdBy,`status` FROM `user` p");
     }
 
     public Iterable<SlimSelectDTO> searchType(String search) {
@@ -235,6 +238,18 @@ public class ProjectService {
 
     public Iterable<SlimSelectDTO> getAllType(String search) {
         return pramrepo.getAllType("%" + search.trim() + "%");
+    }
+
+    public Iterable<SlimSelectDTO> getAllUsers(String search) {
+        return usr.getAllUsers("%" + search.trim() + "%");
+    }
+
+    public Parameter updateParameter(Integer pid, String categoryName, String categoryType) throws Exception {
+        Parameter p = pramrepo.findById(pid).get();
+        p.setCategoryName(categoryName);
+        p.setCategoryType(categoryType);
+        p = pramrepo.save(p);
+        return p;
     }
 
 }
