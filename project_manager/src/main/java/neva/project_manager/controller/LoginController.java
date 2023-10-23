@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package neva.project_manager.controller;
 
 import jakarta.servlet.http.HttpSession;
@@ -12,10 +8,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import neva.project_manager.model.User;
 
-/**
- *
- * @author Neva
- */
 @RestController
 public class LoginController {
 

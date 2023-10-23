@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package neva.project_manager.controller;
 
 import jakarta.servlet.http.HttpSession;
@@ -9,6 +5,7 @@ import neva.project_manager.datatable.DataTableRequest;
 import neva.project_manager.datatable.DataTablesResponse;
 import neva.project_manager.dto.LoadBoardDTO;
 import neva.project_manager.dto.LoadDataDTO;
+import neva.project_manager.dto.LoadParameterDTO;
 import neva.project_manager.dto.LoadProjectDTO;
 import neva.project_manager.dto.LoadTaskDTO;
 import neva.project_manager.dto.LoadUserDTO;
@@ -29,10 +26,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-/**
- *
- * @author nevanjith
- */
 @RestController
 @RequestMapping("/project")
 public class ProjectController {
@@ -91,6 +84,11 @@ public class ProjectController {
         return ser.LoadProject(session.getAttribute("uid").toString());
     }
 
+    @PostMapping("/load-parameter")
+    public LoadParameterDTO LoadParameter(@RequestParam Integer pid) throws Exception {
+        return ser.LoadParameter(pid);
+    }
+
     @GetMapping("/load-tasks")
     public Iterable<LoadTaskDTO> LoadTasks(HttpSession session) throws Exception {
         return ser.LoadTasks(session.getAttribute("uid").toString());
@@ -99,6 +97,11 @@ public class ProjectController {
     @PostMapping("/show")
     public DataTablesResponse<ParamDTO> getParam(@RequestBody DataTableRequest param) throws Exception {
         return ser.getParam(param);
+    }
+
+    @PostMapping("/show-data")
+    public LoadTaskDTO showData(@RequestParam Integer tid) throws Exception {
+        return ser.showData(tid);
     }
 
     @PostMapping("/get-users")

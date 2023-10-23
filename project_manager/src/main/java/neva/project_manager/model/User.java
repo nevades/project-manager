@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package neva.project_manager.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
@@ -16,10 +12,6 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.relational.core.mapping.Table;
 
-/**
- *
- * @author Neva
- */
 @AllArgsConstructor
 @NoArgsConstructor
 @Setter
