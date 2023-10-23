@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package neva.project_manager.config;
 
 import jakarta.servlet.http.HttpSession;
@@ -20,10 +16,6 @@ import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
-/**
- *
- * @author Neva
- */
 @Configuration
 @EnableJdbcRepositories(basePackages = "neva.project_manager.repo")
 @EnableJdbcAuditing(auditorAwareRef = "httpSessionAuditorAware")

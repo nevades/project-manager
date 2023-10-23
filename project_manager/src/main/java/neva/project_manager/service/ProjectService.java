@@ -5,6 +5,7 @@ import neva.project_manager.datatable.DataTableRequest;
 import neva.project_manager.datatable.DataTablesResponse;
 import neva.project_manager.dto.LoadBoardDTO;
 import neva.project_manager.dto.LoadDataDTO;
+import neva.project_manager.dto.LoadParameterDTO;
 import neva.project_manager.dto.LoadProjectDTO;
 import neva.project_manager.dto.LoadTaskDTO;
 import neva.project_manager.dto.LoadUserDTO;
@@ -138,12 +139,20 @@ public class ProjectService {
         return repo.LoadProject(uid);
     }
 
+    public LoadParameterDTO LoadParameter(Integer pid) {
+        return pramrepo.LoadParameter(pid);
+    }
+
     public Iterable<LoadTaskDTO> LoadTasks(String uid) {
         return trepor.LoadTasks(uid);
     }
 
     public Iterable<LoadDataDTO> LoadData(String uid) {
         return repo.LoadData(uid);
+    }
+
+    public LoadTaskDTO showData(Integer tid) {
+        return trepor.showData(tid);
     }
 
     public Parameter deactivateStatus(Integer id) throws Exception {

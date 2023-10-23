@@ -10,6 +10,12 @@
         <link rel="stylesheet" href="files/css/kanban.css">
     </head>
     <style>
+        html, body {
+            margin: 0;
+            height: 100%;
+            /*overflow: hidden;*/
+        }
+
         body.modal-open .background-containerx{
             -webkit-filter: blur(4px);
             -moz-filter: blur(4px);
@@ -188,9 +194,9 @@
                             <div class="col-15 " style="width: 75%">
                                 <div>
                                     <select id="select_priority" style="margin-top:-5px; margin-left: -12px;" class="swal2-select">
-                                        <option value="Low">Priority: Low</option>
-                                        <option value="Medium">Priority: Medium</option>
-                                        <option value="High">Priority: High</option>
+                                        <option value="Low" style="background-color: green;">Priority: Low</option>
+                                        <option value="Medium" style="background-color: yellow;">Priority: Medium</option>
+                                        <option value="High" style="background-color: red;">Priority: High</option>
                                     </select>
                                 </div>
                             </div>
@@ -240,7 +246,7 @@
                             <div class="col-topic-start"></div>
                             <label class="col-form-label new-label-box" style="width: 20%">Subject<span class="text-danger">*</span></label>
                             <div class="col-15 " style="width: 75%">
-                                <input type="text" onkeyup="this.value = this.value.toUpperCase();" max="100" class="form-control form-control-xs" autocomplete="off" id="subject_input">
+                                <input type="text" onkeyup="this.value = this.value.toUpperCase();" max="100" class="form-control form-control-xs" autocomplete="off" id="subject_show">
                             </div>
                         </div>
 
@@ -248,7 +254,7 @@
                             <div class="col-topic-start"></div>
                             <label class="col-form-label new-label-box" style="width: 20%">Description<span class="text-danger">*</span></label>
                             <div class="col-15 " style="width: 75%">
-                                <textarea class="form-control" rows="7" name="description" id="description"></textarea>
+                                <textarea class="form-control" rows="7" name="description" id="description_show"></textarea>
                             </div>
                         </div>
                         <div class="row">
@@ -317,7 +323,7 @@
                             + '<div class="card" style="background-color: #32c29b; padding: 0; font-size: 14px; border-radius: 16px;">'
                             + '<p class="card-text">Time Created : ' + ptime + '</p>'
                             + '</div>'
-                            + '<button class="btn btn-secondary btn-sm select" id="projectButton" type="button" data-projectid="' + pid + '">Go to project</button>'
+                            + '<button class="btn btn-secondary btn-sm select projectselect" id="projectButton" type="button" data-projectid="' + pid + '">Go to project</button>'
                             + '</div></div>';
 
                     $('#center').append(temp);
@@ -461,7 +467,7 @@
                                 const nid = data[i].id;
 
                                 if (subject && description) {
-                                    var thisNote = $("<div onclick=\"handleCardClick()\" id=\"card-" + (nid) + "\" class=\"post-it\" draggable=\"true\"><p class=\"editable\" style=\"font-size: 17px; margin-top: -25px; margin-left: 5px; font-weight: bold;\" title=\"Click to edit\" contenteditable=\"false\">" + subject + "</p><p contenteditable=\"true\" style=\"font-size: 14px; margin-top: -5px; margin-left: 5px;\">" + description + "</p><div style=\"margin-top: 0px\" class=\"card-footer\"></div></div>");
+                                    var thisNote = $("<div onclick=\"handleCardClick(this)\" project=" + (pid) + " board=" + (bid) + " id=\"card-" + (nid) + "\" class=\"post-it\" draggable=\"true\"><p class=\"editable\" style=\"font-size: 17px; margin-top: -25px; margin-left: 5px; font-weight: bold;\" title=\"Click to edit\" contenteditable=\"false\">" + subject + "</p><p contenteditable=\"true\" style=\"font-size: 14px; margin-top: -5px; margin-left: 5px;\">" + description + "</p><div style=\"margin-top: 0px\" class=\"card-footer\"></div></div>");
                                     note.push(thisNote);
                                     switch (selectedOption) {
                                         case "Low":
@@ -479,7 +485,6 @@
                                     thisNote.on("keyup", noteChange);
                                     $('.card' + bid + '').prepend(thisNote);
                                     saveApplication();
-
                                 }
                             }
                         });
@@ -608,31 +613,26 @@
                 });
             });
 
-            function handleCardClick() {
-////                fetch('project/load-info').then((res) => res.json()).then((data) => {
-////
-////                    for (var i = 0; i < data.length; i++) {
-////                        const subject = data[i].subject;
-////                        const description = data[i].description;
-////                    }
-////                    alert(subject);
-////                });
-//
-//                var yourUidHere = 5;
-//
-//                fetch('project/load-info?uid=' + yourUidHere)
-//                        .then((res) => res.json())
-//                        .then((data) => {
-//                            for (var i = 0; i < data.length; i++) {
-//                                const subject = data[i].subject;
-//                                const description = data[i].description;
-//                            }
-//                            alert(subject);
-//                        });
+            function handleCardClick(card) {
 
+                const projectr = card.getAttribute("project");
+                const boardr = card.getAttribute("board");
+
+                $.post('project/show-data', {tid: boardr}, function (data) {
+
+                    document.getElementById("subject_show").value = data.subject;
+                    document.getElementById("description_show").value = data.description;
+
+                });
 
                 $('#myModal').modal('show');
             }
+
+//            var myButton = document.getElementById("myButton");
+//
+//            myButton.addEventListener("click", function () {
+//                alert("Button clicked!");
+//            });
         </script>
     </body>
 </html>

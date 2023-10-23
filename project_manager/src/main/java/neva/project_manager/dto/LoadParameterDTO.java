@@ -9,13 +9,9 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter
 @Setter
-public class LoadUserDTO {
+public class LoadParameterDTO {
 
-    private Integer userId;
-    private String userName;
-    private String userType;
-    private String date;
-    private String createdBy;
-    private String status;
-
+    private Integer id;
+    private String category_name;
+    private String category_type;
 }

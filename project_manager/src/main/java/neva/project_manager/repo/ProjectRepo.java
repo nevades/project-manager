@@ -1,7 +1,3 @@
-/**
- *
- * @author nevanjith
- */
 package neva.project_manager.repo;
 
 import neva.project_manager.dto.LoadDataDTO;

@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package neva.project_manager.config;
 
 import jakarta.servlet.http.HttpSession;
@@ -10,10 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.AuditorAware;
 import org.springframework.stereotype.Component;
 
-/**
- *
- * @author Neva
- */
 @Component
 public class HttpSessionAuditorAware implements AuditorAware<Integer> {
 
