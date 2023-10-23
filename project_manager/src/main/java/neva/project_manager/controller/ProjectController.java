@@ -63,8 +63,8 @@ public class ProjectController {
     }
 
     @PostMapping("/save-user")
-    public ResponseEntity<CommonResponse> saveUser(@RequestParam String username) throws Exception {
-        ser.saveUser(username);
+    public ResponseEntity<CommonResponse> saveUser(@RequestParam String username, @RequestParam Integer usertype) throws Exception {
+        ser.saveUser(username, usertype);
         CommonResponse response = new CommonResponse("Success!", 200);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
@@ -161,10 +161,22 @@ public class ProjectController {
         return ser.getAllType(search);
     }
 
+    @PostMapping("/search-user")
+    public Iterable<SlimSelectDTO> getAllUsers(@RequestParam String search) throws Exception {
+        return ser.getAllUsers(search);
+    }
+
     @PostMapping("/save-task")
-    public ResponseEntity<CommonResponse> saveTask(@RequestParam String subject, @RequestParam String selectedOption, @RequestParam String description, @RequestParam Integer projectId) throws Exception {
-        Task saved = ser.saveTask(subject, selectedOption, description, projectId);
+    public ResponseEntity<CommonResponse> saveTask(@RequestParam String subject, @RequestParam String selectedOption, @RequestParam String description, @RequestParam Integer projectId, @RequestParam Integer assignedTo, @RequestParam Integer behalfOf) throws Exception {
+        Task saved = ser.saveTask(subject, selectedOption, description, projectId, assignedTo, behalfOf);
         CommonResponse response = new CommonResponse("Success!", 200, saved.getId());
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @PostMapping("/update-parameter")
+    public ResponseEntity<CommonResponse> updateParameter(@RequestParam Integer pid, @RequestParam String categoryName, @RequestParam String categoryType) throws Exception {
+        ser.updateParameter(pid, categoryName, categoryType);
+        CommonResponse response = new CommonResponse("Success!", 200);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 

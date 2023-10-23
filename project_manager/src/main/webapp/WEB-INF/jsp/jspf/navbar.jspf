@@ -1,27 +1,13 @@
 <style>
     .navbar {
-        /*background-color: #868686  !important;*/
         background-color: #FCFCFC  !important;
     }
-
-    .nav-link {
-        /*color: #f0f0f0;*/
-        /*font-weight: bold;*/
-        /*font-family: "Helvetica Neue", Arial, sans-serif;*/
-        /*font-family: "Roboto", Arial, sans-serif !important;*/
+    .navbar-nav a {
+        /*font-family: "Helvetica Neue", sans-serif;  Change to a thicker font-family */
+        font-family: Arial, sans-serif;
+        font-weight: normal;
     }
-    /*
-        .navbar-nav .nav-link {
-            font-weight: normal;
-        }
 
-        .dropdown-primary span {
-            font-weight: normal;
-        }
-
-        .dropdown-primary .feather {
-            font-size: 16px;
-        }*/
 </style>
 
 <nav class="navbar navbar-expand-lg bg-body-tertiary">

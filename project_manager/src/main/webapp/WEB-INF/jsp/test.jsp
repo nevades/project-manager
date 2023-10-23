@@ -15,7 +15,6 @@
 
     <script>
         document.getElementById('uploadBtn').addEventListener('click', function () {
-
             let fd = new FormData();
 
             let file = document.getElementById('file').files;
