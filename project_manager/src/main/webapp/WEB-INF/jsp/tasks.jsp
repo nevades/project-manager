@@ -110,7 +110,7 @@
         </div>
 
 
-        <div class="modal fade" id="taskModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal fade" id="taskModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-xl">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -123,11 +123,13 @@
                         </div>
                         <div>
                             <label for="categoryTypeE">Category Type</label>
-                            <select id="categoryTypeE" tabindex="-1" data-ssid="ss-57072" style="display: none;"><option value="" data-placeholder="true"></option><option value="" data-placeholder="true"></option><option value="" data-placeholder="true"></option><option value="1">Application</option></select><div class="ss-57072 ss-main" style=""><div class="ss-single-selected"><span class="placeholder"><span class="ss-disabled">Category Type List</span></span><span class="ss-deselect ss-hide">x</span><span class="ss-arrow"><span class="arrow-down"></span></span></div><div class="ss-content" style=""><div class="ss-search"><input type="search" placeholder="Search" tabindex="0" aria-label="Search"></div><div class="ss-list"><div class="ss-option ss-hide"></div><div class="ss-option ss-hide"></div><div class="ss-option ss-hide"></div><div class="ss-option" data-id="83173823">Application</div></div></div></div>
+                            <select id="categoryTypeE"></select>
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-primary">Save changes</button>
+                        <button type="button" data-bs-dismiss="modal" id="updateTask" class="btn btn-primary">Save changes</button>
+
+                        <!--<button type="button" data-bs-dismiss="taskModal" id="updateTask" class="btn btn-primary">Save changes</button>-->
                     </div>
                 </div>
             </div>
@@ -369,11 +371,59 @@
                     }
                 });
             });
-
+            const taskModal = document.getElementById("taskModal");
+            var dataId;
             $(document).on('click', '.editrec', function () {
-                var dataId = $(this).data('id');
+                $("#taskModal").modal("show");
+                dataId = $(this).data('id');
                 $.post('project/load-parameter', {pid: dataId}, function (data) {
                     document.getElementById("categoryNameP").value = data.category_name;
+                });
+            });
+
+            $(document).on('click', '#updateTask', function () {
+
+                catType = categoryTypeE.selected();
+                catName = document.getElementById("categoryNameP").value;
+                taskModal.classList.remove("show");
+                Swal.fire({
+                    title: 'Are you sure?',
+                    text: "This Parameter Will be Updated!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Yes, Proceed!',
+                    showLoaderOnConfirm: true,
+                    preConfirm: () => {
+                        return fetch('project/update-parameter', {
+                            method: 'POST',
+                            body: new URLSearchParams({
+                                pid: dataId,
+                                categoryName: catName,
+                                categoryType: catType
+                            })
+                        }).then(response => {
+                            if (!response.ok) {
+                                throw new Error(response.statusText);
+                            }
+                            return response.json();
+                        }).catch(error => {
+                            Swal.showValidationMessage('Request failed:' + error);
+                        });
+                    },
+                    allowOutsideClick: () => !Swal.isLoading()
+
+                }).then((result) => {
+                    if (result.value) {
+                        if (result.value.status !== 200) {
+                            Swal.fire('Error!', result.value.msg, 'error');
+                        } else {
+                            Swal.fire('Successfull!', 'Parameter has been Updated !', 'success');
+                            dtable.ajax.reload();
+                            taskModal.style.display('none');
+                        }
+                    }
                 });
             });
 
@@ -386,7 +436,7 @@
                         "autoWidth": false,
                         "processing": true,
                         "serverSide": true,
-                        "order": [[0, "desc"]],
+                        "order": [[0, "asc"]],
                         "searchHighlight": true,
                         "searchDelay": 350,
                         "ajax": {
@@ -415,7 +465,7 @@
                             let action_td = document.createElement('td');
                             $(action_td).addClass('text-center');
                             if (data['status'] === 'active') {
-                                $(action_td).append('<a href="javascript:void(0)" class="editrec" data-id="' + data['id'] + '" data-toggle="modal" data-target="#taskModal"><i class="icon feather icon-edit f-w-600 f-16 m-r-10 text-c-green"></i></a><a href="javascript:void(0)" class="delrec"><i class="feather icon-trash-2 f-w-600 f-16 text-danger"></i></a>');
+                                $(action_td).append('<a href="javascript:void(0)" class="editrec" data-id="' + data['id'] + '"><i class="icon feather icon-edit f-w-600 f-16 m-r-10 text-c-green"></i></a><a href="javascript:void(0)" class="delrec"><i class="feather icon-trash-2 f-w-600 f-16 text-danger"></i></a>');
                             } else if (data['status'] === 'deactivated') {
                                 $(action_td).append('<a href="javascript:void(0)" class="rerec"><i class="feather icon-refresh-cw f-w-600 f-16 text-c-blue"></i></a>');
                             }
