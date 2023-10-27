@@ -7,6 +7,7 @@ import neva.project_manager.dto.LoadBoardDTO;
 import neva.project_manager.dto.LoadDataDTO;
 import neva.project_manager.dto.LoadParameterDTO;
 import neva.project_manager.dto.LoadProjectDTO;
+import neva.project_manager.dto.LoadTaskCountDTO;
 import neva.project_manager.dto.LoadTaskDTO;
 import neva.project_manager.dto.LoadUserDTO;
 import neva.project_manager.dto.ParamDTO;
@@ -99,9 +100,14 @@ public class ProjectController {
         return ser.getParam(param);
     }
 
+    @PostMapping("/show-tickets")
+    public DataTablesResponse<LoadTaskDTO> getTickets(@RequestBody DataTableRequest param) throws Exception {
+        return ser.getTickets(param);
+    }
+
     @PostMapping("/show-data")
-    public LoadTaskDTO showData(@RequestParam Integer tid) throws Exception {
-        return ser.showData(tid);
+    public LoadTaskDTO showData(@RequestParam Integer tid, @RequestParam Integer pid) throws Exception {
+        return ser.showData(tid, pid);
     }
 
     @PostMapping("/get-users")
@@ -167,8 +173,8 @@ public class ProjectController {
     }
 
     @PostMapping("/save-task")
-    public ResponseEntity<CommonResponse> saveTask(@RequestParam String subject, @RequestParam String selectedOption, @RequestParam String description, @RequestParam Integer projectId, @RequestParam Integer assignedTo, @RequestParam Integer behalfOf) throws Exception {
-        Task saved = ser.saveTask(subject, selectedOption, description, projectId, assignedTo, behalfOf);
+    public ResponseEntity<CommonResponse> saveTask(@RequestParam String subject, @RequestParam String selectedOption, @RequestParam String description, @RequestParam Integer projectId, @RequestParam Integer assignedTo, @RequestParam Integer behalfOf, @RequestParam Integer parameter_id) throws Exception {
+        Task saved = ser.saveTask(subject, selectedOption, description, projectId, assignedTo, behalfOf, parameter_id);
         CommonResponse response = new CommonResponse("Success!", 200, saved.getId());
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
@@ -180,6 +186,27 @@ public class ProjectController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
+    @GetMapping("/cards")
+    public Iterable<LoadTaskCountDTO> getCardCount(HttpSession session) throws Exception {
+        return ser.getCardCount(session.getAttribute("uid").toString());
+    }
+
+    @GetMapping("/other")
+    public Iterable<LoadTaskCountDTO> loadOtherCount(HttpSession session) throws Exception {
+        return ser.loadOtherCount(session.getAttribute("uid").toString());
+    }
+
+    @GetMapping("/total")
+    public Iterable<LoadTaskCountDTO> loadTotalCount(HttpSession session) throws Exception {
+        return ser.loadTotalCount(session.getAttribute("uid").toString());
+    }
+
+//    @PostMapping("/logout")
+//    public ResponseEntity<CommonResponse> updateParameter(@RequestParam Integer pid, @RequestParam String categoryName, @RequestParam String categoryType) throws Exception {
+//        ser.updateParameter(pid, categoryName, categoryType);
+//        CommonResponse response = new CommonResponse("Success!", 200);
+//        return new ResponseEntity<>(response, HttpStatus.OK);
+//    }
     @ExceptionHandler(Exception.class)
     public ResponseEntity<CommonResponse> handleException(Exception e) {
         e.printStackTrace();

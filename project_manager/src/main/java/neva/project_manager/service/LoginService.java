@@ -14,4 +14,8 @@ public class LoginService {
     public User checkLogin(String username) {
         return UserRepo.findByUsername(username).orElse(null);
     }
+
+    public User Logout(String username) {
+        return UserRepo.findByUsername(username).orElse(null);
+    }
 }
