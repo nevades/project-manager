@@ -1,19 +1,7 @@
-<style>
-    .navbar {
-        background-color: #FCFCFC  !important;
-    }
-    .navbar-nav a {
-        /*font-family: "Helvetica Neue", sans-serif;  Change to a thicker font-family */
-        font-family: Arial, sans-serif;
-        font-weight: normal;
-    }
-
-</style>
-
 <nav class="navbar navbar-expand-lg bg-body-tertiary">
     <div class="container-fluid">
-        <a href="dashboard">
-            <img class="img-fluid" src="files/images/logo_navbar.jpeg" style="width: 170px;" alt="fintrex DropInNet">
+        <a href="dashboard" style="margin-left: -20px;">
+            <img class="img-fluid" src="files/images/logo_navbar_bg.png" style="width: 170px;" alt="fintrex DropInNet">
         </a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -39,16 +27,40 @@
                     </ul>
                 </li>
             </ul>
-            <ul class="nav-right navbar-nav">
+            <ul>
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                         Logged as: <%=session.getAttribute("username")%>
                     </a>
                     <ul class="dropdown-menu">
-                        <li><a class="dropdown-item" href="logout">Logout</a></li>
+                        <li><a class="dropdown-item" id="logoutLink">Logout</a></li>
                     </ul>
                 </li>
             </ul>
+            <form class="d-flex" role="search">
+                <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+                <button class="btn btn-outline-success" type="submit">Search</button>
+            </form>
         </div>
     </div>
 </nav>
+
+<script>
+    document.getElementById("logoutLink").addEventListener("click", function (e) {
+
+        e.preventDefault();
+//
+//        setTimeout(function () {
+//            location.reload();
+//        }, 1000);
+
+
+        fetch("/project_manager/logout", {
+            method: "GET"
+        });
+        setTimeout(function () {
+            location.reload();
+        }, 100);
+
+    });
+</script>

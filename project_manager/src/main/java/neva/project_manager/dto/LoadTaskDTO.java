@@ -15,8 +15,11 @@ public class LoadTaskDTO {
     private String subject;
     private String description;
     private String priority;
-    private Integer project_id;
-    private Integer board_id;
+    private String project_id;
+    private String board_id;
+    private String parameter_id;
+    private String assigned_to;
+    private String behalf_of;
     private String status;
 
 }

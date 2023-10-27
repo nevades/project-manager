@@ -16,11 +16,6 @@ public class PageController {
         return "dashboard";
     }
 
-    @GetMapping("/dashboard_1")
-    public String dashboard_1() {
-        return "dashboard_1";
-    }
-
     @GetMapping("/setup")
     public String setup() {
         return "setup";
@@ -42,7 +37,7 @@ public class PageController {
     }
 
     @GetMapping("/admin")
-    public String admmin() {
+    public String admin() {
         return "admin";
     }
 

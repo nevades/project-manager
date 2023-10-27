@@ -23,6 +23,7 @@ public class Task {
     private String priority;
     private Integer project_id;
     private Integer board_id;
+    private Integer parameter_id;
     private Integer assigned_to;
     private Integer behalf_of;
     private String status;

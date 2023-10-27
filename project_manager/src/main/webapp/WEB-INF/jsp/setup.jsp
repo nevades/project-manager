@@ -10,95 +10,72 @@
         <%@include file="jspf/header.jspf" %>
     </head>
     <style>
-        .border-top.mb-3 {
-            border-top: 1px solid #666666 !important;
-            margin-bottom: 3px !important;
+        .card {
+            background-color: rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
+            padding: 20px;
+            backdrop-filter: blur(3px);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            color: white;
         }
-
-        img{
-            max-width:0px;
-        }
-
-        body {
-            margin: 0;
-            padding: 0;
+        .card-title, .card-text {
+            color: white !important;
         }
     </style>
-    <%@include file="jspf/navbar.jspf" %>
-    <body style="background-image: url('files/images/setup.jpg'); background-repeat: no-repeat; background-attachment: fixed; background-size: cover;">
-        <div style="margin-top: 20px;">
-            <div class="card" style="background-color: #ecf0f5; width: auto ; height: 10rem; margin-left: 25px; margin-right: 30px; margin-top: 0px;">
-                <div class="card-header">
-                    <h5 class="card-title">Project Setup</h5>
-                    <div class="border-top mb-3"></div>
-                </div>
-                <div class="card-body">
-                    <div class="row">
-                        <div class="form-group col">
-                            <label for="exampleInputEmail1">Project Name</label>
-                            <input type="text" class="form-control" id="projectName" style="width: 600px;" aria-describedby="emailHelp" placeholder="">
-                        </div>
-                        <div class="form-group col" style="margin-left: 50px;">
-                            <label class="row" for="exampleInputEmail1">Project Icon</label>
-                            <input class="row" onchange="readURL(this);" type="file" id="myFile" name="filename">
-                        </div>
-                        <div class="form-group col" style="margin-left: 50px;">
-                            <img id="blah" src="http://placehold.it/180" alt="your image" />
+    <body style="background-image: url('files/images/setup_new4.jpg'); background-repeat: no-repeat; background-attachment: fixed; background-size: cover;">
+        <%@include file="jspf/navbar.jspf" %>
+        <div class="row" style="height: 100vh; padding: 40px;">
+            <div class="col-sm-8">
+                <div class="card" style="height: 95%;">
+                    <div class="card-header">
+                        <h5 class="card-title">Project Setup</h5>
+                        <div class="border-top mb-3"></div>
+                    </div>
+                    <div class="card-body" style="margin-top: -10px;">
+                        <div>
+                            <div class="row">
+                                <div class="form-group">
+                                    <label for="exampleInputEmail1">Project Name</label>
+                                    <input type="text" class="form-control" id="projectName" aria-describedby="emailHelp" placeholder="">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="exampleInputEmail1">Project board name</label>
+                                <input type="text" class="form-control" id="labelText" aria-describedby="emailHelp" placeholder="">
+                            </div>
+                            <br>
+                            <div class="form-group">
+                                <label for="colorInput">Choose a project board color:</label>
+                                <div class="col-sm-2">
+                                    <input type="color" class="form-control" id="colorInput" style="height: 50px;">
+                                </div>
+                            </div>
+                            <br>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+                                <label class="form-check-label" for="flexCheckDefault">
+                                    Set a default project board color
+                                </label>
+                            </div>
+                            <br>
                         </div>
                     </div>
+                    <p class="card-text">You can add new project boards with their own custom colors</p>
+                    <a href="#" id="createLabelButton" class="btn btn-primary">Add Project Board</a>
                 </div>
             </div>
-            <div class="row" style="margin-top: -30px;">
-                <div class="col">
-                    <div class="card" style="background-color: #ecf0f5; width: auto; height: 30rem; margin-left: 30px; margin-top: 10px;">
-                        <div class="card-header">
-                            <h5 class="card-title">Add new project board</h5>
-                            <div class="border-top mb-3"></div>
-                        </div>
-                        <div class="card-body" style="margin-top: -10px;">
-                            <div>
-                                <div class="form-group">
-                                    <label for="exampleInputEmail1">Project board name</label>
-                                    <input type="text" class="form-control" id="labelText" aria-describedby="emailHelp" placeholder="">
-                                </div>
-                                <br>
-                                <div class="form-group">
-                                    <label for="colorInput">Choose a project board color:</label>
-                                    <div class="col-sm-2">
-                                        <input type="color" class="form-control" id="colorInput" style="height: 50px;">
-                                    </div>
-                                </div>
-                                <br>
-                                <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
-                                    <label class="form-check-label" for="flexCheckDefault">
-                                        Set a default project board color
-                                    </label>
-                                </div>
-                                <br>
-                            </div>
-                        </div>
-                        <div class="card-footer">
-                            <p class="card-text">You can add new project boards with their own custom colors</p>
-                            <a href="#" id="createLabelButton" class="btn btn-primary">Add Project Board</a>
+            <div class="col-sm-4">
+                <div class="card" style="height: 95%;">
+                    <div class="card-header">
+                        <h5 class="card-title">Custom created project board list</h5>
+                        <div class="border-top mb-3"></div>
+                    </div>
+                    <div class="card-body">
+                        <div id="labelContainer">
                         </div>
                     </div>
-                </div>
-                <div class="col">
-                    <div class="card" style="background-color: #ecf0f5; width: auto; height: 30rem;margin-right: 35px; margin-top: 10px;">
-                        <div class="card-header">
-                            <h5 class="card-title">Custom created project board list</h5>
-                            <div class="border-top mb-3"></div>
-                        </div>
-                        <div class="card-body">
-                            <div id="labelContainer">
-                            </div>
-                        </div>
-                        <div class="card-footer">
-                            <p class="card-text">You can add new project boards with their own custom colors</p>
-                            <a id="save" class="btn btn-success">Confirm Action</a>
-                        </div>
-                    </div>
+                    <p class="card-text">You can add new project boards with their own custom colors</p>
+                    <a id="save" class="btn btn-success">Confirm Action</a>
                 </div>
             </div>
         </div>
@@ -145,9 +122,6 @@
                     }
                 }
             }
-
-            var inputField = document.getElementById('projectName');
-            inputField.style.width = referenceWidth + 'px';
 
             $(document).on('click', '#save', function () {
 
