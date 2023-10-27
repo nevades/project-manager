@@ -13,7 +13,6 @@
         .board-item {
             display: flex;
         }
-
         .flex {
             display: flex;
         }
@@ -22,10 +21,11 @@
             border: 1px solid #ccc;
         }
     </style>
-    <%@include file="jspf/navbar.jspf" %>
+    <%--<%@include file="jspf/navbar.jspf" %>--%>
     <body style="background-image: url('files/images/background1.jpg');
           background-repeat: no-repeat;
           background-position: center center;">
+        <%@include file="jspf/navbar.jspf" %>
         <div class="row flex" style="margin-top: 20px;">
             <div class="col-3">
                 <div class="card" style="background-color: #fff; height: auto; margin-left: 20px;">

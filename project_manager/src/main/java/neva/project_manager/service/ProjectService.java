@@ -7,6 +7,7 @@ import neva.project_manager.dto.LoadBoardDTO;
 import neva.project_manager.dto.LoadDataDTO;
 import neva.project_manager.dto.LoadParameterDTO;
 import neva.project_manager.dto.LoadProjectDTO;
+import neva.project_manager.dto.LoadTaskCountDTO;
 import neva.project_manager.dto.LoadTaskDTO;
 import neva.project_manager.dto.LoadUserDTO;
 import neva.project_manager.dto.ParamDTO;
@@ -18,7 +19,6 @@ import neva.project_manager.model.Project;
 import neva.project_manager.model.Task;
 import neva.project_manager.model.User;
 import neva.project_manager.repo.BoardRepo;
-import neva.project_manager.repo.CardRepo;
 import neva.project_manager.repo.CategoryRepo;
 import neva.project_manager.repo.ParamRepo;
 import neva.project_manager.repo.ProjectRepo;
@@ -51,13 +51,13 @@ public class ProjectService {
     private BoardRepo brepo;
 
     @Autowired
-    private CardRepo crepo;
-
-    @Autowired
     private DataTableRepo<ParamDTO> prepo;
 
     @Autowired
     private DataTableRepo<LoadUserDTO> urepo;
+
+    @Autowired
+    private DataTableRepo<LoadTaskDTO> ltrepo;
 
     @Transactional
     public Project saveProject(String projectName, String[] boardNames, String[] boardColors) throws Exception {
@@ -133,7 +133,7 @@ public class ProjectService {
     }
 
     public Iterable<LoadBoardDTO> LoadBoard(String uid, String projectId) {
-        return crepo.LoadBoard(uid, projectId);
+        return brepo.LoadBoard(uid, projectId);
     }
 
     public Iterable<LoadProjectDTO> LoadProject(String uid) {
@@ -152,8 +152,8 @@ public class ProjectService {
         return repo.LoadData(uid);
     }
 
-    public LoadTaskDTO showData(Integer tid) {
-        return trepor.showData(tid);
+    public LoadTaskDTO showData(Integer tid, Integer pid) {
+        return trepor.showData(tid, pid);
     }
 
     public Parameter deactivateStatus(Integer id) throws Exception {
@@ -198,14 +198,15 @@ public class ProjectService {
         return usrtype;
     }
 
-    public Task saveTask(String subject, String selectedOption, String description, Integer projectId, Integer assignedTo, Integer behalfOf) {
+    public Task saveTask(String subject, String selectedOption, String description, Integer projectId, Integer assignedTo, Integer behalfOf, Integer parameter_id) {
         Task task = new Task();
         task.setSubject(subject);
         task.setDescription(description);
         task.setProject_id(projectId);
         task.setBoard_id(1);
-        task.setAssigned_to(assignedTo);
+        task.setParameter_id(parameter_id);
         task.setBehalf_of(behalfOf);
+        task.setAssigned_to(assignedTo);
         task.setStatus("active");
 
         switch (selectedOption) {
@@ -226,6 +227,10 @@ public class ProjectService {
 
     public DataTablesResponse<ParamDTO> getParam(DataTableRequest param) throws Exception {
         return prepo.getData(ParamDTO.class, param, "SELECT `id`,`category_name` AS categoryName,(SELECT `name` FROM `category` WHERE `id` = `category_type`) AS categoryType,`date`,(SELECT `username` FROM `user` WHERE `id` = p.`created_by`) AS createdBy,`status` FROM `parameter` p");
+    }
+
+    public DataTablesResponse<LoadTaskDTO> getTickets(DataTableRequest param) throws Exception {
+        return ltrepo.getData(LoadTaskDTO.class, param, "SELECT `id`,`subject`,`description`,`priority`,(SELECT `project_name` FROM `project` WHERE `project_id` = t.`project_id`) AS `project_id`,(SELECT `board_name` FROM `board` WHERE `board_id` = t.`board_id`) AS `board_id`,(SELECT `category_name` FROM `parameter` WHERE `id` = `parameter_id`) AS `parameter_id`,(SELECT `username` FROM `user` WHERE `id` = `assigned_to`) AS `assigned_to`,(SELECT `username` FROM `user` WHERE `id` = `behalf_of`) AS `behalf_of`,`status` FROM `task` t");
     }
 
     public DataTablesResponse<LoadUserDTO> getUsers(DataTableRequest param) throws Exception {
@@ -252,4 +257,15 @@ public class ProjectService {
         return p;
     }
 
+    public Iterable<LoadTaskCountDTO> getCardCount(String uid) {
+        return trepor.countByStatus();
+    }
+
+    public Iterable<LoadTaskCountDTO> loadOtherCount(String uid) {
+        return trepor.loadOtherCount();
+    }
+
+    public Iterable<LoadTaskCountDTO> loadTotalCount(String uid) {
+        return trepor.loadTotalCount();
+    }
 }

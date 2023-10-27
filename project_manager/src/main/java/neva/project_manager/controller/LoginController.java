@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import neva.project_manager.model.User;
+import org.springframework.web.bind.annotation.GetMapping;
 
 @RestController
 public class LoginController {
@@ -29,6 +30,15 @@ public class LoginController {
             return "ok";
         }
 
+    }
+
+    @GetMapping("/logout")
+    public String Logout(HttpSession session) {
+
+        session.removeAttribute("uid");
+        session.removeAttribute("username");
+
+        return "ok";
     }
 
 }
