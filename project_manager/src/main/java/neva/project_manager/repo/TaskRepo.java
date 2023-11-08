@@ -14,6 +14,9 @@ public interface TaskRepo extends CrudRepository<Task, Integer> {
     @Query("SELECT `id`,`subject`,`description`,`priority`,`project_id`,`board_id` FROM `task` WHERE `status` = 'active'")
     Iterable<LoadTaskDTO> LoadTasks(@Param("uid") String uid);
 
+    @Query("SELECT `id`,`subject`,`description`,(SELECT u.`username` FROM `user` u WHERE u.`id`=`assigned_to`)AS `assigned_to`,(SELECT u.`username` FROM `user` u WHERE u.`id`=`behalf_of`)AS `behalf_of`,`priority`,(SELECT pj.`project_name` FROM `project` pj WHERE pj.`project_id` = th.`project_id`) AS `project_id`,(SELECT bj.`board_name` FROM `board` bj WHERE bj.`board_id` = th.`board_id`) AS `board_id` FROM `task` th WHERE `id` = :tid")
+    Iterable<LoadTaskDTO> LoadTask(@Param("tid") Integer tid);
+
     @Query("SELECT `id`,`subject`,`description` FROM `task` WHERE `board_id`=:tid AND `project_id`=:pid")
     LoadTaskDTO showData(@Param("tid") Integer tid, @Param("pid") Integer pid);
 

@@ -91,6 +91,7 @@
         <script type="text/javascript" src="files/js/autoNumeric.js"></script>
         <script type="text/javascript" src="files/js/dataTables.responsive.min.js"></script>
         <script>
+
         </script>
         <script>
             var referenceElement = document.getElementById('labelText');

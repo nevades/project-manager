@@ -3,36 +3,16 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>Setup</title>
+        <title>Project Manager</title>
         <link rel="icon" href="files/images/fav.ico" type="image/x-icon">
-        <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.18/dist/sweetalert2.min.css">
+        <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.css">
         <link rel="stylesheet" type="text/css" href="files/css/slimselect.css">
-        <%--<%@include file="jspf/header.jspf" %>--%>
-        <!--<link rel="stylesheet" type="text/css" href="files/bootstrap/css/bootstrap.min.css">-->
-        <!--<link rel="stylesheet" type="text/css" href="files/css/style.css?v=1">-->
         <link rel="stylesheet" href="files/css/kanban.css">
     </head>
     <style>
-        .naver {
-            margin-top: 10px !important;
-            margin-right: 5px !important;
-        }
 
-        #aimg {
-            margin-left: 0px !important;
-        }
-
-        #navbarSupportedContent {
-            margin-left: -1px !important;
-        }
-
-        .montserrat-medium-text {
-            font-family: 'Montserrat', sans-serif !important;
-            font-weight: 400 !important;
-            font-size: 14px !important;
-            line-height: 26px !important;
-            letter-spacing: normal !important;
+        body {
+            font-family : Montserrat-Medium, sans-serif !important;
         }
 
         body.modal-open .background-containerx{
@@ -49,10 +29,6 @@
             display: flex !important;
             white-space: nowrap !important;
             padding-bottom: 20px !important;
-
-            overflow-x: auto;
-            white-space: nowrap; /* Prevent line breaks in the content */
-            width: 100%; /* Ensure it takes the full width of its container */
         }
         .divs {
             overflow: auto !important;
@@ -144,8 +120,55 @@
             position: relative;
         }
     </style>
-    <body style="background-image: url('files/images/backgg.jpg'); background-repeat: no-repeat; background-attachment: fixed; background-size: cover;">
-        <%@include file="jspf/navbar.jspf" %>
+
+    <%--<%@include file="jspf/navbar.jspf" %>--%>
+    <body style="background-image: url('files/images/wallpaper.jpg'); background-repeat: no-repeat; background-attachment: fixed; background-size: cover;">
+        <nav class="navbar navbar-expand-lg bg-body-tertiary" style="font-family : Montserrat-Medium, sans-serif">
+            <div class="container-fluid">
+                <a href="dashboard">
+                    <img class="img-fluid" src="files/images/logo_navbar_bg.png" style="width: 170px;" alt="fintrex DropInNet">
+                </a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                        <li class="nav-item">
+                            <a class="nav-link" aria-current="page" href="dashboard">Dashboard</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="setup">Setup</a>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                Advanced Options
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" href="advancedUsers">Manage Users</a></li>
+                                <li><a class="dropdown-item" href="advancedTasks">Manager Task Types</a></li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li><a class="dropdown-item" href="management">Manage Projects</a></li>
+                                <li><a class="dropdown-item" href="admin">Admin</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                    <ul>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                Logged as: <%=session.getAttribute("username")%>
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" id="logoutLink">Logout</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                    <form class="d-flex" role="search">
+                        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+                        <button class="btn btn-outline-success" type="submit">Search</button>
+                    </form>
+                </div>
+            </div>
+        </nav>
         <div id="landing">
         </div>
 
@@ -309,7 +332,6 @@
         <script type="text/javascript" src="files/js/autoNumeric.js"></script>
         <script type="text/javascript" src="files/js/dataTables.responsive.min.js"></script>
         <script>
-
         </script>
         <script>
             var select_priority = new SlimSelect({
@@ -413,8 +435,8 @@
                         const id = data[i].boardId;
 
                         const colDiv = $('<div style="margin-top: 10px;" class="divs col-4"></div>');
-                        const h3Element = $('<div class="card" style="height: 35px; width: 240px; background-color:' + color + '"><h3>' + name + '</h3></div>');
-                        const boxDiv = $('<div  class="box card' + id + '" style="width: 260px; background-color: ' + color + '; border:7px dotted ' + color + ';"></div>');
+                        const h3Element = $('<div class="card" style="height: 35px; width: auto; background-color:' + color + '"><h3>' + name + '</h3></div>');
+                        const boxDiv = $('<div  class="box card' + id + '" style="background-color: ' + color + '; border:7px dotted ' + color + ';"></div>');
                         colDiv.append(h3Element);
                         colDiv.append(boxDiv);
                         colDiv.addClass("divs");
@@ -510,28 +532,19 @@
                         newNote.click(function () {
                             $("#exampleModal").modal("show");
                         });
-                        let descriptionx = "";
-                        let subjectx = "";
+
                         fetch('project/load-tasks').then((res) => res.json()).then((data) => {
 
                             for (var i = 0; i < data.length; i++) {
-                                let subject = data[i].subject;
-                                let description = data[i].description;
+                                const subject = data[i].subject;
+                                const description = data[i].description;
                                 const selectedOption = data[i].priority;
                                 const pid = data[i].project_id;
                                 const bid = data[i].board_id;
                                 const nid = data[i].id;
-
-                                if (description.length > 22) {
-                                    description = description.substring(0, 22) + '...';
-                                }
-
-                                if (subject.length > 13) {
-                                    subject = subject.substring(0, 13) + '...';
-                                }
-
+//                                if (projectid === pid) {
                                 if (subject && description) {
-                                    var thisNote = $("<div onclick=\"handleCardClick(this)\" actual=" + (nid) + " project=" + (pid) + " board=" + (bid) + " id=\"card-" + (nid) + "\" class=\"post-it\" draggable=\"true\"><p class=\"editable\" style=\"font-size: 17px; margin-top: -25px; margin-left: 5px; font-weight: bold;\" title=\"Click to edit\" contenteditable=\"false\">" + subject + "</p><p contenteditable=\"false\" style=\"font-size: 14px; margin-top: -5px; margin-left: 5px;\">" + description + "</p><div style=\"margin-top: 0px\" class=\"card-footer\"></div></div>");
+                                    var thisNote = $("<div onclick=\"handleCardClick(this)\" actual=" + (nid) + " project=" + (pid) + " board=" + (bid) + " id=\"card-" + (nid) + "\" class=\"post-it\" draggable=\"true\"><p class=\"editable\" style=\"font-size: 17px; margin-top: -25px; margin-left: 5px; font-weight: bold;\" title=\"Click to edit\" contenteditable=\"false\">" + subject + "</p><p contenteditable=\"true\" style=\"font-size: 14px; margin-top: -5px; margin-left: 5px;\">" + description + "</p><div style=\"margin-top: 0px\" class=\"card-footer\"></div></div>");
                                     note.push(thisNote);
                                     switch (selectedOption) {
                                         case "Low":
@@ -550,6 +563,7 @@
                                     $('.card' + bid + '').prepend(thisNote);
                                     saveApplication();
                                 }
+//                                }
                             }
                         });
 
@@ -570,27 +584,15 @@
                                 console.log(response.text());
                             });
 
-                            let subject = $("#subject_input").val();
-                            let description = $("#description").val();
+                            const subject = $("#subject_input").val();
+                            const description = $("#description").val();
                             const selectedOption = $("#select_priority").val();
                             const x = $("#assignto").val();
                             const y = $("#behalfof").val();
                             const z = $("#select_task").val();
 
-                            if (description.length > 22) {
-                                descriptionx = description.substring(0, 22) + '...';
-                            } else {
-                                descriptionx = description;
-                            }
-
-                            if (subject.length > 13) {
-                                subjectx = subject.substring(0, 13) + '...';
-                            } else {
-                                subjectx = subject;
-                            }
-
                             if (subject && description) {
-                                var thisNote = $("<div id=\"temp\" class=\"post-it\" draggable=\"true\"><p class=\"editable\" style=\"font-size: 17px; margin-top: -25px; margin-left: 5px; font-weight: bold;\" title=\"Click to edit\" contenteditable=\"false\">" + subjectx + "</p><p contenteditable=\"true\" style=\"font-size: 14px; margin-top: -5px; margin-left: 5px;\">" + descriptionx + "</p><div style=\"margin-top: 0px\" class=\"card-footer\"></div></div>");
+                                var thisNote = $("<div id=\"temp\" class=\"post-it\" draggable=\"true\"><p class=\"editable\" style=\"font-size: 17px; margin-top: -25px; margin-left: 5px; font-weight: bold;\" title=\"Click to edit\" contenteditable=\"false\">" + subject + "</p><p contenteditable=\"true\" style=\"font-size: 14px; margin-top: -5px; margin-left: 5px;\">" + description + "</p><div style=\"margin-top: 0px\" class=\"card-footer\"></div></div>");
                                 note.push(thisNote);
                                 switch (selectedOption) {
                                     case "Low":
@@ -632,10 +634,10 @@
                                 }).catch(error => {
                                     Swal.fire("Empty Description!", "Please Enter a Valid Subject!", "warning");
                                 });
+                                $("#exampleModal").modal("hide");
                             } else {
                                 alert("error");
                             }
-                            $("#exampleModal").modal("hide");
                         });
 
                         function noteDragStart(e) {
@@ -660,7 +662,7 @@
                                 var xnumberPart = draggedNoteId.match(/\d+/);
                                 var dninumber = parseInt(xnumberPart[0]);
                             }
-                            this.setAttribute("board", number);
+
                             return fetch('project/update-board', {
                                 method: 'POST',
                                 body: new URLSearchParams({
@@ -711,9 +713,12 @@
             });
 
             function handleCardClick(card) {
+
                 const projectr = card.getAttribute("project");
                 const boardr = card.getAttribute("board");
+
                 $.post('project/show-data', {tid: boardr, pid: projectr}, function (data) {
+
                     document.getElementById("subject_show").value = data.subject;
                     document.getElementById("description_show").value = data.description;
                 });

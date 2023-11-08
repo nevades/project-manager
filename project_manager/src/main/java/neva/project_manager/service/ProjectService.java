@@ -24,6 +24,7 @@ import neva.project_manager.repo.ParamRepo;
 import neva.project_manager.repo.ProjectRepo;
 import neva.project_manager.repo.TaskRepo;
 import neva.project_manager.repo.UserRepo;
+import neva.project_manager.repo.UserTypeRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -40,6 +41,9 @@ public class ProjectService {
 
     @Autowired
     private TaskRepo trepor;
+
+    @Autowired
+    private UserTypeRepo tussr;
 
     @Autowired
     private CategoryRepo catrepo;
@@ -102,7 +106,7 @@ public class ProjectService {
 
     }
 
-    public Project updateProject(Integer projectId, String projectName) throws Exception {
+    public Project updateProject(Integer projectId, String projectName, String boardData) throws Exception {
         Project existingProject = repo.findByProjectId(projectId);
 
         existingProject.setProjectName(projectName);
@@ -146,6 +150,10 @@ public class ProjectService {
 
     public Iterable<LoadTaskDTO> LoadTasks(String uid) {
         return trepor.LoadTasks(uid);
+    }
+
+    public Iterable<LoadTaskDTO> LoadTask(Integer tid) {
+        return trepor.LoadTask(tid);
     }
 
     public Iterable<LoadDataDTO> LoadData(String uid) {
@@ -198,6 +206,13 @@ public class ProjectService {
         return usrtype;
     }
 
+    public Task reactivateTask(Integer id) throws Exception {
+        Task tttype = trepor.findById(id).get();
+        tttype.setStatus("active");
+        tttype = trepor.save(tttype);
+        return tttype;
+    }
+
     public Task saveTask(String subject, String selectedOption, String description, Integer projectId, Integer assignedTo, Integer behalfOf, Integer parameter_id) {
         Task task = new Task();
         task.setSubject(subject);
@@ -230,7 +245,30 @@ public class ProjectService {
     }
 
     public DataTablesResponse<LoadTaskDTO> getTickets(DataTableRequest param) throws Exception {
-        return ltrepo.getData(LoadTaskDTO.class, param, "SELECT `id`,`subject`,`description`,`priority`,(SELECT `project_name` FROM `project` WHERE `project_id` = t.`project_id`) AS `project_id`,(SELECT `board_name` FROM `board` WHERE `board_id` = t.`board_id`) AS `board_id`,(SELECT `category_name` FROM `parameter` WHERE `id` = `parameter_id`) AS `parameter_id`,(SELECT `username` FROM `user` WHERE `id` = `assigned_to`) AS `assigned_to`,(SELECT `username` FROM `user` WHERE `id` = `behalf_of`) AS `behalf_of`,`status` FROM `task` t");
+
+//        String s = "";
+//        if (param.getData() == "0") {
+//            s = "";
+//        } else if (param.getData() == "1") {
+//            s = "WHERE p.`category_type` IN (1)";
+//        } else if (param.getData() == "2") {
+//            s = "WHERE p.`category_type` IN (2)";
+//        } else if (param.getData() == "69") {
+//            s = "WHERE p.`category_type` NOT IN (1,2)";
+//        }
+        String s = "";
+        String data = param.getData();
+        if ("0".equals(data)) {
+            s = "";
+        } else if ("1".equals(data)) {
+            s = "WHERE p.`category_type` IN (1)";
+        } else if ("2".equals(data)) {
+            s = "WHERE p.`category_type` IN (2)";
+        } else if ("69".equals(data)) {
+            s = "WHERE p.`category_type` NOT IN (1,2)";
+        }
+
+        return ltrepo.getData(LoadTaskDTO.class, param, "SELECT t.`id`,`subject`,`description`,`priority`,(SELECT `project_name` FROM `project` WHERE `project_id` = t.`project_id`) AS `project_id`,(SELECT `board_name` FROM `board` WHERE `board_id` = t.`board_id`) AS `board_id`,(SELECT `category_name` FROM `parameter` WHERE `id` = `parameter_id`) AS `parameter_id`,(SELECT `username` FROM `user` WHERE `id` = `assigned_to`) AS `assigned_to`,(SELECT `username` FROM `user` WHERE `id` = `behalf_of`) AS `behalf_of`,t.`status` FROM `task` t INNER JOIN `parameter` p ON t.`parameter_id` = p.`id` " + s + " ");
     }
 
     public DataTablesResponse<LoadUserDTO> getUsers(DataTableRequest param) throws Exception {
@@ -239,6 +277,10 @@ public class ProjectService {
 
     public Iterable<SlimSelectDTO> searchType(String search) {
         return catrepo.searchType("%" + search.trim() + "%");
+    }
+
+    public Iterable<SlimSelectDTO> searchUserType(String search) {
+        return tussr.searchUserType("%" + search.trim() + "%");
     }
 
     public Iterable<SlimSelectDTO> getAllType(String search) {

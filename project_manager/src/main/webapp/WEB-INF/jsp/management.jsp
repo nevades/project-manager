@@ -71,6 +71,8 @@
         <script type="text/javascript" src="files/js/autoNumeric.js"></script>
         <script type="text/javascript" src="files/js/dataTables.responsive.min.js"></script>
         <script>
+            var boardData = {};
+
             fetch('project/load-project').then((res) => res.json()).then((data) => {
                 for (var i = 0; i < data.length; i++) {
                     const pid = data[i].projectId;
@@ -91,6 +93,7 @@
             });
 
             $(document).on('click', '.select', function () {
+                boardData = {};
                 var projectid = $(this).data('projectid');
                 var projectName = $(this).closest('.card-body').find('.card-title').text();
                 $('#exampleInputEmail').val(projectName);
@@ -122,6 +125,19 @@
 
                 $('#save').click(function () {
                     const projectName = $('#exampleInputEmail').val();
+
+                    var boardElements = document.querySelectorAll("[id^='board-']");
+
+                    boardElements.forEach(function (boardElement, index) {
+                        var boardId = boardElement.id;
+                        var boardName = boardElement.value;
+                        var colorInput = document.getElementById("colorInput" + index);
+                        var boardColor = colorInput ? colorInput.value : '';
+
+                        boardData[boardId] = {name: boardName, color: boardColor};
+                    });
+
+//                    console.log(boardData);
                     Swal.fire({
                         title: 'Are you sure?',
                         text: "This Project Will Be Updated!",
@@ -136,7 +152,8 @@
                                 method: 'POST',
                                 body: new URLSearchParams({
                                     projectId: projectid,
-                                    projectName: projectName
+                                    projectName: projectName,
+                                    boardData: JSON.stringify(boardData)
                                 })
                             }).then(response => {
                                 if (!response.ok) {
@@ -159,7 +176,6 @@
                         }
                     });
                 });
-
             });
         </script>
     </body>

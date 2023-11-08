@@ -77,10 +77,71 @@
           background-repeat: no-repeat;
           background-position: center center;">
         <%@include file="jspf/navbar.jspf" %>
+
+        <div class="modal fade" id="largeModal" tabindex="-1" role="dialog" aria-labelledby="largeModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg modal-dialog-centered" role="document" style="max-width: 90%;">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="exampleModalLabel" style="width: 20%">View Ticket Details</h1>
+                        <span>
+                            <label class="col-form-label new-label-box" style="width: 50%">Assigned To</label>
+                            <input id="assignt" disabled type="text" class="form-control form-control-xs" style="width: 100%">
+                        </span>
+                        <span style="margin-left: 125px;">
+                            <label class="col-form-label new-label-box" style="width: 50%">Behalf Of</label>
+                            <input id="behalft" disabled type="text" class="form-control form-control-xs" style="width: 100%">
+                        </span>
+                        <span style="margin-left: 125px;">
+                            <label class="col-form-label new-label-box" style="width: 50%">Priority</label>
+                            <input id="priorityt" disabled type="text" class="form-control form-control-xs" style="width: 100%">
+                        </span>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row form-group">
+                            <div class="col-topic-start"></div>
+                            <label class="col-form-label new-label-box" style="width: 20%">Subject</label>
+                            <div class="col-15 " style="width: 75%">
+                                <input disabled type="text" onkeyup="this.value = this.value.toUpperCase();" max="100" class="form-control form-control-xs" autocomplete="off" id="subjectt">
+                            </div>
+                        </div>
+
+                        <div class="row form-group">
+                            <div class="col-topic-start"></div>
+                            <label class="col-form-label new-label-box" style="width: 20%">Description</label>
+                            <div class="col-15 " style="width: 75%">
+                                <textarea disabled class="form-control" rows="5" name="description" id="descriptiont"></textarea>
+                            </div>
+                        </div>
+
+                        <div class="row form-group">
+                            <div class="col-topic-start"></div>
+                            <label class="col-form-label new-label-box" style="width: 20%">Project Name</label>
+                            <div class="col-15 " style="width: 75%">
+                                <input disabled type="text" max="100" class="form-control form-control-xs" autocomplete="off" id="projectt">
+                            </div>
+                        </div>
+
+                        <div class="row form-group">
+                            <div class="col-topic-start"></div>
+                            <label class="col-form-label new-label-box" style="width: 20%">Board Name</label>
+                            <div class="col-15 " style="width: 75%">
+                                <input disabled type="text" max="100" class="form-control form-control-xs" autocomplete="off" id="boardt">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <!--<button type="button" class="btn btn-primary">Save changes</button>-->
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <div class="container" style="margin-top: 15px;">
             <div class="row">
                 <div class="col-md-3">
-                    <div class="card-counter primary">
+                    <div class="card-counter primary" id="all_tickets">
                         <i class="fa-solid fa-border-all"></i>
                         <span class="count-numbers"><h1 id="all"></h1></span>
                         <span class="count-name">All Tickets</span>
@@ -88,7 +149,7 @@
                 </div>
 
                 <div class="col-md-3">
-                    <div class="card-counter info">
+                    <div class="card-counter info" id="app_tickets">
                         <i class="fa-solid fa-window-maximize"></i>
                         <span class="count-numbers"><h1 id="ap"></h1></span>
                         <span class="count-name">Application</span>
@@ -96,7 +157,7 @@
                 </div>
 
                 <div class="col-md-3">
-                    <div class="card-counter success">
+                    <div class="card-counter success" id="hard_tickets">
                         <i class="fa fa-microchip"></i>
                         <span class="count-numbers"><h1 id="hw"></h1></span>
                         <span class="count-name">Hardware</span>
@@ -104,7 +165,7 @@
                 </div>
 
                 <div class="col-md-3">
-                    <div class="card-counter danger">
+                    <div class="card-counter danger" id="other_tickets">
                         <i class="fa-solid fa-triangle-exclamation"></i>
                         <span class="count-numbers"><h1 id="ot"></h1></span>
                         <span class="count-name">Other</span>
@@ -116,7 +177,7 @@
         <div class="container mt-4">
             <div class="card">
                 <div class="card-header">
-                    <h6 class="m-0">Parameterization</h6>
+                    <h6 class="m-0" id="name">All Tickets</h6>
                 </div>
                 <div class="card-body">
                     <div class="table-responsive">
@@ -155,9 +216,9 @@
         <!--<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>-->
         <!--<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.18/dist/sweetalert2.min.js"></script>-->
         <%@include file="jspf/scripts.jspf" %>
-        <!--<script type="text/javascript" src="files/js/slimselect.js"></script>-->
+        <script type="text/javascript" src="files/js/slimselect.js"></script>
         <script type="text/javascript" src="files/js/datatables.min.js"></script>
-        <!--<script type="text/javascript" src="files/js/sweetalert2.js"></script>-->
+        <script type="text/javascript" src="files/js/sweetalert2.js"></script>
         <!--<script type="text/javascript" src="files/js/func.js"></script>-->
         <!--<script type="text/javascript" src="files/js/autoNumeric.js"></script>-->
         <!--<script type="text/javascript" src="files/js/dataTables.responsive.min.js"></script>-->
@@ -165,6 +226,29 @@
         <script>
         </script>
         <script>
+            const nameElement = document.getElementById("name");
+            var department = "";
+            department = '0';
+            $("#all_tickets").click(function () {
+                department = '0';
+                nameElement.textContent = "All Tickets";
+                dtable.ajax.reload();
+            });
+            $("#app_tickets").click(function () {
+                department = '1';
+                nameElement.textContent = "Application Tickets";
+                dtable.ajax.reload();
+            });
+            $("#hard_tickets").click(function () {
+                department = '2';
+                nameElement.textContent = "Hardware Tickets";
+                dtable.ajax.reload();
+            });
+            $("#other_tickets").click(function () {
+                department = '69';
+                nameElement.textContent = "Other Tickets";
+                dtable.ajax.reload();
+            });
 
             function loadTotalCount() {
                 fetch('project/total').then((res) => res.json()).then((data) => {
@@ -177,10 +261,8 @@
                 fetch('project/cards').then((res) => res.json()).then((data) => {
                     for (var i = 0; i < data.length; i++) {
                         if (data[i].category_type === 1) {
-                            console.log(data[i].no);
                             $('#ap').html(data[i].no);
                         } else if (data[i].category_type === 2) {
-                            console.log(data[i].no);
                             $('#hw').html(data[i].no);
                         }
                     }
@@ -215,6 +297,7 @@
                             "contentType": "application/json",
                             "type": "POST",
                             "data": function (d) {
+                                d.data = department;
                                 return JSON.stringify(d);
                             },
                             error: function (xhr, error, code) {
@@ -241,15 +324,117 @@
                             let action_td = document.createElement('td');
                             $(action_td).addClass('text-center');
                             if (data['status'] === 'active') {
-                                $(action_td).append('<a href="javascript:void(0)" class="editrec" data-id="' + data['id'] + '"><i class="icon feather icon-edit f-w-600 f-16 m-r-10 text-c-green"></i></a><a href="javascript:void(0)" class="delrec"><i class="feather icon-trash-2 f-w-600 f-16 text-danger"></i></a>');
+                                $(action_td).append('<a href="javascript:void(0)" class="editrec" data-id="' + data['id'] + '"><i class="icon feather icon-edit f-w-600 f-16 m-r-10 text-c-green"></i></a><a href="javascript:void(0)" class="taskdelrec"><i class="feather icon-trash-2 f-w-600 f-16 text-danger"></i></a>');
                             } else if (data['status'] === 'deactivated') {
-                                $(action_td).append('<a href="javascript:void(0)" class="rerec"><i class="feather icon-refresh-cw f-w-600 f-16 text-c-blue"></i></a>');
+                                $(action_td).append('<a href="javascript:void(0)" class="taskrerec"><i class="feather icon-refresh-cw f-w-600 f-16 text-c-blue"></i></a>');
                             }
                             $(row).append(action_td);
                             setTableStatus($(row).find('td').eq(8));
                         }
                     }
             );
+
+            $(document).on('click', '.taskdelrec', function () {
+                var id = $(this).closest('tr').find('td').eq(0).text();
+
+                Swal.fire({
+                    title: 'Are you sure?',
+                    text: "This Task Will be Deactivated!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Yes, Proceed!',
+                    showLoaderOnConfirm: true,
+                    preConfirm: () => {
+                        return fetch('project/deactivate-task', {
+                            method: 'POST',
+                            body: new URLSearchParams({
+                                id: id
+                            })
+                        }).then(response => {
+                            if (!response.ok) {
+                                throw new Error(response.statusText);
+                            }
+                            return response.json();
+                        }).catch(error => {
+                            Swal.showValidationMessage('Request failed:' + error);
+                        });
+                    },
+                    allowOutsideClick: () => !Swal.isLoading()
+
+                }).then((result) => {
+                    if (result.value) {
+                        if (result.value.status !== 200) {
+                            Swal.fire('Error!', result.value.msg, 'error');
+                        } else {
+                            Swal.fire('Successfull!', 'Task has been Deactivated !', 'success');
+                            dtable.ajax.reload();
+                        }
+                    }
+                });
+            });
+
+            $(document).on('click', '.taskrerec', function () {
+                var id = $(this).closest('tr').find('td').eq(0).text();
+
+                Swal.fire({
+                    title: 'Are you sure?',
+                    text: "This Task Will be Re-activated!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Yes, Proceed!',
+                    showLoaderOnConfirm: true,
+                    preConfirm: () => {
+                        return fetch('project/reactivate-task', {
+                            method: 'POST',
+                            body: new URLSearchParams({
+                                id: id
+                            })
+                        }).then(response => {
+                            if (!response.ok) {
+                                throw new Error(response.statusText);
+                            }
+                            return response.json();
+                        }).catch(error => {
+                            Swal.showValidationMessage('Request failed:' + error);
+                        });
+                    },
+                    allowOutsideClick: () => !Swal.isLoading()
+
+                }).then((result) => {
+                    if (result.value) {
+                        if (result.value.status !== 200) {
+                            Swal.fire('Error!', result.value.msg, 'error');
+                        } else {
+                            Swal.fire('Successfull!', 'Task has been Re-activated !', 'success');
+                            dtable.ajax.reload();
+                        }
+                    }
+                });
+            });
+
+            var dataId;
+            $(document).on('click', '.editrec', function () {
+                $("#largeModal").modal("show");
+                dataId = $(this).data('id');
+                $.post('project/load-task', {tid: dataId}, function (data) {
+                    console.log(data);
+                    for (var i = 0; i < data.length; i++) {
+
+                        document.getElementById("assignt").value = data[i].assigned_to;
+                        document.getElementById("behalft").value = data[i].behalf_of;
+                        document.getElementById("priorityt").value = data[i].priority;
+                        document.getElementById("subjectt").value = data[i].subject;
+                        document.getElementById("descriptiont").value = data[i].description;
+                        document.getElementById("projectt").value = data[i].project_id;
+                        document.getElementById("boardt").value = data[i].board_id;
+                    }
+                });
+            });
+
         </script>
     </body>
 </html>

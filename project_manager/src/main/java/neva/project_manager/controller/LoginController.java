@@ -19,14 +19,11 @@ public class LoginController {
     public String checkLogin(@RequestParam String username, @RequestParam String password, HttpSession session) {
 
         User user = LoginService.checkLogin(username);
-
-        if (user == null) {
+        if (user == null || "deactivated".equals(user.getStatus())) {
             return "error";
         } else {
-
             session.setAttribute("uid", user.getId());
             session.setAttribute("username", username);
-
             return "ok";
         }
 

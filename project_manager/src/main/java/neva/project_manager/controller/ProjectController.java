@@ -50,8 +50,8 @@ public class ProjectController {
     }
 
     @PostMapping("/update-project")
-    public ResponseEntity<CommonResponse> updateProject(@RequestParam Integer projectId, @RequestParam String projectName) throws Exception {
-        ser.updateProject(projectId, projectName);
+    public ResponseEntity<CommonResponse> updateProject(@RequestParam Integer projectId, @RequestParam String projectName, @RequestParam String boardData) throws Exception {
+        ser.updateProject(projectId, projectName, boardData);
         CommonResponse response = new CommonResponse("Success!", 200);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
@@ -93,6 +93,11 @@ public class ProjectController {
     @GetMapping("/load-tasks")
     public Iterable<LoadTaskDTO> LoadTasks(HttpSession session) throws Exception {
         return ser.LoadTasks(session.getAttribute("uid").toString());
+    }
+
+    @PostMapping("/load-task")
+    public Iterable<LoadTaskDTO> LoadTask(@RequestParam Integer tid) throws Exception {
+        return ser.LoadTask(tid);
     }
 
     @PostMapping("/show")
@@ -157,9 +162,21 @@ public class ProjectController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
+    @PostMapping("/reactivate-task")
+    public ResponseEntity<CommonResponse> reactivateTask(@RequestParam Integer id) throws Exception {
+        ser.reactivateTask(id);
+        CommonResponse response = new CommonResponse("Success!", 200);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
     @PostMapping("/get-type")
     public Iterable<SlimSelectDTO> searchType(@RequestParam String search) throws Exception {
         return ser.searchType(search);
+    }
+
+    @PostMapping("/get-usertype")
+    public Iterable<SlimSelectDTO> searchUserType(@RequestParam String search) throws Exception {
+        return ser.searchUserType(search);
     }
 
     @PostMapping("/search-type")
