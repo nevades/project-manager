@@ -10,6 +10,8 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface BoardRepo extends CrudRepository<Board, Integer> {
 
+    Board findByBoardId(Integer boardId);
+
     @Query("SELECT `board_id`,`board_name`,`board_color` FROM `board` b WHERE `project_id`=:projectId")
     Iterable<LoadBoardDTO> LoadBoard(@Param("uid") String uid, @Param("projectId") String projectId);
 }

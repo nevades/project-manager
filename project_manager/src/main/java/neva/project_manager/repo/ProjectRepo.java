@@ -20,4 +20,5 @@ public interface ProjectRepo extends CrudRepository<Project, Long> {
 
     @Query("SELECT `project_id`,`project_name`,`status` FROM `project` WHERE `user_id` = 1")
     Iterable<LoadDataDTO> LoadData(@Param("uid") String uid);
+
 }
