@@ -72,7 +72,8 @@
                             </div>
                             <div>
                                 <label for="categoryType">User Type</label>
-                                <input type="text" class="form-control" id="categoryType" name="categoryType" required>
+                                <select id="usertype"></select>
+                                <!--<input type="text" class="form-control" id="categoryType" name="categoryType" required>-->
                             </div>
                         </form>
                     </div>
@@ -107,6 +108,21 @@
                 $addUserModal.modal('hide');
             });
 
+            var usertype = new SlimSelect({
+                select: '#usertype',
+                placeholder: "Category Type List",
+                ajax: function (search, callback) {
+                    fetch('project/get-usertype', {
+                        method: 'POST',
+                        body: new URLSearchParams({search: search || ''})
+                    }).then(res => res.json()).then((data) => {
+                        callback(data);
+                    });
+                },
+                allowDeselect: false
+            });
+            $('#usertype').data('select', usertype);
+
             $('#saveUserBtn').click(function () {
                 Swal.fire({
                     title: 'Are you sure?',
@@ -122,7 +138,7 @@
                             method: 'POST',
                             body: new URLSearchParams({
                                 username: document.getElementById('userNameText').value,
-                                usertype: document.getElementById('categoryType').value
+                                usertype: document.getElementById('usertype').value
                             })
                         }).then(response => {
                             if (!response.ok) {

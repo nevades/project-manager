@@ -24,6 +24,9 @@ public class DataTableRequest {
     @JsonProperty(required = false)
     private String filter;
 
+//    public String get(String data) {
+//        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+//    }
     @AllArgsConstructor
     @NoArgsConstructor
     @Getter
