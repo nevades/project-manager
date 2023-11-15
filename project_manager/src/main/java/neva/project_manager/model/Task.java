@@ -27,9 +27,4 @@ public class Task {
     private Integer assigned_to;
     private Integer behalf_of;
     private String status;
-//    @CreatedDate
-//    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd hh:mm:ss")
-//    private Date date;
-//    @CreatedBy
-//    private Integer createdBy;
 }

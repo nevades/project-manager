@@ -1,5 +1,9 @@
 package neva.project_manager.service;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import java.util.Iterator;
+import java.util.Map;
 import neva.project_manager.datatable.DataTableRepo;
 import neva.project_manager.datatable.DataTableRequest;
 import neva.project_manager.datatable.DataTablesResponse;
@@ -108,10 +112,42 @@ public class ProjectService {
 
     public Project updateProject(Integer projectId, String projectName, String boardData) throws Exception {
         Project existingProject = repo.findByProjectId(projectId);
-
         existingProject.setProjectName(projectName);
 
+        ObjectMapper objectMapper = new ObjectMapper();
+        JsonNode boardDataJson = objectMapper.readTree(boardData);
+
+        Iterator<Map.Entry<String, JsonNode>> boards = boardDataJson.fields();
+        while (boards.hasNext()) {
+            Map.Entry<String, JsonNode> boardEntry = boards.next();
+            String boardId = boardEntry.getKey();
+
+            // Extract the numeric part from the board ID
+            String numericPart = boardId.replaceAll("\\D+", ""); // Extracts only digits
+
+            JsonNode boardDetails = boardEntry.getValue();
+
+            // Now you can extract 'name' and 'color' from boardDetails and update the corresponding board.
+            // For example:
+            String boardName = boardDetails.get("name").asText();
+            String boardColor = boardDetails.get("color").asText();
+
+            // Update the board using the retrieved information.
+            Board existingBoard = brepo.findByBoardId(numericPart);
+            existingBoard.setBoardName(boardName);
+            existingBoard.setBoardColor(boardColor);
+            brepo.save(existingBoard);
+        }
+
         return repo.save(existingProject);
+    }
+
+    public User updateUser(Integer userid, String username, Integer usertype) throws Exception {
+        User existingUser = usr.findById(userid).get();
+        existingUser.setUsername(username);
+        existingUser.setUserType(usertype);
+
+        return usr.save(existingUser);
     }
 
     public Parameter saveParam(String ctype, String cname) throws Exception {
@@ -160,8 +196,12 @@ public class ProjectService {
         return repo.LoadData(uid);
     }
 
-    public LoadTaskDTO showData(Integer tid, Integer pid) {
-        return trepor.showData(tid, pid);
+    public LoadTaskDTO showData(Integer nid) {
+        return trepor.showData(nid);
+    }
+
+    public User getUserName(Integer uuid) {
+        return usr.getUserName(uuid);
     }
 
     public Parameter deactivateStatus(Integer id) throws Exception {
@@ -236,7 +276,6 @@ public class ProjectService {
         }
 
         task = trepor.save(task);
-        Integer tid = task.getId();
         return task;
     }
 
@@ -246,16 +285,6 @@ public class ProjectService {
 
     public DataTablesResponse<LoadTaskDTO> getTickets(DataTableRequest param) throws Exception {
 
-//        String s = "";
-//        if (param.getData() == "0") {
-//            s = "";
-//        } else if (param.getData() == "1") {
-//            s = "WHERE p.`category_type` IN (1)";
-//        } else if (param.getData() == "2") {
-//            s = "WHERE p.`category_type` IN (2)";
-//        } else if (param.getData() == "69") {
-//            s = "WHERE p.`category_type` NOT IN (1,2)";
-//        }
         String s = "";
         String data = param.getData();
         if ("0".equals(data)) {

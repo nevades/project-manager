@@ -15,4 +15,7 @@ public interface UserRepo extends CrudRepository<User, Integer> {
 
     @Query("SELECT `id` AS `value`,`username` AS `text` FROM `user` WHERE `status`='active'")
     Iterable<SlimSelectDTO> getAllUsers(@Param("search") String search);
+
+    @Query("SELECT k.`username`,k.`user_type` FROM `user` k WHERE k.`id`=:uuid")
+    User getUserName(@Param("uuid") Integer uuid);
 }
