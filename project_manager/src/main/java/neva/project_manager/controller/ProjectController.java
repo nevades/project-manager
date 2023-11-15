@@ -1,6 +1,8 @@
 package neva.project_manager.controller;
 
 import jakarta.servlet.http.HttpSession;
+import java.util.HashMap;
+import java.util.Map;
 import neva.project_manager.datatable.DataTableRequest;
 import neva.project_manager.datatable.DataTablesResponse;
 import neva.project_manager.dto.LoadBoardDTO;
@@ -13,6 +15,7 @@ import neva.project_manager.dto.LoadUserDTO;
 import neva.project_manager.dto.ParamDTO;
 import neva.project_manager.dto.SlimSelectDTO;
 import neva.project_manager.model.Task;
+import neva.project_manager.model.User;
 import neva.project_manager.service.ProjectService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -52,6 +55,13 @@ public class ProjectController {
     @PostMapping("/update-project")
     public ResponseEntity<CommonResponse> updateProject(@RequestParam Integer projectId, @RequestParam String projectName, @RequestParam String boardData) throws Exception {
         ser.updateProject(projectId, projectName, boardData);
+        CommonResponse response = new CommonResponse("Success!", 200);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @PostMapping("/update-user")
+    public ResponseEntity<CommonResponse> updateUser(@RequestParam Integer userid, @RequestParam String username, @RequestParam Integer usertype) throws Exception {
+        ser.updateUser(userid, username, usertype);
         CommonResponse response = new CommonResponse("Success!", 200);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
@@ -111,8 +121,13 @@ public class ProjectController {
     }
 
     @PostMapping("/show-data")
-    public LoadTaskDTO showData(@RequestParam Integer tid, @RequestParam Integer pid) throws Exception {
-        return ser.showData(tid, pid);
+    public LoadTaskDTO showData(@RequestParam Integer nid) throws Exception {
+        return ser.showData(nid);
+    }
+
+    @PostMapping("/load-username")
+    public User getUserName(@RequestParam Integer uuid) throws Exception {
+        return ser.getUserName(uuid);
     }
 
     @PostMapping("/get-users")
@@ -192,7 +207,12 @@ public class ProjectController {
     @PostMapping("/save-task")
     public ResponseEntity<CommonResponse> saveTask(@RequestParam String subject, @RequestParam String selectedOption, @RequestParam String description, @RequestParam Integer projectId, @RequestParam Integer assignedTo, @RequestParam Integer behalfOf, @RequestParam Integer parameter_id) throws Exception {
         Task saved = ser.saveTask(subject, selectedOption, description, projectId, assignedTo, behalfOf, parameter_id);
-        CommonResponse response = new CommonResponse("Success!", 200, saved.getId());
+        Map<String, Object> responseData = new HashMap<>();
+        responseData.put("id", saved.getId());
+        responseData.put("projectId", saved.getProject_id());
+        responseData.put("boardId", saved.getBoard_id());
+
+        CommonResponse response = new CommonResponse("Success!", 200, responseData);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
@@ -218,12 +238,6 @@ public class ProjectController {
         return ser.loadTotalCount(session.getAttribute("uid").toString());
     }
 
-//    @PostMapping("/logout")
-//    public ResponseEntity<CommonResponse> updateParameter(@RequestParam Integer pid, @RequestParam String categoryName, @RequestParam String categoryType) throws Exception {
-//        ser.updateParameter(pid, categoryName, categoryType);
-//        CommonResponse response = new CommonResponse("Success!", 200);
-//        return new ResponseEntity<>(response, HttpStatus.OK);
-//    }
     @ExceptionHandler(Exception.class)
     public ResponseEntity<CommonResponse> handleException(Exception e) {
         e.printStackTrace();

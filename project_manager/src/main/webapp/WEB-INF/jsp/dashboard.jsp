@@ -3,7 +3,7 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>Setup</title>
+        <title>Dashboard</title>
         <link rel="icon" href="files/images/fav.ico" type="image/x-icon">
         <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.18/dist/sweetalert2.min.css">
@@ -51,8 +51,8 @@
             padding-bottom: 20px !important;
 
             overflow-x: auto;
-            white-space: nowrap; /* Prevent line breaks in the content */
-            width: 100%; /* Ensure it takes the full width of its container */
+            white-space: nowrap;
+            width: 100%;
         }
         .divs {
             overflow: auto !important;
@@ -144,7 +144,7 @@
             position: relative;
         }
     </style>
-    <body style="background-image: url('files/images/backgg.jpg'); background-repeat: no-repeat; background-attachment: fixed; background-size: cover;">
+    <body style="background-image: url('files/images/wallpaperflare.com_wallpaper.jpg'); background-repeat: no-repeat; background-attachment: fixed; background-size: cover;">
         <%@include file="jspf/navbar.jspf" %>
         <div id="landing">
         </div>
@@ -155,7 +155,7 @@
                     <div class="operations" style="margin-left: 10px; margin-top: 10px; width: auto; display: none;">
                         <button type="button" onclick="clearCenter()" class="btn btn-info"><span><i class="fa fa-arrow-left fa-1x"></i></span> Select Project</button>
 
-                        <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                        <button id="addtask" type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#exampleModal">
                             <i class="fa-solid fa-location-arrow"></i> Add Task
                         </button>
                         <i class="trash fa-solid fa-trash fa-lg"></i>
@@ -270,7 +270,7 @@
                             <div class="col-topic-start"></div>
                             <label class="col-form-label new-label-box" style="width: 20%">Subject<span class="text-danger">*</span></label>
                             <div class="col-15 " style="width: 75%">
-                                <input type="text" onkeyup="this.value = this.value.toUpperCase();" max="100" class="form-control form-control-xs" autocomplete="off" id="subject_show">
+                                <input readonly type="text" onkeyup="this.value = this.value.toUpperCase();" max="100" class="form-control form-control-xs" autocomplete="off" id="subject_show">
                             </div>
                         </div>
 
@@ -278,7 +278,7 @@
                             <div class="col-topic-start"></div>
                             <label class="col-form-label new-label-box" style="width: 20%">Description<span class="text-danger">*</span></label>
                             <div class="col-15 " style="width: 75%">
-                                <textarea class="form-control" rows="7" name="description" id="description_show"></textarea>
+                                <textarea class="form-control" rows="7" name="description" id="description_show" readonly></textarea>
                             </div>
                         </div>
                         <div class="row">
@@ -312,6 +312,14 @@
 
         </script>
         <script>
+            $("#addtask").click(function () {
+                document.getElementById('subject_input').value = '';
+                document.getElementById('description').value = '';
+                assignto.setSelected('');
+                behalfof.setSelected('');
+                select_task.setSelected('');
+            });
+
             var select_priority = new SlimSelect({
                 select: '#select_priority'
             });
@@ -387,11 +395,6 @@
 
             function clearCenter() {
                 location.reload();
-                //                const body = document.body;
-                //                body.style.overflowX === 'hidden';
-                //                $(".operations").hide();
-                //                $(".divs").empty();
-                //                document.getElementById("center").style.display = "flex";
             }
             var projectid;
             $(document).on('click', '.select', function () {
@@ -554,21 +557,21 @@
                         });
 
                         $("#add").click(function () {
-                            let fd = new FormData();
+//                            let fd = new FormData();
+//
+//                            let file = document.getElementById('file').files;
+//                            for (var i = 0; i < file.length; i++) {
+//                                fd.append('file', file[i]);
+//                            }
+//                            let txt = document.getElementById('txt').value;
+//                            fd.append('txt', txt);
 
-                            let file = document.getElementById('file').files;
-                            for (var i = 0; i < file.length; i++) {
-                                fd.append('file', file[i]);
-                            }
-                            let txt = document.getElementById('txt').value;
-                            fd.append('txt', txt);
-
-                            fetch('test/upload', {
-                                method: 'POST',
-                                body: fd
-                            }).then(response => {
-                                console.log(response.text());
-                            });
+//                            fetch('test/upload', {
+//                                method: 'POST',
+//                                body: fd
+//                            }).then(response => {
+//                                console.log(response.text());
+//                            });
 
                             let subject = $("#subject_input").val();
                             let description = $("#description").val();
@@ -589,25 +592,7 @@
                                 subjectx = subject;
                             }
 
-                            if (subject && description) {
-                                var thisNote = $("<div id=\"temp\" class=\"post-it\" draggable=\"true\"><p class=\"editable\" style=\"font-size: 17px; margin-top: -25px; margin-left: 5px; font-weight: bold;\" title=\"Click to edit\" contenteditable=\"false\">" + subjectx + "</p><p contenteditable=\"true\" style=\"font-size: 14px; margin-top: -5px; margin-left: 5px;\">" + descriptionx + "</p><div style=\"margin-top: 0px\" class=\"card-footer\"></div></div>");
-                                note.push(thisNote);
-                                switch (selectedOption) {
-                                    case "Low":
-                                        thisNote.find(".card-footer").append($("<button type=\"button\" style=\"margin-left: -150px\" class=\"btn btn-success\"></button>"));
-                                        break;
-                                    case "Medium":
-                                        thisNote.find(".card-footer").append($("<button type=\"button\" style=\"margin-left: -150px\" class=\"btn btn-warning\"></button>"));
-                                        break;
-                                    case "High":
-                                        thisNote.find(".card-footer").append($("<button type=\"button\" style=\"margin-left: -150px\" class=\"btn btn-danger\"></button>"));
-                                        break;
-                                }
-                                thisNote.on("dragstart", noteDragStart);
-                                thisNote.on("dragend", noteDragEnd);
-                                thisNote.on("keyup", noteChange);
-                                boxs.first().prepend(thisNote);
-                                saveApplication();
+                            if (subject && description && x && y && z) {
 
                                 return fetch('project/save-task', {
                                     method: 'POST',
@@ -624,18 +609,43 @@
                                     if (!response.ok) {
                                         throw new Error(response.statusText);
                                     } else {
-                                        Swal.fire('Successfull!', 'Task has been successfully submitted');
+                                        Swal.fire(
+                                                'Successfull!',
+                                                'Task has been successfully submitted',
+                                                'success'
+                                                );
+                                        $("#exampleModal").modal("hide");
                                     }
                                     return response.json();
                                 }).then(resp => {
-                                    $(document).find('#temp').attr('id', 'card-' + resp.data);
-                                }).catch(error => {
-                                    Swal.fire("Empty Description!", "Please Enter a Valid Subject!", "warning");
+                                    var taskId = resp.data;
+
+                                    var nid = taskId.id;
+                                    var pid = taskId.projectId;
+                                    var bid = taskId.boardId;
+
+                                    var thisNote = $("<div onclick=\"handleCardClick(this)\" actual=" + (nid) + " project=" + (pid) + " board=" + (bid) + " id=\"card-" + (nid) + "\" class=\"post-it\" draggable=\"true\"><p class=\"editable\" style=\"font-size: 17px; margin-top: -25px; margin-left: 5px; font-weight: bold;\" title=\"Click to edit\" contenteditable=\"false\">" + subjectx + "</p><p contenteditable=\"true\" style=\"font-size: 14px; margin-top: -5px; margin-left: 5px;\">" + descriptionx + "</p><div style=\"margin-top: 0px\" class=\"card-footer\"></div></div>");
+                                    note.push(thisNote);
+                                    switch (selectedOption) {
+                                        case "Low":
+                                            thisNote.find(".card-footer").append($("<button type=\"button\" style=\"margin-left: -150px\" class=\"btn btn-success\"></button>"));
+                                            break;
+                                        case "Medium":
+                                            thisNote.find(".card-footer").append($("<button type=\"button\" style=\"margin-left: -150px\" class=\"btn btn-warning\"></button>"));
+                                            break;
+                                        case "High":
+                                            thisNote.find(".card-footer").append($("<button type=\"button\" style=\"margin-left: -150px\" class=\"btn btn-danger\"></button>"));
+                                            break;
+                                    }
+                                    thisNote.on("dragstart", noteDragStart);
+                                    thisNote.on("dragend", noteDragEnd);
+                                    thisNote.on("keyup", noteChange);
+                                    boxs.first().prepend(thisNote);
+                                    saveApplication();
                                 });
                             } else {
-                                alert("error");
+                                Swal.fire("Empty Parameter!", "Please Enter All Valid Parameters!", "warning");
                             }
-                            $("#exampleModal").modal("hide");
                         });
 
                         function noteDragStart(e) {
@@ -711,9 +721,8 @@
             });
 
             function handleCardClick(card) {
-                const projectr = card.getAttribute("project");
-                const boardr = card.getAttribute("board");
-                $.post('project/show-data', {tid: boardr, pid: projectr}, function (data) {
+                let nidr = card.getAttribute("actual");
+                $.post('project/show-data', {nid: nidr}, function (data) {
                     document.getElementById("subject_show").value = data.subject;
                     document.getElementById("description_show").value = data.description;
                 });

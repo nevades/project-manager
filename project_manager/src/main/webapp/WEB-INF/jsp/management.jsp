@@ -71,6 +71,7 @@
         <script type="text/javascript" src="files/js/autoNumeric.js"></script>
         <script type="text/javascript" src="files/js/dataTables.responsive.min.js"></script>
         <script>
+            $('#exampleInputEmail').val("");
             var boardData = {};
 
             fetch('project/load-project').then((res) => res.json()).then((data) => {
@@ -136,8 +137,7 @@
 
                         boardData[boardId] = {name: boardName, color: boardColor};
                     });
-
-//                    console.log(boardData);
+                    console.log(boardData);
                     Swal.fire({
                         title: 'Are you sure?',
                         text: "This Project Will Be Updated!",
@@ -170,8 +170,17 @@
                             if (result.value.status !== 200) {
                                 Swal.fire('Error!', result.value.msg, 'error');
                             } else {
-                                Swal.fire('Successfull!', 'Project Has Been Updated!', 'success');
-                                location.reload();
+                                Swal.fire({
+                                    title: 'Successfull!',
+                                    text: 'Project Has Been Updated!',
+                                    icon: 'success'
+                                }).then((result) => {
+//                                    if (result.isConfirmed) {
+                                    location.reload();
+//                                    }
+                                });
+//                                Swal.fire('Successfull!', 'Project Has Been Updated!', 'success');
+//                                location.reload();
                             }
                         }
                     });

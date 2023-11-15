@@ -175,14 +175,16 @@
                         } else {
                             Swal.fire('Successfull!', 'Project has been Assigned !', 'success');
                             document.getElementById('projectName').value = '';
-                            ("#labelContainer").html("");
+                            $("#labelContainer").html("");
+                            labelCount = 1;
+                            boardsArray = [];
                         }
                     }
                 });
             });
 
             let labelCount = 1;
-            const boardsArray = [];
+            let boardsArray = [];
             document.getElementById('createLabelButton').addEventListener('click', function () {
                 if (labelCount === 9) {
                     Swal.fire(
@@ -192,8 +194,8 @@
                             );
                     return;
                 }
-                const colorCode = document.getElementById('colorInput').value;
-                const labelText = document.getElementById('labelText').value;
+                let colorCode = document.getElementById('colorInput').value;
+                let labelText = document.getElementById('labelText').value;
                 if (labelText === '') {
                     Swal.fire(
                             '',
@@ -202,9 +204,9 @@
                             );
                     return;
                 }
-                const br = document.createElement('br');
-                const customColorLabel = document.createElement('span');
-                const icon = document.createElement('i');
+                let br = document.createElement('br');
+                let customColorLabel = document.createElement('span');
+                let icon = document.createElement('i');
                 icon.classList.add('fa-regular', 'fa-trash-can');
                 icon.style.color = 'black';
                 icon.id = 'delrec';

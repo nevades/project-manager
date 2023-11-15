@@ -11,6 +11,7 @@ import lombok.Setter;
 @Setter
 public class LoadUserDTO {
 
+    private Integer id;
     private Integer userId;
     private String userName;
     private String userType;
