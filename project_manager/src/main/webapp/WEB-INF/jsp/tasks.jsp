@@ -384,46 +384,50 @@
 
                 catType = categoryTypeE.selected();
                 catName = document.getElementById("categoryNameP").value;
-                taskModal.classList.remove("show");
-                Swal.fire({
-                    title: 'Are you sure?',
-                    text: "This Parameter Will be Updated!",
-                    icon: 'warning',
-                    showCancelButton: true,
-                    confirmButtonColor: '#3085d6',
-                    cancelButtonColor: '#d33',
-                    confirmButtonText: 'Yes, Proceed!',
-                    showLoaderOnConfirm: true,
-                    preConfirm: () => {
-                        return fetch('project/update-parameter', {
-                            method: 'POST',
-                            body: new URLSearchParams({
-                                pid: dataId,
-                                categoryName: catName,
-                                categoryType: catType
-                            })
-                        }).then(response => {
-                            if (!response.ok) {
-                                throw new Error(response.statusText);
-                            }
-                            return response.json();
-                        }).catch(error => {
-                            Swal.showValidationMessage('Request failed:' + error);
-                        });
-                    },
-                    allowOutsideClick: () => !Swal.isLoading()
+                if (catType && catName) {
+                    taskModal.classList.remove("show");
+                    Swal.fire({
+                        title: 'Are you sure?',
+                        text: "This Parameter Will be Updated!",
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonColor: '#3085d6',
+                        cancelButtonColor: '#d33',
+                        confirmButtonText: 'Yes, Proceed!',
+                        showLoaderOnConfirm: true,
+                        preConfirm: () => {
+                            return fetch('project/update-parameter', {
+                                method: 'POST',
+                                body: new URLSearchParams({
+                                    pid: dataId,
+                                    categoryName: catName,
+                                    categoryType: catType
+                                })
+                            }).then(response => {
+                                if (!response.ok) {
+                                    throw new Error(response.statusText);
+                                }
+                                return response.json();
+                            }).catch(error => {
+                                Swal.showValidationMessage('Request failed:' + error);
+                            });
+                        },
+                        allowOutsideClick: () => !Swal.isLoading()
 
-                }).then((result) => {
-                    if (result.value) {
-                        if (result.value.status !== 200) {
-                            Swal.fire('Error!', result.value.msg, 'error');
-                        } else {
-                            Swal.fire('Successfull!', 'Parameter has been Updated !', 'success');
-                            dtable.ajax.reload();
-                            taskModal.style.display('none');
+                    }).then((result) => {
+                        if (result.value) {
+                            if (result.value.status !== 200) {
+                                Swal.fire('Error!', result.value.msg, 'error');
+                            } else {
+                                Swal.fire('Successfull!', 'Parameter has been Updated !', 'success');
+                                dtable.ajax.reload();
+                                taskModal.style.display('none');
+                            }
                         }
-                    }
-                });
+                    });
+                } else {
+                    Swal.fire("Empty Parameter!", "Please Enter All Valid Parameters!", "warning");
+                }
             });
 
             $.fn.dataTable.ext.errMode = 'none';
