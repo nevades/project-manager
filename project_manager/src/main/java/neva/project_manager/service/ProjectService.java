@@ -8,6 +8,7 @@ import neva.project_manager.datatable.DataTableRepo;
 import neva.project_manager.datatable.DataTableRequest;
 import neva.project_manager.datatable.DataTablesResponse;
 import neva.project_manager.dto.LoadBoardDTO;
+import neva.project_manager.dto.LoadCategoryDTO;
 import neva.project_manager.dto.LoadDataDTO;
 import neva.project_manager.dto.LoadParameterDTO;
 import neva.project_manager.dto.LoadProjectDTO;
@@ -66,6 +67,9 @@ public class ProjectService {
 
     @Autowired
     private DataTableRepo<LoadTaskDTO> ltrepo;
+
+    @Autowired
+    private DataTableRepo<LoadCategoryDTO> lcdto;
 
     @Transactional
     public Project saveProject(String projectName, String[] boardNames, String[] boardColors) throws Exception {
@@ -281,6 +285,10 @@ public class ProjectService {
 
     public DataTablesResponse<ParamDTO> getParam(DataTableRequest param) throws Exception {
         return prepo.getData(ParamDTO.class, param, "SELECT `id`,`category_name` AS categoryName,(SELECT `name` FROM `category` WHERE `id` = `category_type`) AS categoryType,`date`,(SELECT `username` FROM `user` WHERE `id` = p.`created_by`) AS createdBy,`status` FROM `parameter` p");
+    }
+
+    public DataTablesResponse<LoadCategoryDTO> getCatType(DataTableRequest param) throws Exception {
+        return lcdto.getData(LoadCategoryDTO.class, param, "SELECT `id`,`name`,`date`,`created_by`,`status` FROM `category`");
     }
 
     public DataTablesResponse<LoadTaskDTO> getTickets(DataTableRequest param) throws Exception {
