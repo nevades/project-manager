@@ -54,6 +54,52 @@
                     <div class="text-right">
                         <button id="addCategoryBtn" class="btn btn-sm waves-effect waves-light btn-danger"><i class="icon feather icon-plus"></i>Add Categories</button>
                         <button id="addCategoryTypeBtn" class="btn btn-sm waves-effect waves-light btn-info"><i class="icon feather icon-plus"></i>Add Category Type</button>
+                        <button id="editCategoryTypeBtn" class="btn btn-sm waves-effect waves-light btn-warning" data-toggle="modal" data-target="#myModal"><i class="icon feather icon-plus"></i>Edit Category Type</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade" id="myModal">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+
+                    <div class="modal-header">
+                        <h4 class="modal-title">Edit Category Type</h4>
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    </div>
+
+                    <div class="modal-body">
+
+                        <div class="container mt-4">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h6 class="m-0">Category Type</h6>
+                                </div>
+                                <div class="card-body">
+                                    <div class="table-responsive">
+                                        <table class="table table-bordered table-hover" id="catTypeTable">
+                                            <thead class="table-dark">
+                                                <tr>
+                                                    <th>ID</th>
+                                                    <th>Category Type</th>
+                                                    <th>Date Created</th>
+                                                    <th>Created By</th>
+                                                    <th>Status</th>
+                                                    <th>Action</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                     </div>
                 </div>
             </div>
@@ -477,6 +523,53 @@
                         }
                     }
             );
+            $("#editCategoryTypeBtn").click(function () {
+                var catTypeTable = $('#catTypeTable').DataTable(
+                        {
+                            "aLengthMenu": [[5, 10, 25, -1], [5, 10, 25, "All"]],
+                            "pageLength": 0,
+                            "ordering": true,
+                            "autoWidth": false,
+                            "processing": true,
+                            "serverSide": true,
+                            "order": [[0, "asc"]],
+                            "searchHighlight": true,
+                            "searchDelay": 350,
+                            "ajax": {
+                                "url": "project/show-cat-type",
+                                "contentType": "application/json",
+                                "type": "POST",
+                                "data": function (d) {
+                                    return JSON.stringify(d);
+                                },
+                                error: function (xhr, error, code) {
+                                    console.log(xhr);
+                                    console.log(code);
+                                }
+                            },
+                            "columns": [
+                                {"data": "id", className: "text-right"},
+                                {"data": "name"},
+                                {"data": "date"},
+                                {"data": "created_by", visible: true},
+                                {"data": "status", className: "text-center"}
+                            ], "language": {
+                                'loadingRecords': '&nbsp;',
+                                'processing': '<div class="loader2"></div>'
+                            }, "createdRow": function (row, data) {
+                                let action_td = document.createElement('td');
+                                $(action_td).addClass('text-center');
+                                if (data['status'] === 'active') {
+                                    $(action_td).append('<a href="javascript:void(0)" class="editrec" data-id="' + data['id'] + '"><i class="icon feather icon-edit f-w-600 f-16 m-r-10 text-c-green"></i></a><a href="javascript:void(0)" class="delrec"><i class="feather icon-trash-2 f-w-600 f-16 text-danger"></i></a>');
+                                } else if (data['status'] === 'deactivated') {
+                                    $(action_td).append('<a href="javascript:void(0)" class="rerec"><i class="feather icon-refresh-cw f-w-600 f-16 text-c-blue"></i></a>');
+                                }
+                                $(row).append(action_td);
+                                setTableStatus($(row).find('td').eq(4));
+                            }
+                        }
+                );
+            });
         </script>
     </body>
 </html>

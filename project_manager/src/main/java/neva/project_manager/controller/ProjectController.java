@@ -6,6 +6,7 @@ import java.util.Map;
 import neva.project_manager.datatable.DataTableRequest;
 import neva.project_manager.datatable.DataTablesResponse;
 import neva.project_manager.dto.LoadBoardDTO;
+import neva.project_manager.dto.LoadCategoryDTO;
 import neva.project_manager.dto.LoadDataDTO;
 import neva.project_manager.dto.LoadParameterDTO;
 import neva.project_manager.dto.LoadProjectDTO;
@@ -113,6 +114,11 @@ public class ProjectController {
     @PostMapping("/show")
     public DataTablesResponse<ParamDTO> getParam(@RequestBody DataTableRequest param) throws Exception {
         return ser.getParam(param);
+    }
+
+    @PostMapping("/show-cat-type")
+    public DataTablesResponse<LoadCategoryDTO> getCatType(@RequestBody DataTableRequest param) throws Exception {
+        return ser.getCatType(param);
     }
 
     @PostMapping("/show-tickets")
