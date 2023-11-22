@@ -289,6 +289,8 @@
 
             $('#addCategoryTypeBtn').click(function () {
                 $('#addCategoryTypeModal').modal('show');
+                var inputElement = document.getElementById("categoryTypeName");
+                inputElement.value = '';
             });
 
             $('#cancelCategoryType').click(function () {
