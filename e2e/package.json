@@ -1,0 +1,12 @@
+{
+  "name": "tasklane-e2e",
+  "private": true,
+  "type": "module",
+  "description": "Browser smoke tests for a running Tasklane instance",
+  "scripts": {
+    "test": "node smoke.mjs"
+  },
+  "devDependencies": {
+    "playwright": "1.65.1"
+  }
+}

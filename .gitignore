@@ -26,3 +26,6 @@ coverage/
 
 # Built SPA copied into the backend during packaging
 backend/src/main/resources/static/
+
+# End-to-end test output
+e2e/screenshots/
