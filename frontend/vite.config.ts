@@ -18,6 +18,18 @@ export default defineConfig({
       '/actuator': 'http://localhost:8080',
     },
   },
+  build: {
+    rollupOptions: {
+      output: {
+        // Split large, rarely-changing libraries into their own cacheable chunks.
+        manualChunks: {
+          react: ['react', 'react-dom', 'react-router'],
+          query: ['@tanstack/react-query'],
+          dnd: ['@dnd-kit/core', '@dnd-kit/sortable', '@dnd-kit/utilities'],
+        },
+      },
+    },
+  },
   test: {
     environment: 'node',
   },
