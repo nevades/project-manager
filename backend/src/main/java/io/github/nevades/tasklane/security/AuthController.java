@@ -42,15 +42,18 @@ public class AuthController {
     private final UserRepository users;
     private final PasswordEncoder passwordEncoder;
     private final boolean registrationEnabled;
+    private final boolean demoEnabled;
 
     public AuthController(AuthenticationManager authenticationManager, SecurityContextRepository contextRepository,
             UserRepository users, PasswordEncoder passwordEncoder,
-            @Value("${app.registration.enabled:true}") boolean registrationEnabled) {
+            @Value("${app.registration.enabled:true}") boolean registrationEnabled,
+            @Value("${app.demo-data.enabled:false}") boolean demoEnabled) {
         this.authenticationManager = authenticationManager;
         this.contextRepository = contextRepository;
         this.users = users;
         this.passwordEncoder = passwordEncoder;
         this.registrationEnabled = registrationEnabled;
+        this.demoEnabled = demoEnabled;
     }
 
     /** Issues the CSRF cookie. The SPA calls this once on start-up before any mutating request. */
@@ -62,7 +65,7 @@ public class AuthController {
     /** Public settings the login screen needs before the user is authenticated. */
     @GetMapping("/config")
     public Map<String, Boolean> config() {
-        return Map.of("registrationEnabled", registrationEnabled);
+        return Map.of("registrationEnabled", registrationEnabled, "demoEnabled", demoEnabled);
     }
 
     @GetMapping("/me")
