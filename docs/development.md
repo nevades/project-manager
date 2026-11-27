@@ -5,7 +5,7 @@
 | Tool    | Version              | Notes                                     |
 | ------- | -------------------- | ----------------------------------------- |
 | JDK     | 25                   | e.g. [Eclipse Temurin](https://adoptium.net) |
-| Node.js | 20.19+ (24 recommended) |                                         |
+| Node.js | 22.22+ (24 recommended) |                                         |
 | Docker  | recent               | Runs PostgreSQL; not needed for unit tests |
 
 Maven is not required; use the included wrapper (`./mvnw`, or `mvnw.cmd` on Windows).

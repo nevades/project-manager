@@ -19,13 +19,15 @@ export default defineConfig({
     },
   },
   build: {
-    rollupOptions: {
+    rolldownOptions: {
       output: {
         // Split large, rarely-changing libraries into their own cacheable chunks.
-        manualChunks: {
-          react: ['react', 'react-dom', 'react-router'],
-          query: ['@tanstack/react-query'],
-          dnd: ['@dnd-kit/core', '@dnd-kit/sortable', '@dnd-kit/utilities'],
+        codeSplitting: {
+          groups: [
+            { name: 'react', test: /node_modules[\\/](react|react-dom|react-router|scheduler)[\\/]/ },
+            { name: 'query', test: /node_modules[\\/]@tanstack[\\/]/ },
+            { name: 'dnd', test: /node_modules[\\/]@dnd-kit[\\/]/ },
+          ],
         },
       },
     },

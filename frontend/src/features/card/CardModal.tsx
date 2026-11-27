@@ -10,7 +10,7 @@ import {
   UserRound,
   X,
 } from 'lucide-react'
-import { useEffect, useState, type FormEvent, type ReactNode } from 'react'
+import { useState, type FormEvent, type ReactNode } from 'react'
 import { Avatar } from '@/components/Avatar'
 import { ConfirmDialog } from '@/components/ConfirmDialog'
 import { Modal } from '@/components/Modal'
@@ -82,7 +82,7 @@ function CardEditor({ board, card, onClose }: { board: BoardDetail; card: CardDe
       </button>
 
       <div className="border-b border-slate-100 px-6 pt-6 pb-4 pr-14">
-        <TitleEditor title={card.title} onSave={(title) => save({ title })} />
+        <TitleEditor key={card.title} title={card.title} onSave={(title) => save({ title })} />
         <p className="mt-1 text-sm text-slate-500">
           in list <span className="font-medium text-slate-700">{card.listName}</span>
           {updateCard.isPending && <Spinner className="ml-2 inline size-3.5" />}
@@ -297,9 +297,9 @@ function SidebarField({
   )
 }
 
+/** Rendered with `key={title}` so it re-initialises whenever the saved title changes. */
 function TitleEditor({ title, onSave }: { title: string; onSave: (title: string) => void }) {
   const [value, setValue] = useState(title)
-  useEffect(() => setValue(title), [title])
 
   const commit = () => {
     const trimmed = value.trim()
@@ -336,15 +336,16 @@ function DescriptionEditor({
   const [editing, setEditing] = useState(false)
   const [value, setValue] = useState(description ?? '')
 
-  useEffect(() => {
-    if (!editing) setValue(description ?? '')
-  }, [description, editing])
+  const startEditing = () => {
+    setValue(description ?? '')
+    setEditing(true)
+  }
 
   if (!editing) {
     return (
       <button
         type="button"
-        onClick={() => setEditing(true)}
+        onClick={startEditing}
         className={cn(
           'w-full rounded-lg px-3 py-2.5 text-left text-sm whitespace-pre-wrap transition',
           description ? 'text-slate-700 hover:bg-slate-50' : 'bg-slate-100 text-slate-500 hover:bg-slate-200',

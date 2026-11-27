@@ -99,7 +99,7 @@ For running in production (HTTPS, backups, hardening) see the [deployment guide]
 
 Run the API and the frontend dev server separately to get hot reload.
 
-**Prerequisites:** JDK 25, Node.js 20.19+ (24 recommended) and Docker (for PostgreSQL).
+**Prerequisites:** JDK 25, Node.js 22.22+ (24 recommended) and Docker (for PostgreSQL).
 
 ```bash
 # 1. Start PostgreSQL only
