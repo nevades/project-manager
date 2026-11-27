@@ -4,7 +4,11 @@ Thanks for your interest in improving Tasklane!
 
 ## Getting started
 
-Follow the **Local development** section of the [README](README.md) to run the API and the frontend.
+Follow the [development guide](docs/development.md) to run the API and the frontend locally. The
+[architecture overview](docs/architecture.md) explains how the code is organised.
+
+Found a bug or have an idea? Open an issue using one of the templates. Security problems should be reported
+privately as described in [SECURITY.md](SECURITY.md).
 
 ## Workflow
 
@@ -15,6 +19,7 @@ Follow the **Local development** section of the [README](README.md) to run the A
    cd backend && ./mvnw verify
    cd frontend && npm run lint && npm run test && npm run build
    ```
+   For UI changes, also run the browser tests against a fresh stack (see [docs/development.md](docs/development.md)).
 4. Open a pull request with a clear description. CI runs the same checks.
 
 ## Commit messages
