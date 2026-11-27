@@ -59,24 +59,12 @@ export function CardModal({ board, cardId, onClose }: CardModalProps) {
   )
 }
 
-function toInput(card: CardDetail): UpdateCardInput {
-  return {
-    title: card.title,
-    description: card.description,
-    priority: card.priority,
-    dueDate: card.dueDate,
-    assigneeId: card.assignee?.id ?? null,
-    completed: card.completed,
-    labelIds: card.labelIds,
-  }
-}
-
 function CardEditor({ board, card, onClose }: { board: BoardDetail; card: CardDetail; onClose: () => void }) {
   const updateCard = useUpdateCard(board.id, card.id)
   const deleteCard = useDeleteCard(board.id)
   const [confirmDelete, setConfirmDelete] = useState(false)
 
-  const save = (patch: Partial<UpdateCardInput>) => updateCard.mutate({ ...toInput(card), ...patch })
+  const save = (patch: Partial<UpdateCardInput>) => updateCard.mutate(patch)
 
   const toggleLabel = (labelId: number) =>
     save({
