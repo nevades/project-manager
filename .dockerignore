@@ -1,0 +1,10 @@
+.git
+.github
+**/node_modules
+**/dist
+**/target
+**/.idea
+**/.vscode
+**/*.log
+.env
+backend/src/main/resources/static
