@@ -1,0 +1,10 @@
+# Normalise line endings in the repository; shell scripts must stay LF for Docker/Linux builds.
+* text=auto eol=lf
+*.cmd text eol=crlf
+*.bat text eol=crlf
+backend/mvnw text eol=lf
+
+*.png binary
+*.jpg binary
+*.ico binary
+*.jar binary
