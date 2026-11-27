@@ -1,0 +1,43 @@
+spring:
+  application:
+    name: tasklane
+  datasource:
+    url: ${DB_URL:jdbc:postgresql://localhost:5432/tasklane}
+    username: ${DB_USERNAME:tasklane}
+    password: ${DB_PASSWORD:tasklane}
+  jpa:
+    open-in-view: false
+    hibernate:
+      ddl-auto: validate
+  flyway:
+    enabled: true
+
+server:
+  port: ${PORT:8080}
+  error:
+    include-message: never
+  servlet:
+    session:
+      timeout: 7d
+      cookie:
+        http-only: true
+        same-site: lax
+        secure: ${SESSION_COOKIE_SECURE:false}
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health
+  endpoint:
+    health:
+      probes:
+        enabled: true
+
+app:
+  demo-data:
+    # Seeds a demo account (demo@example.com / demo1234) and a sample board
+    # when the database has no users yet.
+    enabled: ${DEMO_DATA:false}
+  registration:
+    enabled: ${REGISTRATION_ENABLED:true}
