@@ -4,6 +4,10 @@ updates:
     directory: /backend
     schedule:
       interval: weekly
+    groups:
+      backend:
+        patterns: ['*']
+
   - package-ecosystem: npm
     directory: /frontend
     schedule:
@@ -11,11 +15,40 @@ updates:
     groups:
       frontend:
         patterns: ['*']
+    ignore:
+      # Type definitions follow the Node.js LTS used at runtime.
+      - dependency-name: '@types/node'
+        update-types: ['version-update:semver-major']
+
+  - package-ecosystem: npm
+    directory: /e2e
+    schedule:
+      interval: monthly
+
   - package-ecosystem: github-actions
     directory: /
     schedule:
       interval: monthly
+    groups:
+      actions:
+        patterns: ['*']
+
   - package-ecosystem: docker
     directory: /
     schedule:
       interval: monthly
+    ignore:
+      # Stay on LTS runtimes; major upgrades are done deliberately.
+      - dependency-name: node
+        update-types: ['version-update:semver-major']
+      - dependency-name: eclipse-temurin
+        update-types: ['version-update:semver-major']
+
+  - package-ecosystem: docker-compose
+    directory: /
+    schedule:
+      interval: monthly
+    ignore:
+      # A PostgreSQL major upgrade needs a manual dump and restore of existing data.
+      - dependency-name: postgres
+        update-types: ['version-update:semver-major']
