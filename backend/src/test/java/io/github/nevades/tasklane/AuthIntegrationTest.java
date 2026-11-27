@@ -3,6 +3,7 @@ package io.github.nevades.tasklane;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -59,6 +60,34 @@ class AuthIntegrationTest extends IntegrationTestSupport {
         mvc.perform(post("/api/boards").session(session).contentType(MediaType.APPLICATION_JSON)
                         .content("{\"name\":\"No token\"}"))
                 .andExpect(status().isForbidden());
+    }
+
+    @Test
+    void adminChangesApplyToExistingSessionsImmediately() throws Exception {
+        MockHttpSession admin = register("boss@example.com", "Boss");
+        MockHttpSession user = register("worker@example.com", "Worker");
+        long userId = readId(getJson("/api/auth/me", user), "$.id");
+
+        // Promotion takes effect without signing in again.
+        send(put("/api/admin/users/" + userId), admin, "{\"role\":\"ADMIN\",\"active\":true}")
+                .andExpect(status().isOk());
+        getJson("/api/admin/users", user).andExpect(status().isOk());
+
+        // Deactivation signs the user out of their current session.
+        send(put("/api/admin/users/" + userId), admin, "{\"role\":\"USER\",\"active\":false}")
+                .andExpect(status().isOk());
+        getJson("/api/boards", user).andExpect(status().isUnauthorized());
+        mvc.perform(post("/api/auth/login").with(csrf()).contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"email\":\"worker@example.com\",\"password\":\"password123\"}"))
+                .andExpect(status().isUnauthorized());
+    }
+
+    @Test
+    void adminsCannotDemoteThemselves() throws Exception {
+        MockHttpSession admin = register("self@example.com", "Self");
+        long adminId = readId(getJson("/api/auth/me", admin), "$.id");
+        send(put("/api/admin/users/" + adminId), admin, "{\"role\":\"USER\",\"active\":true}")
+                .andExpect(status().isBadRequest());
     }
 
     @Test
