@@ -264,11 +264,38 @@ export function useCard(cardId: number | null) {
 export function useUpdateCard(boardId: number, cardId: number) {
   const client = useQueryClient()
   return useMutation({
-    mutationFn: (input: UpdateCardInput) => api.put<CardDetail>(`/api/cards/${cardId}`, input),
-    onSuccess: (card) => {
-      client.setQueryData(keys.card(cardId), card)
-      return invalidateBoard(client, boardId)
+    mutationKey: ['update-card', cardId],
+    // Edits to the same card run one after another so the server always applies them in order.
+    scope: { id: `update-card-${cardId}` },
+    // The patch has already been applied to the cache in onMutate, so the cached card is the latest state,
+    // including any edits still in flight. Sending it whole means rapid edits never overwrite each other.
+    mutationFn: () => {
+      const card = client.getQueryData<CardDetail>(keys.card(cardId))
+      if (!card) throw new Error('Card is not loaded')
+      return api.put<CardDetail>(`/api/cards/${cardId}`, toUpdateInput(card))
     },
+    onMutate: async (patch: Partial<UpdateCardInput>) => {
+      await client.cancelQueries({ queryKey: keys.card(cardId) })
+      const { assigneeId, ...fields } = patch
+      const members = client.getQueryData<BoardDetail>(keys.board(boardId))?.members ?? []
+      client.setQueryData<CardDetail>(keys.card(cardId), (card) => {
+        if (!card) return card
+        const next = { ...card, ...fields }
+        if (assigneeId !== undefined) {
+          const member = members.find((candidate) => candidate.id === assigneeId)
+          next.assignee = member ? { id: member.id, displayName: member.displayName, email: member.email } : null
+        }
+        return next
+      })
+    },
+    onSuccess: (card) => {
+      // Only accept the server copy once no other edit to this card is still pending.
+      if (client.isMutating({ mutationKey: ['update-card', cardId] }) <= 1) {
+        client.setQueryData(keys.card(cardId), card)
+      }
+    },
+    onError: () => client.invalidateQueries({ queryKey: keys.card(cardId) }),
+    onSettled: () => invalidateBoard(client, boardId),
   })
 }
 
@@ -307,9 +334,22 @@ export function useAddChecklistItem(boardId: number, cardId: number) {
 }
 
 export function useUpdateChecklistItem(boardId: number, cardId: number) {
-  return useCardChildMutation(boardId, cardId, ({ id, content, done }: ChecklistItem) =>
-    api.put<ChecklistItem>(`/api/checklist-items/${id}`, { content, done }),
-  )
+  const client = useQueryClient()
+  return useMutation({
+    mutationFn: ({ id, content, done }: ChecklistItem) =>
+      api.put<ChecklistItem>(`/api/checklist-items/${id}`, { content, done }),
+    // Tick the box immediately; the server response reconciles it.
+    onMutate: async (item) => {
+      await client.cancelQueries({ queryKey: keys.card(cardId) })
+      client.setQueryData<CardDetail>(keys.card(cardId), (card) =>
+        card ? { ...card, checklist: card.checklist.map((existing) => (existing.id === item.id ? item : existing)) } : card,
+      )
+    },
+    onSettled: () => {
+      client.invalidateQueries({ queryKey: keys.card(cardId) })
+      return invalidateBoard(client, boardId)
+    },
+  })
 }
 
 export function useDeleteChecklistItem(boardId: number, cardId: number) {
@@ -343,6 +383,18 @@ export function useAdminUpdateUser() {
 }
 
 // ---- Helpers ---------------------------------------------------------------------------------------------
+
+export function toUpdateInput(card: CardDetail): UpdateCardInput {
+  return {
+    title: card.title,
+    description: card.description,
+    priority: card.priority,
+    dueDate: card.dueDate,
+    assigneeId: card.assignee?.id ?? null,
+    completed: card.completed,
+    labelIds: card.labelIds,
+  }
+}
 
 export function updateBoardCache(client: QueryClient, boardId: number, update: (board: BoardDetail) => BoardDetail) {
   client.setQueryData<BoardDetail>(keys.board(boardId), (board) => (board ? update(board) : board))
