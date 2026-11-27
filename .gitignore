@@ -1,1 +1,28 @@
-/project_manager/target/
+# Build output
+target/
+dist/
+build/
+*.log
+
+# Dependencies
+node_modules/
+
+# Environment
+.env
+.env.*
+!.env.example
+
+# IDE / OS
+.idea/
+*.iml
+.vscode/*
+!.vscode/extensions.json
+.DS_Store
+Thumbs.db
+
+# Test and coverage output
+coverage/
+*.tsbuildinfo
+
+# Built SPA copied into the backend during packaging
+backend/src/main/resources/static/
