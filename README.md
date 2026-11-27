@@ -12,6 +12,7 @@ Organise work into boards, lists and cards, drag cards between columns, and keep
 ![Spring Boot 4](https://img.shields.io/badge/Spring%20Boot-4-6DB33F)
 ![React 19](https://img.shields.io/badge/React-19-61DAFB)
 ![Docker](https://img.shields.io/badge/Docker-ready-2496ED)
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 
 <img src="docs/screenshots/board.png" alt="Tasklane board view" width="900" />
 
@@ -28,6 +29,7 @@ Organise work into boards, lists and cards, drag cards between columns, and keep
 - [Documentation](#documentation)
 - [Tech stack](#tech-stack)
 - [Contributing](#contributing)
+- [License](#license)
 
 ## Features
 
@@ -153,3 +155,7 @@ The end-to-end suite expects a fresh stack started with `docker compose up --bui
 
 Contributions are welcome. Please read [CONTRIBUTING.md](CONTRIBUTING.md) first. Commits follow
 [Conventional Commits](https://www.conventionalcommits.org/).
+
+## License
+
+Released under the [MIT License](LICENSE).
