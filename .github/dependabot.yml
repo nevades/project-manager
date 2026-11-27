@@ -19,6 +19,9 @@ updates:
       # Type definitions follow the Node.js LTS used at runtime.
       - dependency-name: '@types/node'
         update-types: ['version-update:semver-major']
+      # typescript-eslint supports TypeScript < 6.1; upgrade TypeScript together with it.
+      - dependency-name: typescript
+        update-types: ['version-update:semver-major']
 
   - package-ecosystem: npm
     directory: /e2e
