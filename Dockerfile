@@ -1,7 +1,7 @@
 # syntax=docker/dockerfile:1
 
 # ---- 1. Build the React single-page app -------------------------------------------------------
-FROM node:24-alpine AS frontend
+FROM node:26-alpine AS frontend
 WORKDIR /app/frontend
 COPY frontend/package.json frontend/package-lock.json* ./
 RUN if [ -f package-lock.json ]; then npm ci --no-audit --no-fund; else npm install --no-audit --no-fund; fi
